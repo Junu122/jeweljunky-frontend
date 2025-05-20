@@ -43,11 +43,12 @@ export default function Header2({
               <img
                 alt="logo"
                 className="logo"
-                src="../../public/images/logo/jewel-junkie-logo.png"
+                src="/images/logo/jewel-junkie-logo.png"
                 width="136"
                 height="21"
               />
             </Link>
+            hdxfhjdxt
           </div>
           <div className="col-xl-6 tf-md-hidden">
             <nav className="box-navigation text-center">
