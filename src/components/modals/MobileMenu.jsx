@@ -44,7 +44,7 @@ export default function MobileMenu() {
           <ul className="nav-ul-mb" id="wrapper-menu-navigation">
             {navItems.map((item, i) => (
               <li key={i} className="nav-mb-item">
-                <a
+                {/* <a
                   href={`#${item.id}`}
                   className={`collapsed mb-menu-link current ${
                     isMenuActive(item) ? "activeMenu" : ""
@@ -55,8 +55,20 @@ export default function MobileMenu() {
                 >
                   <span>{item.label}</span>
                   <span className="btn-open-sub" />
-                </a>
-                <div id={item.id} className="collapse">
+                </a> */}
+                <Link
+                  to={item.href}
+                  className={`mb-menu-link collapsed   ${
+                    isMenuActive(item) ? "activeMenu" : ""
+                  }`}
+                >
+                  {item.label}
+{/* 
+                  <div className="demo-label">
+                    <span className="demo-new">New</span>
+                  </div> */}
+                </Link>
+                {/* <div id={item.id} className="collapse">
                   <ul className="sub-nav-menu">
                     {item.links.map((subItem, i2) => (
                       <li key={i2}>
@@ -116,17 +128,9 @@ export default function MobileMenu() {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </div> */}
               </li>
             ))}
-            <li className="nav-mb-item">
-              <a
-                href="https://themeforest.net/item/ecomus-ultimate-html5-template/53417990?s_rank=3"
-                className="mb-menu-link"
-              >
-                Buy now
-              </a>
-            </li>
           </ul>
           <div className="mb-other-content">
             <div className="d-flex group-icon">
@@ -163,18 +167,6 @@ export default function MobileMenu() {
             <i className="icon icon-account" />
             Login
           </Link>
-          <div className="bottom-bar-language">
-            <div className="tf-currencies">
-              <CurrencySelect />
-            </div>
-            <div className="tf-languages">
-              <LanguageSelect
-                parentClassName={
-                  "image-select center style-default type-languages"
-                }
-              />
-            </div>
-          </div>
         </div>
       </div>
     </div>

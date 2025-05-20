@@ -32,7 +32,7 @@ export default function Categories() {
                 spaceBetween: 30,
               },
               0: {
-                slidesPerView: 2,
+                slidesPerView: 3,
               },
             }}
             spaceBetween={15}

@@ -48,7 +48,7 @@ export default function Header2({
                 height="21"
               />
             </Link>
-            hdxfhjdxt
+
           </div>
           <div className="col-xl-6 tf-md-hidden">
             <nav className="box-navigation text-center">
