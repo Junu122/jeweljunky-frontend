@@ -69,7 +69,7 @@ export default function Header2({
             <ul className="nav-icon d-flex justify-content-end align-items-center gap-20">
               <li className="nav-search">
                 <a
-                  href="#canvasSearch"
+                  href="#"
                   data-bs-toggle="offcanvas"
                   aria-controls="offcanvasLeft"
                   className="nav-icon-item"
