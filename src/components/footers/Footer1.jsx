@@ -162,7 +162,7 @@ export default function Footer1({ bgColor = "" }) {
                 <ul className="footer-menu-list tf-collapse-content">
                   {footerLinks.map((link, index) => (
                     <li key={index}>
-                      <Link to={link.href} className="footer-menu_item">
+                      <Link to={"/"} className="footer-menu_item">
                         {link.text}
                       </Link>
                     </li>
@@ -179,7 +179,7 @@ export default function Footer1({ bgColor = "" }) {
                 <ul className="footer-menu-list tf-collapse-content">
                   {aboutLinks.slice(0, 4).map((link, index) => (
                     <li key={index}>
-                      <Link to={link.href} className="footer-menu_item">
+                      <Link to={"/"} className="footer-menu_item">
                         {link.text}
                       </Link>
                     </li>
