@@ -292,9 +292,9 @@ export default function Nav({ isArrow = null, textColor = "", Linkfs = "" }) {
           }`}
         >
           Pages
-          <i className="icon icon-arrow-down" />
+          {/* <i className="icon icon-arrow-down" /> */}
         </a>
-        <div className="sub-menu submenu-default">
+        {/* <div className="sub-menu submenu-default">
           <ul className="menu-list">
             {pages.map((item, index) => (
               <li key={index} className={item.links ? "menu-item-2 " : ""}>
@@ -352,7 +352,7 @@ export default function Nav({ isArrow = null, textColor = "", Linkfs = "" }) {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
       </li>
       {/* <li className="menu-item position-relative">
         <a

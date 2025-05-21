@@ -1,5 +1,5 @@
 import { useContextElement } from "@/context/Context";
-import { products1 } from "@/data/products";
+import { Jewelleryproducts, products1 } from "@/data/products";
 
 import { Link } from "react-router-dom";
 import { useRef } from "react";
@@ -31,7 +31,7 @@ export default function ShopCart() {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="header">
-            <div className="title fw-5">Shopping cart</div>
+            <div className="title fw-5">Shopping cart </div>
             <span
               className="icon-close icon-close-popup"
               data-bs-dismiss="modal"
@@ -59,7 +59,7 @@ export default function ShopCart() {
                 </span>
               </div>
               <div className="tf-progress-msg">
-                Buy <span className="price fw-6">$75.00</span> more to enjoy
+                Buy <span className="price fw-6">&#8377;999.00</span> more to enjoy
                 <span className="fw-6">Free Shipping</span>
               </div>
             </div>
@@ -89,7 +89,7 @@ export default function ShopCart() {
                           </Link>
                           <div className="meta-variant">Light gray</div>
                           <div className="price fw-6">
-                            ${elm.price?.toFixed(2)}
+                            &#8377;{elm.price?.toFixed(2)}
                           </div>
                           <div className="tf-mini-cart-btns">
                             <div className="wg-quantity small">
@@ -167,7 +167,7 @@ export default function ShopCart() {
                       }}
                       className="swiper tf-cart-slide"
                     >
-                      {products1.slice(0, 2).map((elm, i) => (
+                      {Jewelleryproducts.slice(0, 2).map((elm, i) => (
                         <SwiperSlide key={i} className="swiper-slide">
                           <div className="tf-minicart-recommendations-item">
                             <div className="tf-minicart-recommendations-item-image">
@@ -188,7 +188,7 @@ export default function ShopCart() {
                                 {elm.title}
                               </Link>
                               <div className="price">
-                                ${elm.price.toFixed(2)}
+                                &#8377;{elm.price.toFixed(2)}
                               </div>
                             </div>
                             <div className="tf-minicart-recommendations-item-quickview">
@@ -266,7 +266,7 @@ export default function ShopCart() {
                   <div className="tf-cart-totals-discounts">
                     <div className="tf-cart-total">Subtotal</div>
                     <div className="tf-totals-total-value fw-6">
-                      ${totalPrice.toFixed(2)} USD
+                      &#8377;{totalPrice.toFixed(2)} 
                     </div>
                   </div>
                   <div className="tf-cart-tax">

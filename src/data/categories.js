@@ -122,53 +122,53 @@ export const collectionData2 = [
 
 export const collectionData3 = [
   {
-    imgSrc: "https://glozin-demo.myshopify.com/cdn/shop/files/collection_img_1.jpg?v=1716188179&width=360",
+    imgSrc: "https://www.palmonas.com/cdn/shop/files/NK-37_2_0040_5901a704-5e6d-46a5-9fe0-3247becd5e2b.jpg?v=1744524486&width=500",
     imgAlt: "collection-img",
     imgWidth: 360,
     imgHeight: 360,
-    title: "Women’s",
+    title: "necklace",
     itemCount: 23,
   },
   {
-    imgSrc: "https://glozin-demo.myshopify.com/cdn/shop/files/collection_img_2.jpg?v=1716188179&width=360",
+    imgSrc: "https://www.palmonas.com/cdn/shop/files/BR150_1.jpg?v=1744524501&width=900",
     imgAlt: "collection-img",
     imgWidth: 360,
     imgHeight: 360,
-    title: "Men’s",
+    title: "bangle",
     itemCount: 9,
   },
   {
-    imgSrc: "https://glozin-demo.myshopify.com/cdn/shop/files/collection_img_2.jpg?v=1716188179&width=360",
+    imgSrc: "https://www.palmonas.com/cdn/shop/files/PM-RING-041.jpg?v=1744528549&width=900",
     imgAlt: "collection-img",
     imgWidth: 360,
     imgHeight: 362,
-    title: "Jewelry",
+    title: "ring",
     itemCount: 31,
   },
   {
-    imgSrc: "https://glozin-demo.myshopify.com/cdn/shop/files/collection_img_2.jpg?v=1716188179&width=360",
+    imgSrc: "https://www.palmonas.com/cdn/shop/files/PMWSTMN020-G.jpg?v=1744515208&width=900",
     imgAlt: "collection-img",
     imgWidth: 360,
     imgHeight: 362,
-    title: "Sneakers",
+    title: "chain",
     itemCount: 21,
   },
   {
-    imgSrc: "https://glozin-demo.myshopify.com/cdn/shop/files/collection_img_2.jpg?v=1716188179&width=360",
+    imgSrc: "https://www.palmonas.com/cdn/shop/files/PM-EARRINGS-032_3_0040.jpg?v=1744528692&width=900",
     
     imgAlt: "collection-img",
     imgWidth: 360,
     imgHeight: 360,
-    title: "Bags",
+    title: "Earings",
     itemCount: 5,
   },
   {
-    imgSrc: "https://glozin-demo.myshopify.com/cdn/shop/files/collection_img_2.jpg?v=1716188179&width=360",
+    imgSrc: "https://www.palmonas.com/cdn/shop/files/Heart_all_over_bracelet-1_0000_de55078b-edca-4627-bad2-9167a3afd7f0.jpg?v=1744528231&width=900",
     
     imgAlt: "collection-img",
     imgWidth: 360,
     imgHeight: 360,
-    title: "Glasses",
+    title: "bracelets",
     itemCount: 14,
   },
   {
@@ -182,7 +182,7 @@ export const collectionData3 = [
 ];
 export const recentCollectionData = [
   {
-    imgSrc: "https://ecomusreactjs.vercel.app/images/collections/collection-39.jpg",
+    imgSrc: "https://static.malabargoldanddiamonds.com/media/wysiwyg/offer_page/2025/01_Jan/home/diamond-necklace.jpg",
     imgAlt: "collection-img",
     imgWidth: 1600,
     imgHeight: 1775,
@@ -190,7 +190,7 @@ export const recentCollectionData = [
     heading: "Essential Basics",
   },
   {
-    imgSrc: "https://ecomusreactjs.vercel.app/images/collections/collection-39.jpg",
+    imgSrc: "https://www.tanishq.co.in/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dwfba22b76/homepage/tanishq-collections/stunning-every-ear.jpg",
     imgAlt: "collection-img",
     imgWidth: 1600,
     imgHeight: 1775,

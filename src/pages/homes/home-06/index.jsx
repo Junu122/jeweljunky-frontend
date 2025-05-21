@@ -10,9 +10,11 @@ import Products from "@/components/homes/home-6/Products";
 import Location from "@/components/homes/home-6/Location";
 import React from "react";
 import Announcmentbar from "@/components/common/Announcmentbar";
-import Hero from "@/components/homes/home-1/Hero";
+// import Hero from "@/components/homes/home-1/Hero";
+import Hero from "@/components/homes/home-food/Hero";
 import MetaComponent from "@/components/common/MetaComponent";
 import Features2 from "@/components/common/Features2";
+import JewelryBanners from "@/components/homes/home-6/BannerNew";
 const metadata = {
   title: "Home 6 || Ecomus - Ultimate Reactjs Ecommerce Template",
   description: "Ecomus - Ultimate Reactjs Ecommerce Template",
@@ -25,10 +27,11 @@ export default function Homepage6() {
       {/* <Header4 /> */}
       <Hero />
       <Categories />
-      <Products title="best seller"/>
-      <Banner />
+      <Products title="Best Seller"/>
+      <JewelryBanners />
+      {/* <Banner /> */}
       {/* <BestsellerSection /> */}
-      <Products title="trending"/>
+      <Products title="Trending"/>
       <Features2 bgColor="" />
       <Location />
       <div className="mt-5"></div>

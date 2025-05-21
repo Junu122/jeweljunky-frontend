@@ -14,7 +14,7 @@ export default function ViewCartPage() {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <Header2 />
+      {/* <Header2 /> */}
       <div className="tf-page-title">
         <div className="container-full">
           <div className="heading text-center">Shopping Cart</div>

@@ -8,13 +8,11 @@ import {ProductCard} from '@/components/shopCards/ProductCard'
 export default function Products({title}) {
   
   return (
-    <section className="flat-spacing-2 pt_0">
+    <section className="flat-spacing-2 pt_0 mt-4">
       <div className="container">
    <div className="flat-title d-flex flex-column justify-content-center align-items-center text-center px-0">
-  <span className="title wow fadeInUp" data-wow-delay="0s">
-    {title}
-  </span>
-  <div className="wow fadeInUp" data-wow-delay="0.2s">
+ <h3 className="title">{title}</h3>
+  <div className=" " data-wow-delay="0.2s">
     Unmatched design—superior performance and customer satisfaction in one.
   </div>
 </div>

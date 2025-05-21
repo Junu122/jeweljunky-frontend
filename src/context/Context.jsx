@@ -1,4 +1,4 @@
-import { allProducts } from "@/data/products";
+import { allProducts, Jewelleryproducts } from "@/data/products";
 import { openCartModal } from "@/utlis/openCartModal";
 // import { openCart } from "@/utlis/toggleCart";
 import React, { useEffect } from "react";
@@ -79,7 +79,7 @@ const loadData=async()=>{
   const addProductToCart = (id, qty) => {
     if (!cartProducts.filter((elm) => elm.id == id)[0]) {
       const item = {
-        ...allProducts.filter((elm) => elm.id == id)[0],
+        ...Jewelleryproducts.filter((elm) => elm.id == id)[0],
         quantity: qty ? qty : 1,
       };
       setCartProducts((pre) => [...pre, item]);

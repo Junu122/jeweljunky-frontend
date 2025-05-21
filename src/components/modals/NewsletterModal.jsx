@@ -7,6 +7,7 @@ export default function NewsletterModal() {
   const formRef = useRef();
   const [success, setSuccess] = useState(true);
   const [showMessage, setShowMessage] = useState(false);
+  const modalElement = useRef();
 
   const handleShowMessage = () => {
     setShowMessage(true);
@@ -42,30 +43,40 @@ export default function NewsletterModal() {
       e.target.reset(); // Reset the form
     }
   };
-  const modalElement = useRef();
+  
   useEffect(() => {
     const showModal = async () => {
       if (pathname === "/") {
-        const bootstrap = await import("bootstrap"); // dynamically import bootstrap
-        const myModal = new bootstrap.Modal(
-          document.getElementById("newsletterPopup"),
-          {
-            keyboard: false,
-          }
-        );
+        // Check if user has seen the newsletter popup before
+        const hasSeenNewsletter = localStorage.getItem("hasSeenNewsletter");
+        
+        // Only show the modal if they haven't seen it before
+        if (!hasSeenNewsletter) {
+          const bootstrap = await import("bootstrap"); // dynamically import bootstrap
+          const myModal = new bootstrap.Modal(
+            document.getElementById("newsletterPopup"),
+            {
+              keyboard: false,
+            }
+          );
 
-        // Show the modal after a delay using a promise
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        myModal.show();
+          // Show the modal after a delay using a promise
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+          myModal.show();
 
-        modalElement.current.addEventListener("hidden.bs.modal", () => {
-          myModal.hide();
-        });
+          // Set flag in localStorage so it won't show again
+          localStorage.setItem("hasSeenNewsletter", "true");
+
+          modalElement.current.addEventListener("hidden.bs.modal", () => {
+            myModal.hide();
+          });
+        }
       }
     };
 
     showModal();
   }, [pathname]);
+  
   return (
     <div
       ref={modalElement}
@@ -89,7 +100,7 @@ export default function NewsletterModal() {
             />
           </div>
           <div className="modal-bottom">
-            <h4 className="text-center">Don’t miss out</h4>
+            <h4 className="text-center">Don't miss out</h4>
             <h6 className="text-center">
               Be the first one to get the new product at early bird prices.
             </h6>

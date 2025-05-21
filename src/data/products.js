@@ -4,7 +4,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard14_2.jpg?v=1744526375&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/BR090G-4.jpg?v=1744526375&width=900",
     title: "Bubbled Bangle",
-    price: 16.95,
+    price: 1695,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/bangle-gold.jpg" },
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/bangle-silver.jpg" },
@@ -19,7 +19,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/products/05_f35fce64-ab20-4d9b-8d97-ba5bccc7efab.jpg?v=1744527540&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/NK274_1_e423b799-310b-458b-b39b-ece25cdcc828.jpg?v=1744527540&width=900",
     title: "Classic Curb Chain",
-    price: 22.50,
+    price: 2250,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/chain-gold.jpg" },
       { name: "Rose Gold", colorClass: "bg-red-200", imgSrc: "/images/products/chain-rose.jpg" },
@@ -34,7 +34,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/fridaydrop1_2.jpg?v=1744526556&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/RG164_1_ae769c26-5c65-413a-bf8d-d08fd22f64b9.jpg?v=1744526556",
     title: "Solitaire Ring",
-    price: 29.99,
+    price: 2999,
     colors: [
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/ring-silver.jpg" }
     ],
@@ -48,7 +48,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/NK-40_1_0040.jpg?v=1744524127&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/NK496_4_4ff77314-880c-4d5a-ba50-ea634c18fa66.jpg?v=1744524127",
     title: "Pearl Necklace",
-    price: 39.95,
+    price: 3995,
     colors: [
       { name: "White", colorClass: "bg-white", imgSrc: "/images/products/necklace-pearl.jpg" }
     ],
@@ -62,7 +62,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/BR150_1.jpg?v=1744524501&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/BR150-MD3_194dcd92-f1e4-4185-991d-636b09e4072d.jpg?v=1744524501&width=900",
     title: "Twist Gold Bangle",
-    price: 18.50,
+    price: 1850,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/bangle-twist.jpg" }
     ],
@@ -76,7 +76,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/CopyofPMW01NC030.jpg?v=1744519728&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/DSC00429_1d2df1c6-7466-4893-a69e-f750a0604ad3.jpg?v=1744519728&width=900",
     title: "Box Chain Necklace",
-    price: 24.00,
+    price: 2400,
     colors: [
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/chain-silver.jpg" }
     ],
@@ -90,7 +90,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/hugring.jpg?v=1744528077&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/products/04_c9beb17b-9c96-433c-b50e-7c5f9e6d800a.jpg?v=1744528078&width=900",
     title: "Minimalist Band Ring",
-    price: 14.95,
+    price: 1495,
     colors: [
       { name: "Rose Gold", colorClass: "bg-red-200", imgSrc: "/images/products/ring-rose.jpg" }
     ],
@@ -104,7 +104,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/nk222_fd4683a9-6516-4b0f-b2fb-a156450053be.jpg?v=1744620315&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/products/04_85b88afd-f504-4cd9-b4b4-5d10614791f9.jpg?v=1744620315&width=900",
     title: "Diamond Cut Chain",
-    price: 34.95,
+    price: 3495,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/necklace-gold.jpg" }
     ],
@@ -118,7 +118,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/BR146_1.jpg?v=1744524515&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/DSC09404_d93915ab-9734-479b-85f3-f8cf7a8c8096.jpg?v=1744524515&width=900",
     title: "Etched Silver Bangle",
-    price: 21.95,
+    price: 2195,
     colors: [
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/bangle-etched.jpg" }
     ],
@@ -132,7 +132,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/products/05_f35fce64-ab20-4d9b-8d97-ba5bccc7efab.jpg?v=1744527540&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/NK274_1_e423b799-310b-458b-b39b-ece25cdcc828.jpg?v=1744527540&width=900",
     title: "Rope Chain",
-    price: 28.95,
+    price: 2895,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/chain-rope.jpg" }
     ],
@@ -146,7 +146,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/RG151_49b40051-551f-4f17-9d8c-2b5014e41fde.jpg?v=1744527078&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/RG151_2_12bb6174-6e07-4a4d-80c4-aa129c197898.jpg?v=1744527078&width=900",
     title: "Vintage Oval Ring",
-    price: 32.50,
+    price: 3250,
     colors: [
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/ring-vintage.jpg" }
     ],
@@ -160,7 +160,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/PM-NECKLACE-044_2.jpg?v=1744529085&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/DSC09656_cb5c9c91-a023-49be-ac39-4e632b29db41.jpg?v=1744529085",
     title: "Layered Charm Necklace",
-    price: 26.75,
+    price: 2675,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/necklace-layered.jpg" }
     ],
@@ -174,7 +174,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard9_4.jpg?v=1744526847&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/BR076G_37ba51c3-af22-4a86-a23c-286fe5c20d53.jpg?v=1744526847",
     title: "Minimal Stack Bangle",
-    price: 17.99,
+    price: 1799,
     colors: [
       { name: "Rose Gold", colorClass: "bg-red-200", imgSrc: "/images/products/bangle-stack.jpg" }
     ],
@@ -188,7 +188,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/PMWSSRG362-G-7.jpg?v=1744519376&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/PMWSSRG362-G-7-1.jpg?v=1744519376&width=900",
     title: "Infinity Ring",
-    price: 19.95,
+    price: 1995,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/ring-infinity.jpg" }
     ],
@@ -202,7 +202,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/CopyofPMW01NC030.jpg?v=1744519728&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/DSC00429_1d2df1c6-7466-4893-a69e-f750a0604ad3.jpg?v=1744519728&width=900",
     title: "Bar Pendant Necklace",
-    price: 23.99,
+    price: 2399,
     colors: [
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/necklace-bar.jpg" }
     ],
@@ -216,7 +216,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard14_2.jpg?v=1744526375&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/BR090G-4.jpg?v=1744526375&width=900",
     title: "Bubbled Bangle",
-    price: 16.95,
+    price: 1695,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/bangle-gold.jpg" },
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/bangle-silver.jpg" },
@@ -231,7 +231,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard1.jpg?v=1744525882&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/BR019G-12.jpg?v=1744525882&width=900",
     title: "Deco Twist Bangle",
-    price: 18.95,
+    price: 1895,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/deco-gold.jpg" },
       { name: "Rose Gold", colorClass: "bg-rose-400", imgSrc: "/images/products/deco-rose.jpg" },
@@ -247,7 +247,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard12.jpg?v=1744522954&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/ER125S-7.jpg?v=1744522954&width=900",
     title: "Crystal Drop Earrings",
-    price: 24.95,
+    price: 2495,
     colors: [
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/crystal-drop-silver.jpg" },
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/crystal-drop-gold.jpg" }
@@ -262,7 +262,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard13.jpg?v=1744528002&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/ER0017-1.jpg?v=1744528002&width=900",
     title: "Pearl Drop Earrings",
-    price: 21.95,
+    price: 2195,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/pearl-drop-gold.jpg" }
     ],
@@ -276,7 +276,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard7_2.jpg?v=1744527283&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/NE071-24.jpg?v=1744527283&width=900",
     title: "Layered Chain Necklace",
-    price: 28.95,
+    price: 2895,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/layered-chain-gold.jpg" },
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/layered-chain-silver.jpg" }
@@ -291,7 +291,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard6.jpg?v=1744526723&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/NE081G-3.jpg?v=1744526723&width=900",
     title: "Delicate Pendant Necklace",
-    price: 19.95,
+    price: 1995,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/pendant-gold.jpg" },
       { name: "Rose Gold", colorClass: "bg-rose-400", imgSrc: "/images/products/pendant-rose.jpg" }
@@ -306,7 +306,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard4_2.jpg?v=1744522615&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/BR033G-1.jpg?v=1744522615&width=900",
     title: "Twisted Rope Bracelet",
-    price: 14.95,
+    price: 1495,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/rope-gold.jpg" },
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/rope-silver.jpg" }
@@ -321,7 +321,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard2_1.jpg?v=1744527693&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/RI008G-7.jpg?v=1744527693&width=900",
     title: "Minimalist Band Ring",
-    price: 12.95,
+    price: 1295,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/band-gold.jpg" },
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/band-silver.jpg" },
@@ -337,7 +337,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard3.jpg?v=1744523343&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/RI019G-2.jpg?v=1744523343&width=900",
     title: "Crystal Statement Ring",
-    price: 22.95,
+    price: 2295,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/statement-gold.jpg" }
     ],
@@ -351,7 +351,7 @@ export const Jewelleryproducts = [
     imgSrc: "https://www.palmonas.com/cdn/shop/files/Artboard11.jpg?v=1744524794&width=900",
     imgHoverSrc: "https://www.palmonas.com/cdn/shop/files/ER092G-8.jpg?v=1744524794&width=900",
     title: "Geometric Hoop Earrings",
-    price: 19.95,
+    price: 1995,
     colors: [
       { name: "Gold", colorClass: "bg-yellow-400", imgSrc: "/images/products/hoop-gold.jpg" },
       { name: "Silver", colorClass: "bg-gray-300", imgSrc: "/images/products/hoop-silver.jpg" }

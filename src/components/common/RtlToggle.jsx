@@ -16,13 +16,14 @@ export default function RtlToggle() {
     window.location.reload();
   };
   return (
-    <a
-      id="toggle-rtl"
-      onClick={handleDir}
-      className="tf-btn animate-hover-btn btn-fill"
-    >
-      <span>ltr</span>
-      <span>rtl</span>
-    </a>
+    <></>
+    // <a
+    //   id="toggle-rtl"
+    //   onClick={handleDir}
+    //   className="tf-btn animate-hover-btn btn-fill"
+    // >
+    //   <span>ltr</span>
+    //   <span>rtl</span>
+    // </a>
   );
 }

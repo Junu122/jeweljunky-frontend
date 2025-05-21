@@ -8,14 +8,11 @@ export default function Categories() {
     <section className="flat-spacing-12 bg_grey-3">
       <div className="container">
         <div
-          className="flat-title flex-row justify-content-between align-items-center px-0 wow fadeInUp"
+          className="flat-title flex align-items-center px-0 wow fadeInUp"
           data-wow-delay="0s"
         >
           <h3 className="title">Season Collection</h3>
-          <Link to={`/shop-collection-sub`} className="tf-btn btn-line">
-            View all categories
-            <i className="icon icon-arrow1-top-left" />
-          </Link>
+          
         </div>
         <div className="hover-sw-nav hover-sw-2">
           <Swiper
@@ -48,7 +45,7 @@ export default function Categories() {
               <SwiperSlide key={index}>
                 <div className="collection-item-circle hover-img">
                   <Link
-                    to={`/shop-collection-sub`}
+                    to={`/shop-collection-list/${item.title}`}
                     className="collection-image img-style"
                   >
                     <img

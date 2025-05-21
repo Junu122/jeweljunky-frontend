@@ -6,8 +6,8 @@
     .img-style {
         overflow: hidden;
         img {
-            width: 100%;
-            height: 100%;
+            width: 500px;
+            height:400px;
             object-fit: cover;
             -webkit-transition: transform 2s cubic-bezier(0, 0, 0.44, 1.18);
             transition: transform 1.5s cubic-bezier(0, 0, 0.44, 1.18);

@@ -1,6 +1,6 @@
 export const slides = [
   {
-    imgSrc: "https://ecomusreactjs.vercel.app/images/slider/fashion-slideshow-01.jpg",
+    imgSrc: "https://www.tanishq.co.in/dw/image/v2/BKCK_PRD/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dwb9bcbcfb/homepage/HeroBanner/prettypink-desktop.jpg",
     title: "Glamorous\nGlam",
     text: "From casual to formal, we've got you covered",
     btnText: "Shop collection",
@@ -809,22 +809,22 @@ export const slides20 = [
 
 export const sliderData5 = [
   {
-    imgSrc: "/images/slider/slider-food-1.jpg",
+    imgSrc: "https://www.tanishq.co.in/dw/image/v2/BKCK_PRD/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dw08083f53/homepage/new-arrivals/new-arrivals-background.jpg",
     alt: "food-slideshow-1",
-    heading: "Healthy Plant-Based <br/> to your door",
-    text: "Transform your meals with our delicious plant-based recipes",
+    heading: "Elegance Of JewelJunky",
+    text: "Transform your Style with our Stylish Designs",
   },
   {
-    imgSrc: "/images/slider/slider-food-2.jpg",
+    imgSrc: "https://www.tanishq.co.in/dw/image/v2/BKCK_PRD/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dw08083f53/homepage/new-arrivals/new-arrivals-background.jpg",
     alt: "food-slideshow-2",
-    heading: "Vegan Meals Delivered <br/> to Your Door",
-    text: "Upgrade Your Meals with Our Delicious Plant-Based Creations",
+   heading: "Elegance Of JewelJunky",
+    text: "Transform your Style with our Stylish Designs",
   },
   {
-    imgSrc: "/images/slider/slider-food-3.jpg",
+    imgSrc: "https://www.tanishq.co.in/dw/image/v2/BKCK_PRD/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dw08083f53/homepage/new-arrivals/new-arrivals-background.jpg",
     alt: "food-slideshow-3",
-    heading: "Multi-faceted Beauty",
-    text: "From casual to formal, we've got you covered",
+  heading: "Elegance Of JewelJunky",
+    text: "Transform your Style with our Stylish Designs",
   },
 ];
 

@@ -1,4 +1,4 @@
-import { allProducts } from "@/data/products";
+import { Jewelleryproducts } from "@/data/products";
 import { useContextElement } from "@/context/Context";
 import { useEffect, useState } from "react";
 import { ProductCardWishlist } from "../shopCards/ProductCardWishlist";
@@ -11,7 +11,7 @@ export default function Wishlist() {
     if (wishList) {
       console.log(wishList);
       setWishListItems(
-        [...allProducts].filter((el) => wishList.includes(el.id))
+        [...Jewelleryproducts].filter((el) => wishList.includes(el.id))
       );
     }
   }, [wishList]);

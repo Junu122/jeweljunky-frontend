@@ -43,7 +43,7 @@ export default function Header2({
               <img
                 alt="logo"
                 className="logo"
-                src="/images/logo/jewel-junkie-logo.png"
+                src="/images/logo/jewel-junkie-logo-file-copy.png"
                 width="136"
                 height="21"
               />

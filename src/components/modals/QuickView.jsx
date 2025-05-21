@@ -121,7 +121,7 @@ export default function QuickView() {
                   </div>
                 </div>
                 <div className="tf-product-info-price">
-                  <div className="price">${quickViewItem.price.toFixed(2)}</div>
+                  <div className="price">&#8377;{quickViewItem.price.toFixed(2)}</div>
                 </div>
                 <div className="tf-product-description">
                   <p>
@@ -215,10 +215,10 @@ export default function QuickView() {
                       <span>
                         {isAddedToCartProducts(quickViewItem.id)
                           ? "Already Added - "
-                          : "Add to cart - "}
+                          : "Add to cart + "}
                       </span>
                       <span className="tf-qty-price">
-                        ${quickViewItem.price.toFixed(2)}
+                        &#8377;{quickViewItem.price.toFixed(2)}
                       </span>
                     </a>
                     <a

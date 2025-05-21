@@ -78,11 +78,11 @@ export default function DetailsOuterZoom({ product = allProducts[0] }) {
                   </div>
                   <div className="tf-product-info-price">
                     <div className="price-on-sale">
-                      ${product.price.toFixed(2)}
+                      &#8377;{product.price.toFixed(2)}
                     </div>
 
                     <div className="compare-at-price">
-                      ${currentColor.oldPrice.toFixed(2)}
+                      &#8377;{currentColor.oldPrice.toFixed(2)}
                     </div>
 
                     <div className="badges-on-sale">

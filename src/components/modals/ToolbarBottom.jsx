@@ -6,8 +6,8 @@ export default function ToolbarBottom() {
   return (
     <div className="tf-toolbar-bottom type-1150">
       <div className="toolbar-item active">
-        <a
-          href="#toolbarShopmb"
+        <Link
+          to={"/"}
           data-bs-toggle="offcanvas"
           aria-controls="offcanvasLeft"
         >
@@ -15,7 +15,7 @@ export default function ToolbarBottom() {
             <i className="icon-shop" />
           </div>
           <div className="toolbar-label">Shop</div>
-        </a>
+        </Link>
       </div>
       <div className="toolbar-item">
         <a

@@ -96,7 +96,7 @@ export default function Cart() {
                         cart-data-title="Price"
                       >
                         <div className="cart-price">
-                          ${elm.price.toFixed(2)}
+                          &#8377;{elm.price.toFixed(2)}
                         </div>
                       </td>
                       <td
@@ -157,7 +157,7 @@ export default function Cart() {
                           className="cart-total"
                           style={{ minWidth: "60px" }}
                         >
-                          ${(elm.price * elm.quantity).toFixed(2)}
+                          &#8377;{(elm.price * elm.quantity).toFixed(2)}
                         </div>
                       </td>
                     </tr>
@@ -214,7 +214,7 @@ export default function Cart() {
                   </span>
                 </div>
                 <div className="tf-progress-msg">
-                  Buy <span className="price fw-6">$75.00</span> more to enjoy{" "}
+                  Buy <span className="price fw-6">&#8377;999.00</span> more to enjoy{" "}
                   <span className="fw-6">Free Shipping</span>
                 </div>
               </div>
@@ -393,13 +393,13 @@ export default function Cart() {
                   />
                   <label htmlFor="cart-gift-checkbox" className="fw-4">
                     <span>Do you want a gift wrap?</span> Only
-                    <span className="fw-5">$5.00</span>
+                    <span className="fw-5">&#8377;5.00</span>
                   </label>
                 </div>
                 <div className="tf-cart-totals-discounts">
                   <h3>Subtotal</h3>
                   <span className="total-value">
-                    ${totalPrice.toFixed(2)} USD
+                    &#8377;{totalPrice.toFixed(2)} 
                   </span>
                 </div>
                 <p className="tf-cart-tax">
