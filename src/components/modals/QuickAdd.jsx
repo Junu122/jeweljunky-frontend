@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Quantity from "../shopDetails/Quantity";
 import { useContextElement } from "@/context/Context";
 
-import { allProducts } from "@/data/products";
+import { Jewelleryproducts } from "@/data/products";
 import { colors, sizeOptions } from "@/data/singleProductOptions";
 export default function QuickAdd() {
   const {
@@ -14,9 +14,9 @@ export default function QuickAdd() {
     addToCompareItem,
     isAddedtoCompareItem,
   } = useContextElement();
-  const [item, setItem] = useState(allProducts[0]);
+  const [item, setItem] = useState(Jewelleryproducts[0]);
   useEffect(() => {
-    const filtered = allProducts.filter((el) => el.id == quickAddItem);
+    const filtered = Jewelleryproducts.filter((el) => el.id == quickAddItem);
     if (filtered) {
       setItem(filtered[0]);
     }
