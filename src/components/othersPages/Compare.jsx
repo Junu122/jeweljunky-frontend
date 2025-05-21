@@ -1,5 +1,5 @@
 import { useContextElement } from "@/context/Context";
-import { allProducts, products1 } from "@/data/products";
+import { Jewelleryproducts, products1 } from "@/data/products";
 
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ export default function Compare() {
     useContextElement();
   const [items, setItems] = useState([]);
   useEffect(() => {
-    setItems([...allProducts.filter((elm) => compareItem.includes(elm.id))]);
+    setItems([...Jewelleryproducts.filter((elm) => compareItem.includes(elm.id))]);
   }, [compareItem]);
 
   return (
@@ -53,7 +53,7 @@ export default function Compare() {
                     </Link>
                     <div className="price">
                       <span className="price-on-sale">
-                        ${elm.price.toFixed(2)}
+                        &#8377;{elm.price.toFixed(2)}
                       </span>
                     </div>
                     <div className="tf-compare-group-btns d-flex gap-10">

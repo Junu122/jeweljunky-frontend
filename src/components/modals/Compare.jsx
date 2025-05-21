@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useContextElement } from "@/context/Context";
-import { allProducts } from "@/data/products";
+import { Jewelleryproducts } from "@/data/products";
 export default function Compare() {
   const { removeFromCompareItem, compareItem, setCompareItem } =
     useContextElement();
   const [items, setItems] = useState([]);
   useEffect(() => {
-    setItems([...allProducts.filter((elm) => compareItem.includes(elm.id))]);
+    setItems([...Jewelleryproducts.filter((elm) => compareItem.includes(elm.id))]);
   }, [compareItem]);
 
   return (

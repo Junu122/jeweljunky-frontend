@@ -59,7 +59,7 @@ export default function Categories() {
                   </Link>
                   <div className="collection-content text-center">
                     <Link
-                      to={`/shop-collection-sub`}
+                      to={`/shop-collection-list/${item.title}`}
                       className="link title fw-5"
                     >
                       {item.title}
