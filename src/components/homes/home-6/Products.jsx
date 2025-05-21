@@ -8,7 +8,7 @@ import {ProductCard} from '@/components/shopCards/ProductCard'
 export default function Products({title}) {
   
   return (
-    <section className="flat-spacing-2 pt_0 mt-4">
+    <section className="flatd-spacing-2 pt_0 mt-4">
       <div className="container">
    <div className="flat-title d-flex flex-column justify-content-center align-items-center text-center px-0">
  <h3 className="title">{title}</h3>

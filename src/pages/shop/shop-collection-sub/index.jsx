@@ -25,7 +25,7 @@ export default function ShopCollectionSubPage() {
           </p>
         </div>
       </div>
-      <Subcollections />
+      {/* <Subcollections /> */}
       <ShopDefault />
       <Footer1 />
     </>

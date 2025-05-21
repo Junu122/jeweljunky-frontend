@@ -225,7 +225,7 @@ export default function Checkout() {
                           <span className="variant">Brown / M</span>
                         </div>
                         <span className="price">
-                          ${(elm.price * elm.quantity).toFixed(2)}
+                          &#8377;{(elm.price * elm.quantity).toFixed(2)}
                         </span>
                       </div>
                     </li>
@@ -260,7 +260,7 @@ export default function Checkout() {
                 </div>
                 <div className="d-flex justify-content-between line pb_20">
                   <h6 className="fw-5">Total</h6>
-                  <h6 className="total fw-5">$122.00</h6>
+                  <h6 className="total fw-5">&#8377;{totalPrice}</h6>
                 </div>
                 <div className="wd-check-payment">
                   <div className="fieldset-radio mb_20">
@@ -315,7 +315,7 @@ export default function Checkout() {
                     </label>
                   </div>
                 </div>
-                <button className="tf-btn radius-3 btn-fill btn-icon animate-hover-btn justify-content-center">
+                <button className="tf-btn radius-3 btn-fill btn-icon animate-hover-btn justify-content-center disabled">
                   Place order
                 </button>
               </form>

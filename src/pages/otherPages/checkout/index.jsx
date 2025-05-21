@@ -12,7 +12,7 @@ export default function CheckoutPage() {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <Header2 />
+      {/* <Header2 /> */}
       <div className="tf-page-title">
         <div className="container-full">
           <div className="heading text-center">Check Out</div>

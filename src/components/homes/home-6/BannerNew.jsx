@@ -9,11 +9,11 @@ export default function JewelryBanners() {
     {recentCollectionData.slice(0,3).map((item, id) => (
       <div 
         key={id} 
-        className="collection-item-v4 hover-img "
+        className="collection-item-v4 hover-img br"
       >
         <div className="collection-inner ">
           <Link
-            to={`/shop-collection-sub`}
+            to={`/shop-collection-list`}
             className="collection-image img-style"
           >
             <img
@@ -31,7 +31,7 @@ export default function JewelryBanners() {
             <p className="subheading ">{item.subheading}</p>
             <h5 className="heading ">{item.heading}</h5>
             <Link
-              to={`/shop-collection-sub`}
+              to={`/shop-collection-list`}
               className="tf-btn inline-flex items-center justify-center px-6 py-2 bg-black text-white hover:bg-gray-800 rounded-md transition-colors duration-300"
             >
               <span className="mr-2">Shop now</span>

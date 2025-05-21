@@ -1,5 +1,6 @@
 import Footer1 from "@/components/footers/Footer1";
 import Header4 from "@/components/headers/Header4";
+import Productsp from "@/components/homes/home-1/Products";
 import Brands from "@/components/homes/home-1/Brands";
 import BestsellerSection from "@/components/shopCards/ProductCardNew";
 import Banner from "@/components/homes/home-6/Banner";
@@ -32,6 +33,7 @@ export default function Homepage6() {
       {/* <Banner /> */}
       {/* <BestsellerSection /> */}
       <Products title="Trending"/>
+      <Productsp />
       <Features2 bgColor="" />
       <Location />
       <div className="mt-5"></div>

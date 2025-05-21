@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 import React from "react";
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
-  title: "Page Not Found || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "Page Not Found || Jewel Junky ",
+  description: "Jewel Junky",
 };
 export default function PageNotFoundPage() {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <Header1 />
+      {/* <Header1 /> */}
       <section className="page-404-wrap">
         <div className="container">
           <div className="row">
@@ -31,7 +31,7 @@ export default function PageNotFoundPage() {
                 latest collections.
               </p>
               <Link
-                href="/"
+                to="/"
                 className="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn"
               >
                 Go to Home
