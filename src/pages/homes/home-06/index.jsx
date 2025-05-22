@@ -17,8 +17,8 @@ import MetaComponent from "@/components/common/MetaComponent";
 import Features2 from "@/components/common/Features2";
 import JewelryBanners from "@/components/homes/home-6/BannerNew";
 const metadata = {
-  title: "Home 6 || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "Home || jewel junkie",
+  description: "jewel junkie jewellery",
 };
 export default function Homepage6() {
   return (
