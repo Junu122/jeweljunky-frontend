@@ -1,9 +1,9 @@
-import { userAxiosInstance } from "@/utlis/api"
+import { axiosinstance } from "@/utlis/api"
 export const userServices={
     async userRegister(registerData){
         console.log(registerData)
         try {
-            const response=await userAxiosInstance.post('/signup',registerData,{withCredentials:true});
+            const response=await axiosinstance.post('/user/signup',registerData,{withCredentials:true});
             console.log(response)
             return response
         } catch (error) {
@@ -13,7 +13,7 @@ export const userServices={
     async verifyOtp(userData){
         console.log(userData,"userdata in service")
         try {
-            const response=await userAxiosInstance.post('/verifyotp',userData,{withCredentials:true})
+            const response=await axiosinstance.post('/user/verifyotp',userData,{withCredentials:true})
             return response
         } catch (error) {
             console.log(error)
@@ -21,7 +21,7 @@ export const userServices={
     },
     async userLogin(loginData){
         try {
-            const response=await userAxiosInstance.post('/login',loginData,{withCredentials:true})
+            const response=await axiosinstance.post('/user/login',loginData,{withCredentials:true})
             return response
         } catch (error) {
             console.log(error)
@@ -29,7 +29,7 @@ export const userServices={
     },
     async checkauth(){
         try {
-            const response=await userAxiosInstance.get('/check-auth',{withCredentials:true});
+            const response=await userAxiosInstance.get('/user/check-auth',{withCredentials:true});
             console.log(response,".......")
             return response
         } catch (error) {
@@ -38,7 +38,7 @@ export const userServices={
     },
     async getuser(){
         try {
-            const response=await userAxiosInstance.get('/check-user',{withCredentials:true})
+            const response=await userAxiosInstance.get('/user/check-user',{withCredentials:true})
             return response.data
         } catch (error) {
             console.log(error)

@@ -54,7 +54,7 @@ export default function Productcard23({ product }) {
                 key={color.name}
               >
                 <span className="tooltip">{color.name}</span>
-                <span className={`swatch-value ${color.colorClass}`} />
+               <span class="swatch-value bg-color-yellow"></span>
                 <img
                   className="lazyload"
                   data-src={color.imgSrc}

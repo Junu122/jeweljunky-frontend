@@ -34,8 +34,8 @@ export const layouts = [
 export const sortingOptions = [
   { text: "Default" },
 
-  { text: "Alphabetically, A-Z" },
-  { text: "Alphabetically, Z-A" },
-  { text: "Price, low to high" },
-  { text: "Price, high to low" },
+  { text: "Name A-Z" },
+  { text: "Name Z-A" },
+  { text: "Price Low-High" },
+  { text: "Price High-Low" },
 ];

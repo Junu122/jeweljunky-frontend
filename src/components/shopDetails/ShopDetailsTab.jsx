@@ -7,7 +7,7 @@ const tabs = [
   { title: "Return Polocies", active: false },
 ];
 
-export default function ShopDetailsTab() {
+export default function ShopDetailsTab({dummyJewellery}) {
   const [currentTab, setCurrentTab] = useState(1);
 
   return (
@@ -40,26 +40,24 @@ export default function ShopDetailsTab() {
                 >
                   <div className="">
                     <p className="mb_30">
-                      Button-up shirt sleeves and a relaxed silhouette. It’s
-                      tailored with drapey, crinkle-texture fabric that’s made
-                      from LENZING™ ECOVERO™ Viscose — responsibly sourced
-                      wood-based fibres produced through a process that reduces
-                      impact on forests, biodiversity and water supply.
+                   {dummyJewellery.description}
                     </p>
                     <div className="tf-product-des-demo">
                       <div className="right">
-                        <h3 className="fs-16 fw-5">Features</h3>
-                        <ul>
-                          <li>Front button placket</li>
-                          <li>Adjustable sleeve tabs</li>
-                          <li>Babaton embroidered crest at placket and hem</li>
+                        <h3 className="fs-16 fw-5">Brand</h3>
+                        <ul><li>{dummyJewellery.brand}</li></ul>
+                        
+                     
+                        <h3 className="fs-16 fw-5">Material </h3>
+                        <ul >
+                          {dummyJewellery.material.primary.map((material)=>(
+                            <li>{material}</li>
+                          ))}
                         </ul>
-                        <h3 className="fs-16 fw-5">Materials Care</h3>
-                        <ul className="mb-0">
-                          <li>Content: 100% LENZING™ ECOVERO™ Viscose</li>
-                          <li>Care: Hand wash</li>
-                          <li>Imported</li>
-                        </ul>
+                         <h3 className="fs-16 fw-5">Weight </h3>
+                         <ul className="mb-0">
+                          <li>{dummyJewellery.weight.value} <span>{dummyJewellery.weight.unit}</span></li>
+                         </ul>
                       </div>
                       <div className="left">
                         <h3 className="fs-16 fw-5">Materials Care</h3>

@@ -1,12 +1,12 @@
 import { ShoppingBag, Gift, Star } from 'lucide-react';
 import { recentCollectionData } from "@/data/categories";
 import { Link } from "react-router-dom";
-export default function JewelryBanners() {
+export default function JewelryBanners({bannercollection}) {
   return (
   <div className="container py-5">
   {/* Using flex-col by default (mobile) and flex-row on sm+ screens */}
   <div className="d-flex flex-column flex-md-row  gap-3">
-    {recentCollectionData.slice(0,3).map((item, id) => (
+    {bannercollection.map((item, id) => (
       <div 
         key={id} 
         className="collection-item-v4 hover-img br"
@@ -18,11 +18,11 @@ export default function JewelryBanners() {
           >
             <img
               className="lazyload"
-              data-src={item.imgSrc}
-              alt={item.imgAlt}
-              src={item.imgSrc}
-              width={item.imgWidth}
-              height={item.imgHeight}
+              data-src={item.image.url}
+              alt={item.image.alt}
+              src={item.image.url}
+              width={item.width}
+              height={item.height}
             />
           </Link>
           <div

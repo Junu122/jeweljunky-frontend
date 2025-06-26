@@ -1,22 +1,22 @@
 export const colors = [
   {
-    id: "values-beige",
-    value: "Beige",
-    className: "bg-color-beige",
+    id: "values-gold",
+    value: "Gold",
+    className: "bg_gold",
     price: 7,
     oldPrice: 10,
   },
   {
-    id: "values-black",
-    value: "Black",
-    className: "bg-color-black",
+    id: "values-silver",
+    value: "Silver",
+    className: "bg_silver",
     price: 8,
     oldPrice: 10,
   },
   {
-    id: "values-blue",
-    value: "Blue",
-    className: "bg-color-blue",
+    id: "values-rosegold",
+    value: "Rose Gold",
+    className: "bg_rosegold",
     price: 9,
     oldPrice: 11,
   },
@@ -128,10 +128,10 @@ export const colorOptions3 = [
 ];
 
 export const sizeOptions = [
-  { id: "values-s", value: "S", defaultChecked: true },
-  { id: "values-m", value: "M", defaultChecked: false },
-  { id: "values-l", value: "L", defaultChecked: false },
-  { id: "values-xl", value: "XL", defaultChecked: false },
+  { id: "values-s", value: "6", defaultChecked: true },
+  { id: "values-m", value: "7", defaultChecked: false },
+  { id: "values-l", value: "8", defaultChecked: false },
+  { id: "values-xl", value: "9", defaultChecked: false },
 ];
 
 export const paymentImages = [

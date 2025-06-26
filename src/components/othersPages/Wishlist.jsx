@@ -1,20 +1,27 @@
 import { Jewelleryproducts } from "@/data/products";
+import { dummyJewellery } from "@/data/products";
 import { useContextElement } from "@/context/Context";
 import { useEffect, useState } from "react";
 import { ProductCardWishlist } from "../shopCards/ProductCardWishlist";
+import {ProductCard} from '../shopCards/ProductCard'
 import { Link } from "react-router-dom";
 
 export default function Wishlist() {
   const { wishList } = useContextElement();
   const [wishListItems, setWishListItems] = useState([]);
-  useEffect(() => {
-    if (wishList) {
-      console.log(wishList);
-      setWishListItems(
-        [...Jewelleryproducts].filter((el) => wishList.includes(el.id))
-      );
-    }
-  }, [wishList]);
+useEffect(() => {
+  if (wishList && wishList.length > 0) {
+    const wishListIds = wishList.map(item => item.productId); 
+    const filteredItems = dummyJewellery.filter(product => 
+      wishListIds.includes(product.id)
+    );
+    setWishListItems(filteredItems);
+  } else {
+    setWishListItems([]); // clear if wishlist is empty
+  }
+}, [wishList]);
+
+  console.log("wishlist items   :",wishListItems)
 
   return (
     <section className="flat-spacing-2">
@@ -35,7 +42,7 @@ export default function Wishlist() {
               </div>
               <div className="col-lg-3  col-md-6">
                 <Link
-                  to={`/shop-default`}
+                  to={`/product-detail`}
                   className="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"
                 >
                   Explore Products!

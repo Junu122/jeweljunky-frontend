@@ -1,10 +1,14 @@
 import { sliderData5 } from "@/data/heroslides";
+import { useState } from "react";
 
 import { Link } from "react-router-dom";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export default function Hero() {
+export default function Hero({herodata}) {
+  const [heroData,setheroData]=useState(herodata)
+
+ console.log("herodata?herodata.herosection  :",herodata)
   return (
     <section className="tf-slideshow slider-effect-fade position-relative">
       <Swiper
@@ -16,7 +20,7 @@ export default function Hero() {
         spaceBetween={0}
         slidesPerView={1}
       >
-        {sliderData5.map((slide, index) => (
+        {heroData?.map((slide, index) => (
           <SwiperSlide key={index}>
             <div className="wrap-slider">
               <img
@@ -40,7 +44,7 @@ export default function Hero() {
                     to={`/shop-collection-list`} // Direct link in JSX
                     className="fade-item fade-item-3 tf-btn btn-light-icon animate-hover-btn btn-xl rounded-0"
                   >
-                    <span>Shop collection</span>
+                    <span>{slide.buttonText}</span>
                     <i className="icon icon-arrow-right" />
                   </Link>
                 </div>

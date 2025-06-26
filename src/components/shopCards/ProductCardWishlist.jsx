@@ -1,11 +1,12 @@
-import { useState } from "react";
-
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 import CountdownComponent from "../common/Countdown";
+
 export const ProductCardWishlist = ({ product }) => {
-  const [currentImage, setCurrentImage] = useState(product.imgSrc);
-  const { setQuickViewItem } = useContextElement();
+  console.log("wishlist product", product);
+  
+  const { setQuickViewItem, getWishlistItem } = useContextElement();
   const {
     setQuickAddItem,
     addToWishlist,
@@ -15,13 +16,97 @@ export const ProductCardWishlist = ({ product }) => {
     isAddedtoCompareItem,
   } = useContextElement();
 
+  // Get the wishlist item to retrieve the selected variant
+  const wishlistItem = getWishlistItem(product.id);
+  
+  const [currentImage, setCurrentImage] = useState('');
+  const [currentColor, setCurrentColor] = useState('');
+  const [currentVariant, setCurrentVariant] = useState(null);
+
+  const groupedByColor = useMemo(() => {
+    return product?.variants?.reduce((acc, variant) => {
+      const color = variant.color.name;
+      if (!acc[color]) acc[color] = [];
+      acc[color].push(variant);
+      return acc;
+    }, {});
+  }, [product]);
+
+  // Function to find the variant that was saved in wishlist
+  const getSelectedVariant = useMemo(() => {
+    if (!groupedByColor || !wishlistItem) {
+      return {
+        variant: product?.variants?.[0] || null,
+        color: Object.keys(groupedByColor || {})[0] || ''
+      };
+    }
+
+    // Try to find the exact variant that was saved
+    if (wishlistItem.variantId) {
+      const savedVariant = product.variants.find(v => v.id === wishlistItem.variantId);
+      if (savedVariant) {
+        return {
+          variant: savedVariant,
+          color: savedVariant.color.name
+        };
+      }
+    }
+
+    // If variantId not found, try to match by color and size
+    if (wishlistItem.color) {
+      const colorVariants = groupedByColor[wishlistItem.color];
+      if (colorVariants) {
+        const matchingVariant = wishlistItem.size 
+          ? colorVariants.find(v => v.size.value === wishlistItem.size)
+          : colorVariants[0];
+        
+        if (matchingVariant) {
+          return {
+            variant: matchingVariant,
+            color: wishlistItem.color
+          };
+        }
+      }
+    }
+
+    // Fallback to first variant
+    return {
+      variant: product?.variants?.[0] || null,
+      color: Object.keys(groupedByColor || {})[0] || ''
+    };
+  }, [product, groupedByColor, wishlistItem]);
+
+  useEffect(() => {
+    if (!groupedByColor || Object.keys(groupedByColor).length === 0) return;
+    
+    const { variant, color } = getSelectedVariant;
+    
+    if (variant && color) {
+      setCurrentImage(variant.images[0].url);
+      setCurrentColor(color);
+      setCurrentVariant(variant);
+    }
+  }, [product, groupedByColor, getSelectedVariant]);
+
+  const handleColorChange = (color) => {
+    const selectedVariant = groupedByColor[color][0];
+    setCurrentImage(selectedVariant.images[0].url);
+    setCurrentColor(color);
+    setCurrentVariant(selectedVariant);
+  };
+
+  // Show loading state if data is not ready
+  if (!currentVariant || !currentImage) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="card-product fl-item" key={product.id}>
       <div className="card-product-wrapper">
         <Link to={`/product-detail/${product.id}`} className="product-img">
           <img
             className="lazyload img-product"
-            data-src={product.imgSrc}
+            data-src={currentImage}
             src={currentImage}
             alt="image-product"
             width={720}
@@ -30,9 +115,9 @@ export const ProductCardWishlist = ({ product }) => {
           <img
             className="lazyload img-hover"
             data-src={
-              product.imgHoverSrc ? product.imgHoverSrc : product.imgSrc
+              product.imgHoverSrc ? product.imgHoverSrc : product.variants[0].images[0].url
             }
-            src={product.imgHoverSrc ? product.imgHoverSrc : product.imgSrc}
+            src={product.imgHoverSrc ? product.imgHoverSrc : product.variants[0].images[0].url}
             alt="image-product"
             width={720}
             height={1005}
@@ -59,8 +144,10 @@ export const ProductCardWishlist = ({ product }) => {
             <span className="tooltip">Quick Add</span>
           </a>
           <a
-            onClick={() => addToWishlist(product.id)}
-            className="box-icon bg_white wishlist btn-icon-action"
+            onClick={() => addToWishlist(product.id, currentVariant)}
+            className={`box-icon bg_white  wishlist btn-icon-action ${
+              isAddedtoWishlist(product.id) ? "added" : ""
+            }`}
           >
             <span
               className={`icon icon-heart ${
@@ -87,7 +174,6 @@ export const ProductCardWishlist = ({ product }) => {
               }`}
             />
             <span className="tooltip">
-              {" "}
               {isAddedtoCompareItem(product.id)
                 ? "Already Compared"
                 : "Add to Compare"}
@@ -104,6 +190,7 @@ export const ProductCardWishlist = ({ product }) => {
             <span className="tooltip">Quick View</span>
           </a>
         </div>
+        
         {product.countdown && (
           <div className="countdown-box">
             <div className="js-countdown">
@@ -111,35 +198,56 @@ export const ProductCardWishlist = ({ product }) => {
             </div>
           </div>
         )}
-        {product.sizes && (
+        
+        {/* Display the selected variant info */}
+        <div className="wishlist-variant-info">
+          <small>
+            Selected: {currentColor} - {currentVariant.size.value}
+          </small>
+        </div>
+
+        {product.variants && (
           <div className="size-list">
-            {product.sizes.map((size) => (
-              <span key={size}>{size}</span>
+            {groupedByColor[currentColor]?.map((variant) => (
+              <span 
+                key={variant.size.value}   
+                style={{
+                  textDecoration: variant.inventory.isInStock ? "none" : "line-through",
+                  color: variant.inventory.isInStock ? "white" : "gray",
+                  fontWeight: variant.id === currentVariant.id ? "bold" : "normal",
+                  
+                }} 
+                title={variant.inventory.isInStock ? "" : "Out of stock"}
+              > 
+                {variant.size.value}
+              </span>
             ))}
           </div>
         )}
       </div>
+      
       <div className="card-product-info">
         <Link to={`/product-detail/${product.id}`} className="title link">
           {product.title}
         </Link>
-        <span className="price">&#8377;{product.price.toFixed(2)}</span>
-        {product.colors && (
+        <span className="price">&#8377;{currentVariant?.pricing?.price.toFixed(2)}</span>
+        
+        {product.variants && (
           <ul className="list-color-product">
-            {product.colors.map((color) => (
+            {Object.keys(groupedByColor).map((color, i) => (
               <li
                 className={`list-color-item color-swatch ${
-                  currentImage == color.imgSrc ? "active" : ""
-                } `}
-                key={color.name}
-                onMouseOver={() => setCurrentImage(color.imgSrc)}
+                  currentColor === color ? "active" : ""
+                }`}
+                key={i}
+                onMouseOver={() => handleColorChange(color)}
               >
-                <span className="tooltip">{color.name}</span>
-                <span className={`swatch-value ${color.colorClass}`} />
+                <span className="tooltip">{color}</span>
+                <span className={`swatch-value ${groupedByColor[color][0].color.class}`} />
                 <img
                   className="lazyload"
-                  data-src={color.imgSrc}
-                  src={color.imgSrc}
+                  data-src={groupedByColor[color][0].images[0].url}
+                  src={groupedByColor[color][0].images[0].url}
                   alt="image-product"
                   width={720}
                   height={1005}

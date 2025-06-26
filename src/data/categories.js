@@ -1296,7 +1296,7 @@ export const collectionSlides2 = [
 
 export const collectionItems3 = [
   {
-    imgSrc: "https://www.mygossip.in/media/catalog/product/cache/2cd4d89381678ef447c1b749760de60d/1/_/1_38.jpg",
+    imgSrc: "https://www.tanishq.co.in/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dw37978350/homepage/tanishq-collections/18-kt-jew-desktop.jpg",
     alt: "collection-img",
     title: "necklace",
   },

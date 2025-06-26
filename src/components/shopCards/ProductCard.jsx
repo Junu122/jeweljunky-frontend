@@ -1,10 +1,18 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 import CountdownComponent from "../common/Countdown";
+import { useSearchParams } from "react-router-dom";
+import { useProductView } from "@/hooks/userProductView";
 export const ProductCard = ({ product }) => {
-  const [currentImage, setCurrentImage] = useState(product.imgSrc);
+  const { trackView } = useProductView();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const colors = searchParams.get('filter.p.color');
+
+  const [currentImage, setCurrentImage] = useState(product.variants[0].images[0].url);
+  const [currentColor, setCurrentColor] = useState();
+  const [currentVariant, setCurrentVariant] = useState(product?.variants[0]);
+  
   const { setQuickViewItem } = useContextElement();
   const {
     setQuickAddItem,
@@ -13,18 +21,80 @@ export const ProductCard = ({ product }) => {
     addToCompareItem,
     isAddedtoCompareItem,
   } = useContextElement();
-  useEffect(() => {
-    setCurrentImage(product.imgSrc);
+
+  const groupedByColor = useMemo(() => {
+    return product?.variants?.reduce((acc, variant) => {
+      const color = variant.color.name;
+      if (!acc[color]) acc[color] = [];
+      acc[color].push(variant);
+      return acc;
+    }, {});
   }, [product]);
 
-  return (
-    <div className="card-product fl-item" key={product.id}>
+  // Function to get the color to display based on URL params
+  const getInitialColor = useMemo(() => {
+    if (!colors || !groupedByColor) return Object.keys(groupedByColor)[0];
     
+    // Split colors from URL params (assuming comma-separated if multiple)
+    const urlColors = colors.toLowerCase().split(',').map(color => color.trim());
+    const availableColors = Object.keys(groupedByColor).map(color => color.toLowerCase());
+    
+    // Find the first matching color that exists in the product
+    for (const urlColor of urlColors) {
+      const matchingColor = Object.keys(groupedByColor).find(
+        productColor => productColor.toLowerCase() === urlColor
+      );
+      if (matchingColor) {
+        return matchingColor;
+      }
+    }
+    
+    // If no URL color matches, return the first available color
+    return Object.keys(groupedByColor)[0];
+  }, [colors, groupedByColor]);
+
+  useEffect(() => {
+    if (!groupedByColor || Object.keys(groupedByColor).length === 0) return;
+    
+    const selectedColor = getInitialColor;
+    const selectedVariant = groupedByColor[selectedColor]?.[0];
+    
+    if (selectedVariant) {
+      setCurrentImage(selectedVariant.images[0].url);
+      setCurrentColor(selectedColor);
+      setCurrentVariant(selectedVariant);
+    }
+  }, [product, groupedByColor, getInitialColor]);
+
+  const handleColorChange = (color) => {
+    const selectedVariant = groupedByColor[color][0];
+    setCurrentImage(selectedVariant.images[0].url);
+    setCurrentColor(color);
+    setCurrentVariant(selectedVariant);
+  };
+
+  function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '');            // Trim - from end of text
+}
+
+  const handleProductClick=()=>{
+    trackView(product._id);
+  }
+
+  return (
+    <div className="card-product fl-item" key={product?._id} >
       <div className="card-product-wrapper">
-        <Link to={`/product-detail/${product.id}`} className="product-img">
+        <Link to={`/product-detail/${slugify(product?.title)}?id=${product._id}`} className="product-img">
           <img
             className="lazyload img-product"
-            data-src={product.imgSrc}
+            data-src={currentImage}
             src={currentImage}
             alt="image-product"
             width={720}
@@ -33,9 +103,15 @@ export const ProductCard = ({ product }) => {
           <img
             className="lazyload img-hover"
             data-src={
-              product.imgHoverSrc ? product.imgHoverSrc : product.imgSrc
+              product.imgHoverSrc
+                ? product.imgHoverSrc
+                : product.variants[0].images[0].url
             }
-            src={product.imgHoverSrc ? product.imgHoverSrc : product.imgSrc}
+            src={
+              product.imgHoverSrc
+                ? product.imgHoverSrc
+                : product.variants[0].images[0].url
+            }
             alt="image-product"
             width={720}
             height={1005}
@@ -50,32 +126,37 @@ export const ProductCard = ({ product }) => {
             <div className="list-product-btn">
               <a
                 href="#quick_add"
-                onClick={() => setQuickAddItem(product.id)}
+                onClick={() => setQuickAddItem({
+                  productid:product._id,
+                  variant:groupedByColor[currentColor],
+                  realproduct:product
+                })}
                 data-bs-toggle="modal"
+               
                 className="box-icon bg_white quick-add tf-btn-loading"
               >
                 <span className="icon icon-bag" />
                 <span className="tooltip">Quick Add</span>
               </a>
               <a
-                onClick={() => addToWishlist(product.id)}
-                 className={`box-icon bg_white  wishlist btn-icon-action ${
-    isAddedtoWishlist(product.id) ? "added" : ""
-  }`}
+                onClick={() => addToWishlist(product?._id,currentVariant)}
+                className={`box-icon bg_white  wishlist btn-icon-action ${
+                  isAddedtoWishlist(product?._id) ? "added" : ""
+                }`}
               >
                 <span
                   className={`icon icon-heart ${
-                    isAddedtoWishlist(product.id) ? "added" : ""
+                    isAddedtoWishlist(product?._id) ? "added" : ""
                   }`}
                 />
                 <span className="tooltip">
-                  {isAddedtoWishlist(product.id)
+                  {isAddedtoWishlist(product?._id)
                     ? "Already Wishlisted"
                     : "Add to Wishlist"}
                 </span>
                 <span className="icon icon-delete" />
               </a>
-              <a
+              {/* <a
                 href="#compare"
                 data-bs-toggle="offcanvas"
                 aria-controls="offcanvasLeft"
@@ -88,14 +169,13 @@ export const ProductCard = ({ product }) => {
                   }`}
                 />
                 <span className="tooltip">
-                  {" "}
                   {isAddedtoCompareItem(product.id)
                     ? "Already Compared"
                     : "Add to Compare"}
                 </span>
                 <span className="icon icon-check" />
-              </a>
-              <a
+              </a> */}
+              {/* <a
                 href="#quick_view"
                 onClick={() => setQuickViewItem(product)}
                 data-bs-toggle="modal"
@@ -103,7 +183,7 @@ export const ProductCard = ({ product }) => {
               >
                 <span className="icon icon-view" />
                 <span className="tooltip">Quick View</span>
-              </a>
+              </a> */}
             </div>
             {product.countdown && (
               <div className="countdown-box">
@@ -112,13 +192,22 @@ export const ProductCard = ({ product }) => {
                 </div>
               </div>
             )}
-            {product.sizes && (
-              <div className="size-list">
-                {product.sizes.map((size) => (
-                  <span key={size}>{size}</span>
-                ))}
-              </div>
-            )}
+            <div className="size-list">
+              {groupedByColor[currentColor]?.map((variant) => (
+                <span
+                  key={variant.size.value}
+                  style={{
+                    textDecoration: variant.inventory.isInStock
+                      ? "none"
+                      : "line-through",
+                    color: variant.inventory.isInStock ? "white" : "gray",
+                  }}
+                  title={variant.inventory.isInStock ? "" : "Out of stock"}
+                >
+                  {variant.size.value}
+                </span>
+              ))}
+            </div>
           </>
         )}
       </div>
@@ -126,23 +215,30 @@ export const ProductCard = ({ product }) => {
         <Link to={`/product-detail/${product.id}`} className="title link">
           {product.title}
         </Link>
-        <span className="price">&#8377;{product.price.toFixed(2)}</span>
-        {product.colors && (
+        <span className="price">
+          &#8377;{currentVariant?.pricing?.price.toFixed(2)}
+        </span>
+        {product.variants && (
           <ul className="list-color-product">
-            {product.colors.map((color, i) => (
+            {Object.keys(groupedByColor).map((color, i) => (
               <li
                 className={`list-color-item color-swatch ${
-                  currentImage == color.imgSrc ? "active" : ""
-                } `}
+                  currentColor === color ? "active" : ""
+                }`}
                 key={i}
-                onMouseOver={() => setCurrentImage(color.imgSrc)}
+                onMouseOver={() => handleColorChange(color)}
               >
-                <span className="tooltip">{color.name}</span>
-                <span className={`swatch-value ${color.colorClass}`} />
+                <span className="tooltip">{color}</span>
+                <span
+                  style={{
+                    backgroundColor: groupedByColor[color][0].color.value,
+                  }}
+                  className={`swatch-value `}
+                />
                 <img
                   className="lazyload"
-                  data-src={color.imgSrc}
-                  src={color.imgSrc}
+                  data-src={groupedByColor[color][0].images[0].url}
+                  src={groupedByColor[color][0].images[0].url}
                   alt="image-product"
                   width={720}
                   height={1005}

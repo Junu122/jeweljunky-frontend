@@ -7,8 +7,8 @@ import React from "react";
 
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
-  title: "Wishlist || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "Wishlist || jewel junky",
+  description: "jewel junky",
 };
 export default function WishlistPage() {
   return (

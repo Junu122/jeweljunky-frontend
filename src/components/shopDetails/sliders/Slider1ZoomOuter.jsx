@@ -1,176 +1,86 @@
 import Drift from "drift-zoom";
-
+import { useMemo } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import { Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-const imagesDefault = [
-  {
-    id: 1,
-    src: "https://www.palmonas.com/cdn/shop/products/05_f35fce64-ab20-4d9b-8d97-ba5bccc7efab.jpg?v=1744527540&amp;width=900",
-    alt: "",
-    width: 770,
-    height: 1075,
-    dataValue: "beige",
-  },
-  {
-    id: 2,
-    src: "https://www.palmonas.com/cdn/shop/products/05_f35fce64-ab20-4d9b-8d97-ba5bccc7efab.jpg?v=1744527540&amp;width=900",
-    alt: "",
-    width: 713,
-    height: 1070,
-    dataValue: "beige",
-  },
-  {
-    id: 3,
-    src: "https://www.palmonas.com/cdn/shop/files/12_1_0040_4d8322d1-b058-49b1-be61-1592484c33e9.jpg?v=1744515194&width=900",
-    alt: "img-compare",
-    width: 713,
-    height: 1070,
-    dataValue: "beige",
-  },
-  {
-    id: 4,
-    src: "/images/shop/products/hmgoepprod3.jpg",
-    alt: "img-compare",
-    width: 713,
-    height: 1070,
-    dataValue: "beige",
-  },
-  {
-    id: 5,
-    src: "/images/shop/products/hmgoepprod4.jpg",
-    alt: "img-compare",
-    width: 768,
-    height: 1152,
-    dataValue: "beige",
-  },
-  {
-    id: 6,
-    src: "/images/shop/products/hmgoepprod5.jpg",
-    alt: "img-compare",
-    width: 713,
-    height: 1070,
-    dataValue: "beige",
-  },
-  {
-    id: 7,
-    src: "/images/shop/products/hmgoepprod6.jpg",
-    alt: "",
-    width: 768,
-    height: 1152,
-    dataValue: "black",
-  },
-  {
-    id: 8,
-    src: "/images/shop/products/hmgoepprod7.jpg",
-    alt: "",
-    width: 713,
-    height: 1070,
-    dataValue: "black",
-  },
-  {
-    id: 9,
-    src: "/images/shop/products/hmgoepprod8.jpg",
-    alt: "",
-    width: 713,
-    height: 1070,
-    dataValue: "black",
-  },
-  {
-    id: 10,
-    src: "/images/shop/products/hmgoepprod9.jpg",
-    alt: "",
-    width: 768,
-    height: 1152,
-    dataValue: "black",
-  },
-  {
-    id: 11,
-    src: "/images/shop/products/hmgoepprod10.jpg",
-    alt: "",
-    width: 713,
-    height: 1070,
-    dataValue: "blue",
-  },
-  {
-    id: 12,
-    src: "/images/shop/products/hmgoepprod11.jpg",
-    alt: "",
-    width: 713,
-    height: 1070,
-    dataValue: "blue",
-  },
-  {
-    id: 13,
-    src: "/images/shop/products/hmgoepprod12.jpg",
-    alt: "",
-    width: 768,
-    height: 1152,
-    dataValue: "blue",
-  },
-  {
-    id: 14,
-    src: "/images/shop/products/hmgoepprod13.jpg",
-    alt: "",
-    width: 768,
-    height: 1152,
-    dataValue: "blue",
-  },
-  {
-    id: 15,
-    src: "/images/shop/products/hmgoepprod14.jpg",
-    alt: "",
-    width: 768,
-    height: 1152,
-    dataValue: "white",
-  },
-  {
-    id: 16,
-    src: "/images/shop/products/hmgoepprod15.jpg",
-    alt: "",
-    width: 768,
-    height: 1152,
-    dataValue: "white",
-  },
-  {
-    id: 17,
-    src: "/images/shop/products/hmgoepprod16.jpg",
-    alt: "",
-    width: 768,
-    height: 1152,
-    dataValue: "white",
-  },
-  {
-    id: 18,
-    src: "/images/shop/products/hmgoepprod17.jpg",
-    alt: "",
-    width: 768,
-    height: 1152,
-    dataValue: "white",
-  },
-];
-export default function Slider1ZoomOuter({
-  currentColor = "Beige",
-  handleColor = () => {},
-  firstImage,
-  images = imagesDefault,
-}) {
-  const [updatedImages, setfirst] = useState(
-    firstImage
-      ? [{ ...images[0], src: firstImage }, ...images.slice(1)]
-      : images
-  );
 
+export default function Slider1ZoomOuter({
+ 
+
+  currentColor,
+  handleColor = () => {},
+
+  
+  dummyJewellery
+}) {
+  const [updatedImages, setUpdatedImages] = useState([]);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const swiperRef = useRef(null);
-  useEffect(() => {
-    const slideIndex =
-      updatedImages.filter(
-        (elm) => elm.dataValue?.toLowerCase() == currentColor.toLowerCase()
-      )[0]?.id - 1;
-    swiperRef.current.slideTo(slideIndex);
-  }, [currentColor]);
+const allVariantImages = useMemo(() => {
+  return dummyJewellery.variants.flatMap((variant, variantIndex) =>
+    variant.images.map((img, imgIndex) => ({
+      id: `${variant.id}-${imgIndex}`,
+      src: img.url,
+      alt: img.alt || `${dummyJewellery.title} - ${variant.color.name}`,
+      width: 770,
+      height: 1075,
+      dataValue: variant.color.name, // This is crucial for filtering
+    }))
+  );
+}, [dummyJewellery]);
+
+useEffect(() => {
+
+  if (allVariantImages && allVariantImages.length > 0) {
+    setUpdatedImages(allVariantImages);
+  }
+}, [allVariantImages]);
+
+
+
+  // useEffect(()=>{
+  //    if (dummyJewellery && product.colors) {
+  //     const dynamicImages = product.colors.map((color, index) => ({
+  //       id: index + 1,
+  //       src: color.imgSrc,
+  //       alt: `${product.title} - ${color.name}`,
+  //       width: 770, // You can adjust these dimensions as needed
+  //       height: 1075,
+  //       dataValue: color.name,
+  //     }));
+
+  //     // If firstImage is provided, update the first image
+  //     if (firstImage && dynamicImages.length > 0) {
+  //       dynamicImages[0] = { ...dynamicImages[0], src: firstImage };
+  //     }
+
+  //     setUpdatedImages(dynamicImages);
+  //   }
+  // },[product,firstImage])
+
+  // useEffect(() => {
+  //   const slideIndex =
+  //     updatedImages.filter(
+  //       (elm) => elm.dataValue?.toLowerCase() == currentColor.toLowerCase()
+  //     )[0]?.id - 1;
+  //   swiperRef.current.slideTo(slideIndex);
+  // }, [currentColor]);
+
+useEffect(() => {
+  if (!updatedImages.length || !currentColor) return;
+
+  const slideIndex = updatedImages.findIndex(
+    (img) =>
+      img.dataValue == currentColor
+  );
+
+  if (slideIndex >= 0) {
+    swiperRef.current?.slideTo(slideIndex);
+  }
+}, [currentColor, updatedImages]);
+
+
   useEffect(() => {
     // Function to initialize Drift
     const imageZoom = () => {
@@ -270,7 +180,9 @@ export default function Slider1ZoomOuter({
           onSwiper={(swiper) => (swiperRef.current = swiper)}
           onSlideChange={(swiper) => {
             if (updatedImages[swiper.activeIndex]?.dataValue) {
+             
               handleColor(updatedImages[swiper.activeIndex].dataValue);
+             
             }
           }}
         >

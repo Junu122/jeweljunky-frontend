@@ -8,8 +8,8 @@ import React from "react";
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
   title:
-    "Product Collection Sub || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+    "All Products || Jewel Junky",
+  description: "Jewel junky",
 };
 export default function ShopCollectionSubPage() {
   return (

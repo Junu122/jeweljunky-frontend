@@ -1,4 +1,4 @@
-import { products1 } from "@/data/products";
+
 
 import React, { useState,useEffect } from "react";
 import {ProductCard} from '../shopCards/ProductCard'
@@ -8,10 +8,12 @@ import Productcard23 from "../shopCards/Productcard23";
 export default function ProductGrid({
   gridItems = 1,
   allproducts ,
+  dummy,
+  totalproducts
   
 }) {
  
-
+console.log("dummy", dummy);
  
 
   return (
@@ -24,10 +26,11 @@ export default function ProductGrid({
           marginBottom: "24px",
         }}
       >
-        {allproducts?.length} product(s) found
+        {totalproducts} product(s) found 
       </div>
       {gridItems == 1 ? (
         <div className="grid-layout wrapper-shop"  data-grid={`grid-${gridItems}`}>
+        
           {/* card product 1 */}
           {allproducts?.map((elm, i) => (
             <Productcard23 product={elm} key={i} />
@@ -40,8 +43,8 @@ export default function ProductGrid({
           data-grid={`grid-${gridItems}`}
         >
           {/* card product 1 */}
-          {allproducts.map((elm, i) => (
-            <ProductCard product={elm} key={i} />
+          {dummy.map((elm, i) => (
+            <ProductCard  product={elm} key={i} />
           ))}
         </div>
       )}

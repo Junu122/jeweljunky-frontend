@@ -19,13 +19,13 @@ export default function DeliveryReturn() {
             <div className="tf-product-popup-delivery">
               <div className="title">Delivery</div>
               <p className="text-paragraph">
-                All orders shipped with UPS Express.
+                All orders shipped with  Express.
               </p>
               <p className="text-paragraph">
-                Always free shipping for orders over US $250.
+                Always free shipping for orders over US &#8377; 250.
               </p>
               <p className="text-paragraph">
-                All orders are shipped with a UPS tracking number.
+                All orders are shipped with a tracking number.
               </p>
             </div>
             <div className="tf-product-popup-delivery">
@@ -59,10 +59,10 @@ export default function DeliveryReturn() {
                   href="mailto:contact@domain.com"
                   aria-describedby="a11y-external-message"
                 >
-                  <span className="__cf_email__">contact@domain.com</span>
+                  <span className="__cf_email__">jeweljunkieinfo@gmail.com</span>
                 </a>
               </p>
-              <p className="text-paragraph mb-0">Phone: +1 (23) 456 789</p>
+              <p className="text-paragraph mb-0">Phone: +91 (9876) 456 789</p>
             </div>
           </div>
         </div>

@@ -8,9 +8,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 export default function ShopCart() {
   const { cartProducts, totalPrice, setCartProducts, setQuickViewItem } =
     useContextElement();
-  const setQuantity = (id, quantity) => {
+  const setQuantity = (id, quantity, variant) => {
     if (quantity >= 1) {
-      const item = cartProducts.filter((elm) => elm.id == id)[0];
+      const item = cartProducts.find(
+        (elm) =>
+          elm.id == id &&
+          JSON.stringify(elm.variant) === JSON.stringify(variant)
+      );
       const items = [...cartProducts];
       const itemIndex = items.indexOf(item);
       item.quantity = quantity;
@@ -18,8 +22,14 @@ export default function ShopCart() {
       setCartProducts(items);
     }
   };
-  const removeItem = (id) => {
-    setCartProducts((pre) => [...pre.filter((elm) => elm.id != id)]);
+  const removeItem = (id, variant) => {
+    setCartProducts((pre) => [
+      ...pre.filter(
+        (elm) =>
+          elm.id !== id ||
+          JSON.stringify(elm.variant) !== JSON.stringify(variant)
+      ),
+    ]);
   };
 
   const addNoteRef = useRef();
@@ -40,7 +50,11 @@ export default function ShopCart() {
           <div className="wrap">
             <div className="tf-mini-cart-threshold">
               <div className="tf-progress-bar">
-                <span style={{ width: "50%" }}>
+                <span
+                  style={{
+                    width: `${Math.min((totalPrice / 2000) * 100, 100)}%`,
+                  }}
+                >
                   <div className="progress-car">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -59,8 +73,18 @@ export default function ShopCart() {
                 </span>
               </div>
               <div className="tf-progress-msg">
-                Buy <span className="price fw-6">&#8377;999.00</span> more to enjoy
-                <span className="fw-6">Free Shipping</span>
+                {totalPrice >= 2000 ? (
+                  <span className="fw-6">You have unlocked Free Shipping!</span>
+                ) : (
+                  <>
+                    Buy{" "}
+                    <span className="price fw-6">
+                      &#8377;{(2000 - totalPrice).toFixed(2)}
+                    </span>{" "}
+                    more to enjoy
+                    <span className="fw-6"> Free Shipping</span>
+                  </>
+                )}
               </div>
             </div>
             <div className="tf-mini-cart-wrap">
@@ -73,7 +97,7 @@ export default function ShopCart() {
                           <Link to={`/product-detail/${elm.id}`}>
                             <img
                               alt="image"
-                              src={elm.imgSrc}
+                              src={elm.variant.images[0].url}
                               width={668}
                               height={932}
                               style={{ objectFit: "cover" }}
@@ -87,16 +111,22 @@ export default function ShopCart() {
                           >
                             {elm.title}
                           </Link>
-                          <div className="meta-variant">Light gray</div>
+                          <div className="meta-variant">
+                            {elm.product.title}
+                          </div>
                           <div className="price fw-6">
-                            &#8377;{elm.price?.toFixed(2)}
+                            &#8377;{elm.variant.pricing.price.toFixed(2)}
                           </div>
                           <div className="tf-mini-cart-btns">
                             <div className="wg-quantity small">
                               <span
                                 className="btn-quantity minus-btn"
                                 onClick={() =>
-                                  setQuantity(elm.id, elm.quantity - 1)
+                                  setQuantity(
+                                    elm.id,
+                                    elm.quantity - 1,
+                                    elm.variant
+                                  )
                                 }
                               >
                                 -
@@ -113,7 +143,11 @@ export default function ShopCart() {
                               <span
                                 className="btn-quantity plus-btn"
                                 onClick={() =>
-                                  setQuantity(elm.id, elm.quantity + 1)
+                                  setQuantity(
+                                    elm.id,
+                                    elm.quantity + 1,
+                                    elm.variant
+                                  )
                                 }
                               >
                                 +
@@ -122,7 +156,7 @@ export default function ShopCart() {
                             <div
                               className="tf-mini-cart-remove"
                               style={{ cursor: "pointer" }}
-                              onClick={() => removeItem(elm.id)}
+                              onClick={() => removeItem(elm.id, elm.variant)}
                             >
                               Remove
                             </div>
@@ -139,7 +173,7 @@ export default function ShopCart() {
                           </div>
                           <div className="col-12 mt-3">
                             <Link
-                              to={`/shop-default`}
+                              to={`/product-detail`}
                               className="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"
                               style={{ width: "fit-content" }}
                             >
@@ -266,7 +300,7 @@ export default function ShopCart() {
                   <div className="tf-cart-totals-discounts">
                     <div className="tf-cart-total">Subtotal</div>
                     <div className="tf-totals-total-value fw-6">
-                      &#8377;{totalPrice.toFixed(2)} 
+                      &#8377;{totalPrice.toFixed(2)}
                     </div>
                   </div>
                   <div className="tf-cart-tax">

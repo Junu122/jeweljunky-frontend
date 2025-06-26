@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-export default function Quantity({ setQuantity = (value) => {} }) {
+export default function Quantity({ setQuantity = (value) => {},maxvalue }) {
+  console.log(maxvalue,"maxvalue")
   const [count, setCount] = useState(1);
   useEffect(() => {
     setQuantity(count);
@@ -16,6 +17,7 @@ export default function Quantity({ setQuantity = (value) => {} }) {
       </span>
       <input
         min={1}
+        max={maxvalue}
         type="text"
         onChange={(e) => setCount(e.target.value / 1)}
         name="number"
@@ -23,7 +25,7 @@ export default function Quantity({ setQuantity = (value) => {} }) {
       />
       <span
         className="btn-quantity plus-btn"
-        onClick={() => setCount((pre) => pre + 1)}
+        onClick={() => setCount((pre) => pre === maxvalue?maxvalue:pre + 1)}
       >
         +
       </span>

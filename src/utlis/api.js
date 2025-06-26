@@ -1,9 +1,10 @@
 // userAxiosInstance.js
 import axios from 'axios';
 
-const userAxiosInstance = axios.create({
 
-  baseURL: 'http://localhost:5000/api/user',
+const axiosinstance = axios.create({
+
+  baseURL: 'http://localhost:5000/api',
   
 
   timeout: 15000,
@@ -16,7 +17,7 @@ const userAxiosInstance = axios.create({
 });
 
 
-userAxiosInstance.interceptors.request.use(
+axiosinstance.interceptors.request.use(
   config => {
     const token = localStorage.getItem('userToken');
     if (token) {
@@ -30,7 +31,7 @@ userAxiosInstance.interceptors.request.use(
 );
 
 
-userAxiosInstance.interceptors.response.use(
+axiosinstance.interceptors.response.use(
   response => {
    
     return response;
@@ -60,6 +61,25 @@ userAxiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //admin axios
@@ -120,4 +140,4 @@ userAxiosInstance.interceptors.response.use(
 //     return Promise.reject(error);
 //   }
 // );
-export  {userAxiosInstance};
+export  { axiosinstance};

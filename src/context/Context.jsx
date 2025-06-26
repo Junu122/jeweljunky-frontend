@@ -1,4 +1,5 @@
-import { allProducts, Jewelleryproducts } from "@/data/products";
+import { allProducts, Jewelleryproducts,dummyJewellery} from "@/data/products";
+import { wishlistService } from "@/services/wishlistService";
 import { openCartModal } from "@/utlis/openCartModal";
 // import { openCart } from "@/utlis/toggleCart";
 import React, { useEffect } from "react";
@@ -11,16 +12,19 @@ export const useContextElement = () => {
 
 export default function Context({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
-  const [wishList, setWishList] = useState([1, 2, 3, 4, 5, 6]);
+  // Changed wishList structure to store objects with productId and variantId
+  const [wishList, setWishList] = useState([]);
   const [compareItem, setCompareItem] = useState([1, 2, 3]);
   const [quickViewItem, setQuickViewItem] = useState(allProducts[0]);
-  const [quickAddItem, setQuickAddItem] = useState(1);
+  const [quickAddItem, setQuickAddItem] = useState({productid:"",variant:[],realproduct:{}});
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading,setLoading]=useState(false)
   // Authentication states
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+
+ 
 
   // Check authentication status on component mount only (not on every isAuthenticated change)
 const loadData=async()=>{
@@ -44,7 +48,7 @@ const loadData=async()=>{
        }
      
     } catch (err) {
-      console.error("Auth check failed:", err);
+  
       setError(err.response?.data?.message || "Authentication check failed");
       setIsAuthenticated(false);
       setLoading(false)
@@ -64,23 +68,29 @@ const loadData=async()=>{
       setIsAuthenticated(true);
       return response.data;
     } catch (error) {
-      console.log(error);
+  
       return { success: false, message: error.response?.data?.message || "Login failed" };
     }
   };
 
   useEffect(() => {
     const subtotal = cartProducts.reduce((accumulator, product) => {
-      return accumulator + product.quantity * product.price;
+      return accumulator + product.quantity * product.variant.pricing.price;
     }, 0);
     setTotalPrice(subtotal);
   }, [cartProducts]);
 
-  const addProductToCart = (id, qty) => {
-    if (!cartProducts.filter((elm) => elm.id == id)[0]) {
+  const addProductToCart = (id, variant,qty) => {
+   
+    const product = dummyJewellery.find((elm) => elm.id == id);
+   
+    if (!cartProducts.find((elm) => elm.id == id &&  JSON.stringify(elm.variant) === JSON.stringify(variant))  || !cartProducts.length=== 0) {
       const item = {
-        ...Jewelleryproducts.filter((elm) => elm.id == id)[0],
+       
+        id: id,
+        product: product,
         quantity: qty ? qty : 1,
+        variant:variant 
       };
       setCartProducts((pre) => [...pre, item]);
       openCartModal();
@@ -88,8 +98,9 @@ const loadData=async()=>{
       // openCart();
     }
   };
-  const isAddedToCartProducts = (id) => {
-    if (cartProducts.filter((elm) => elm.id == id)[0]) {
+  const isAddedToCartProducts = (id,selectedVariant) => {
+   
+    if (cartProducts.find((elm) => elm.id == id && JSON.stringify(elm.variant) === JSON.stringify(selectedVariant))) {
       return true;
     }
     return false;
@@ -110,18 +121,43 @@ const loadData=async()=>{
       addProductToCart(id, qty);
     }
   };
-  const addToWishlist = (id) => {
-    if (!wishList.includes(id)) {
-      setWishList((pre) => [...pre, id]);
-    } else {
-      setWishList((pre) => [...pre].filter((elm) => elm != id));
+
+
+  const addToWishlist =async (id, currentVariant) => {
+
+    console.log("id   :",id)
+    console.log("currentVariant   :",currentVariant)
+    
+    const wishlistItem = {
+      productId: id,
+      variantId: currentVariant?._id || null,
+      color: currentVariant?.color?.name || null,
+      size: currentVariant?.size?.value || null
+    };
+    
+    const existingItemIndex = wishList.findIndex(item => item.productId === id);
+  
+
+    try {
+      if(existingItemIndex==-1){
+        setWishList((pre) => [...pre, wishlistItem]);
+      const response=  await wishlistService.addToWishlist(wishlistItem);
+
+      console.log(response,"00000000000000000000000")
+      }else{
+        const response=await wishlistService.removeFromWishlist(id);
+         setWishList((pre) => pre.filter(item => item.productId !== wishlistItem.productId));
+        console.log(response,"response on removing wishlist product")
+      }
+    } catch (error) {
+      console.log(error)
     }
   };
+
   const removeFromWishlist = (id) => {
-    if (wishList.includes(id)) {
-      setWishList((pre) => [...pre.filter((elm) => elm != id)]);
-    }
+    setWishList((pre) => pre.filter(item => item.productId !== id));
   };
+
   const addToCompareItem = (id) => {
     if (!compareItem.includes(id)) {
       setCompareItem((pre) => [...pre, id]);
@@ -132,18 +168,25 @@ const loadData=async()=>{
       setCompareItem((pre) => [...pre.filter((elm) => elm != id)]);
     }
   };
+
+  // Updated to work with new wishlist structure
   const isAddedtoWishlist = (id) => {
-    if (wishList.includes(id)) {
-      return true;
-    }
-    return false;
+ 
+    return wishList.some(item => item.productId === id);
   };
+
+  // New function to get wishlist item with variant info
+  const getWishlistItem = (productId) => {
+    return wishList.find(item => item.productId === productId);
+  };
+
   const isAddedtoCompareItem = (id) => {
     if (compareItem.includes(id)) {
       return true;
     }
     return false;
   };
+
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("cartList"));
     if (items?.length) {
@@ -154,10 +197,25 @@ const loadData=async()=>{
   useEffect(() => {
     localStorage.setItem("cartList", JSON.stringify(cartProducts));
   }, [cartProducts]);
+
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("wishlist"));
     if (items?.length) {
-      setWishList(items);
+      // Handle backward compatibility - convert old format to new format if needed
+      const formattedItems = items.map(item => {
+        if (typeof item === 'string' || typeof item === 'number') {
+          // Old format - just product ID
+          return {
+            productId: item,
+            variantId: null,
+            color: null,
+            size: null
+          };
+        }
+        // New format - already an object
+        return item;
+      });
+      setWishList(formattedItems);
     }
   }, []);
 
@@ -168,7 +226,7 @@ const loadData=async()=>{
   // This useEffect will run whenever isAuthenticated changes
   // You can use this to debug or perform actions on auth state change
   useEffect(() => {
-    console.log("Auth state changed:", isAuthenticated);
+    
   }, [isAuthenticated]);
 
   const contextElement = {
@@ -180,6 +238,7 @@ const loadData=async()=>{
     removeFromWishlist,
     addToWishlist,
     isAddedtoWishlist,
+    getWishlistItem, // New function to get wishlist item with variant info
     quickViewItem,
     wishList,
     setQuickViewItem,

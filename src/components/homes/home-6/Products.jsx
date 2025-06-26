@@ -1,21 +1,21 @@
 import Productcart2 from "@/components/shopCards/Productcart2";
 import { products1 } from "@/data/products";
 import { Jewelleryproducts } from "@/data/products";
+import { dummyJewellery } from "@/data/products";
 import React from "react";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {ProductCard} from '@/components/shopCards/ProductCard'
-export default function Products({title}) {
-  
+import { ProductCard } from "@/components/shopCards/ProductCard";
+export default function Products({ title,data}) {
   return (
     <section className="flatd-spacing-2 pt_0 mt-4">
       <div className="container">
-   <div className="flat-title d-flex flex-column justify-content-center align-items-center text-center px-0">
- <h3 className="title">{title}</h3>
-  <div className=" " data-wow-delay="0.2s">
-    Unmatched design—superior performance and customer satisfaction in one.
-  </div>
-</div>
+        <div className="flat-title d-flex flex-column justify-content-center align-items-center text-center px-0">
+          <h3 className="title">{title}</h3>
+          <div className=" " data-wow-delay="0.2s">
+           {data?.subtitle}
+          </div>
+        </div>
         <div className="hover-sw-nav hover-sw-2">
           <Swiper
             dir="ltr"
@@ -40,7 +40,7 @@ export default function Products({title}) {
               nextEl: ".snbn114",
             }}
           >
-            {Jewelleryproducts.map((product, i) => (
+            {data?.products?.map((product, i) => (
               <SwiperSlide key={i} className="swiper-slide">
                 <ProductCard product={product} />
               </SwiperSlide>

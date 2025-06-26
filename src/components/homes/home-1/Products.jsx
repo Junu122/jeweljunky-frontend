@@ -1,7 +1,7 @@
 import { Jewelleryproducts } from "@/data/products";
 import React, { useState } from "react";
 import { ProductCard } from "../../shopCards/ProductCard";
-
+import { dummyJewellery } from "@/data/products";
 export default function Products() {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -12,7 +12,7 @@ export default function Products() {
     setLoading(true);
 
     setTimeout(() => {
-      setDisplayCount(24); // Show up to 24 products
+      setDisplayCount(4); // Show up to 24 products
       setLoading(false);
       setLoaded(true);
     }, 1000);
@@ -35,7 +35,7 @@ export default function Products() {
           data-wow-delay="0s"
           data-grid="grid-4"
         >
-          {allproducts.slice(6, displayCount).map((product, i) => (
+          {dummyJewellery.slice(0, displayCount).map((product, i) => (
             <ProductCard product={product} key={i} />
           ))}
         </div>

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Quantity from "../shopDetails/Quantity";
 import { useContextElement } from "@/context/Context";
-
-import { Jewelleryproducts } from "@/data/products";
-import { colors, sizeOptions } from "@/data/singleProductOptions";
+import { useCallback } from "react";
+import { useMemo } from "react";
 export default function QuickAdd() {
   const {
     quickAddItem,
@@ -14,15 +13,86 @@ export default function QuickAdd() {
     addToCompareItem,
     isAddedtoCompareItem,
   } = useContextElement();
-  const [item, setItem] = useState(Jewelleryproducts[0]);
+  const navigate = useNavigate();
+  const [product, setProduct] = useState();
+  const [currentColor, setCurrentColor] = useState();
+  const [currentSize, setCurrentSize] = useState("");
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+  const [quantity,setQuantity]=useState()
+  const [currentImage, setCurrentImage] = useState();
+
   useEffect(() => {
-    const filtered = Jewelleryproducts.filter((el) => el.id == quickAddItem);
-    if (filtered) {
-      setItem(filtered[0]);
+    if (quickAddItem?.productid) {
+      setProduct(quickAddItem?.realproduct);
+        
+    }
+  }, [quickAddItem.realproduct]);
+
+  const handleGoBack = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
+
+  const groupedByColor = useMemo(() => {
+    if (!product?.variants) return {};
+
+    return product.variants.reduce((acc, variant) => {
+      const color = variant?.color?.name;
+      if (color) {
+        if (!acc[color]) acc[color] = [];
+        acc[color].push(variant);
+      }
+      return acc;
+    }, {});
+  }, [product]);
+
+
+
+
+  // Initialize current color and image when quickAddItem changes
+  useEffect(() => {
+    if (quickAddItem?.variant?.[0]) {
+      const firstVariant = quickAddItem.variant[0];
+      setCurrentColor(firstVariant?.color?.name || "");
+      setCurrentImage(firstVariant?.images?.[0]?.url || "");
+      setCurrentSize("");
     }
   }, [quickAddItem]);
-  const [currentColor, setCurrentColor] = useState(colors[0]);
-  const [currentSize, setCurrentSize] = useState(sizeOptions[0]);
+
+
+
+  // Set first available size when color changes
+  useEffect(() => {
+    if (currentColor && groupedByColor[currentColor]) {
+      const firstAvailableSize = groupedByColor[currentColor]?.find(
+        (variant) => variant?.inventory?.isInStock
+      )?.size?.value;
+
+      setCurrentSize(firstAvailableSize || "");
+    
+    }
+  }, [currentColor, groupedByColor]);
+
+  // Find selected variant
+  const selectedVariant = useMemo(() => {
+    if (!currentColor || !currentSize || !groupedByColor[currentColor]) {
+      return null;
+    }
+
+    return groupedByColor[currentColor]?.find(
+      (variant) => variant?.size?.value === currentSize
+    );
+  }, [currentColor, currentSize, groupedByColor]);
+
+  // Get default price for display
+  const defaultPrice = useMemo(() => {
+    if (currentColor && groupedByColor[currentColor]?.[0]) {
+      return groupedByColor[currentColor][0]?.pricing?.price || 0;
+    }
+    return 0;
+  }, [currentColor, groupedByColor]);
+
+ 
 
   return (
     <div className="modal fade modalDemo" id="quick_add">
@@ -40,15 +110,20 @@ export default function QuickAdd() {
                 <img
                   alt="image"
                   style={{ objectFit: "contain" }}
-                  src={item.imgSrc}
+                  src={currentImage}
                   width={720}
                   height={1005}
                 />
               </div>
               <div className="content">
-                <Link to={`/product-detail/${item.id}`}>{item.title}</Link>
+                <Link to={`/product-detail/${product?._id}`}>{product?.title}</Link>
                 <div className="tf-product-info-price">
-                  <div className="price">&#8377;{item.price.toFixed(2)}</div>
+                  <div className="price">
+                    &#8377;
+                    {selectedVariant
+                      ? selectedVariant.pricing.price
+                      : defaultPrice}
+                  </div>
                 </div>
               </div>
             </div>
@@ -57,28 +132,34 @@ export default function QuickAdd() {
                 <div className="variant-picker-label">
                   Color:
                   <span className="fw-6 variant-picker-label-value">
-                    {currentColor.value}
+                    {currentColor}
                   </span>
                 </div>
                 <form className="variant-picker-values">
-                  {colors.map((color) => (
-                    <React.Fragment key={color.id}>
-                      <input
-                        type="radio"
-                        name="color1"
-                        readOnly
-                        checked={currentColor == color}
-                      />
-                      <label
-                        onClick={() => setCurrentColor(color)}
-                        className="hover-tooltip radius-60"
-                        data-value={color.value}
-                      >
-                        <span className={`btn-checkbox ${color.className}`} />
-                        <span className="tooltip">{color.value}</span>
-                      </label>
-                    </React.Fragment>
-                  ))}
+                  {groupedByColor &&
+                    Object.keys(groupedByColor).map((color, i) => (
+                      <React.Fragment key={i}>
+                        <input
+                          type="radio"
+                          name="color1"
+                          readOnly
+                          checked={currentColor === color}
+                        />
+                        <label
+                          onClick={() => setCurrentColor(color)}
+                          className="hover-tooltip radius-60"
+                          data-value={color}
+                        >
+                          <span
+                            className={`btn-checkbox ${groupedByColor[color][0].color.class}`}
+                             style={{
+                                     backgroundColor: groupedByColor[color][0].color.value,
+                  }}
+                          />
+                          <span className="tooltip">{color}</span>
+                        </label>
+                      </React.Fragment>
+                    ))}
                 </form>
               </div>
               <div className="variant-picker-item">
@@ -86,47 +167,84 @@ export default function QuickAdd() {
                   Size:{" "}
                   <span className="fw-6 variant-picker-label-value">
                     {" "}
-                    {currentSize.value}
+                    {currentSize}
                   </span>
                 </div>
                 <form className="variant-picker-values">
-                  {sizeOptions.map((size) => (
-                    <React.Fragment key={size.id}>
-                      <input
-                        type="radio"
-                        name="size1"
-                        readOnly
-                        checked={currentSize == size}
-                      />
-                      <label
-                        onClick={() => setCurrentSize(size)}
-                        className="style-text"
-                        data-value={size.value}
-                      >
-                        <p>{size.value}</p>
-                      </label>
-                    </React.Fragment>
-                  ))}
+                  {groupedByColor &&
+                    groupedByColor[currentColor]?.map((variant, i) => (
+                      <React.Fragment key={`${i}-${i}`}>
+                        <input
+                          type="radio"
+                          name="size1"
+                          readOnly
+                          checked={currentSize == variant.size.value}
+                          disabled={!variant.inventory.isInStock}
+                        />
+                        <label
+                          onClick={() => {
+                            if (variant.inventory.isInStock) {
+                              setCurrentSize(variant.size.value);
+                            }
+                          }}
+                          className={`style-text ${
+                            !variant.inventory.isInStock ? "disabled" : ""
+                          }`}
+                          htmlFor={variant.size.value}
+                          data-value={variant.size.value}
+                          style={{
+                            cursor: variant.inventory.isInStock
+                              ? "pointer"
+                              : "not-allowed",
+                            opacity: variant.inventory.isInStock ? 1 : 0.5,
+                          }}
+                        >
+                          {variant.inventory.isInStock ? (
+                            <p>{variant.size.value}</p>
+                          ) : (
+                            <p
+                              style={{
+                                color: "red",
+                                textDecoration: "line-through",
+                              }}
+                            >
+                              {variant.size.value}
+                            </p>
+                          )}
+                        </label>
+                      </React.Fragment>
+                    ))}
                 </form>
               </div>
             </div>
             <div className="tf-product-info-quantity mb_15">
               <div className="quantity-title fw-6">Quantity</div>
-              <Quantity />
+              {/* <Quantity  maxvalue={selectedVariant?.inventory.quantity}/> */}
             </div>
             <div className="tf-product-info-buy-button">
               <form onSubmit={(e) => e.preventDefault()} className="">
-                <a
+                 {
+                selectedVariant?(
+                       <a
                   className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn"
-                  onClick={() => addProductToCart(item.id)}
+                  onClick={() => addProductToCart(quickAddItem.productid,selectedVariant)}
                 >
                   <span>
-                    {isAddedToCartProducts(item.id)
+                    {isAddedToCartProducts(quickAddItem.productid, selectedVariant)
                       ? "Already Added - "
                       : "Add to cart - "}
                   </span>
-                  <span className="tf-qty-price">&#8377;{item.price.toFixed(2)}</span>
+                  <span className="tf-qty-price">&#8377;{selectedVariant?selectedVariant.pricing.price:""}</span>
                 </a>
+                ):(
+                     <a
+                          className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn"
+                          style={{ backgroundColor: "#FF6B6B" }}
+                        >
+                          <span>out of stock</span>
+                        </a>
+                )
+              }
                 <div className="tf-product-btn-wishlist btn-icon-action">
                   <i className="icon-heart" />
                   <i className="icon-delete" />
@@ -135,7 +253,7 @@ export default function QuickAdd() {
                   href="#compare"
                   data-bs-toggle="offcanvas"
                   aria-controls="offcanvasLeft"
-                  onClick={() => addToCompareItem(item.id)}
+                  onClick={() => addToCompareItem(product._id)}
                   className="tf-product-btn-wishlist box-icon bg_white compare btn-icon-action"
                 >
                   <span className="icon icon-compare" />

@@ -3,9 +3,13 @@ import { useContextElement } from "@/context/Context";
 import { Link } from "react-router-dom";
 export default function Cart() {
   const { cartProducts, setCartProducts, totalPrice } = useContextElement();
-  const setQuantity = (id, quantity) => {
+  const setQuantity = (id, quantity, variant) => {
     if (quantity >= 1) {
-      const item = cartProducts.filter((elm) => elm.id == id)[0];
+      const item = cartProducts.find(
+        (elm) =>
+          elm.id == id &&
+          JSON.stringify(elm.variant) === JSON.stringify(variant)
+      );
       const items = [...cartProducts];
       const itemIndex = items.indexOf(item);
       item.quantity = quantity;
@@ -13,8 +17,14 @@ export default function Cart() {
       setCartProducts(items);
     }
   };
-  const removeItem = (id) => {
-    setCartProducts((pre) => [...pre.filter((elm) => elm.id != id)]);
+  const removeItem = (id, variant) => {
+    setCartProducts((pre) => [
+      ...pre.filter(
+        (elm) =>
+          elm.id !== id ||
+          JSON.stringify(elm.variant) !== JSON.stringify(variant)
+      ),
+    ]);
   };
   return (
     <section className="flat-spacing-11">
@@ -70,7 +80,7 @@ export default function Cart() {
                         >
                           <img
                             alt="img-product"
-                            src={elm.imgSrc}
+                            src={elm.variant.images[0].url}
                             width={668}
                             height={932}
                           />
@@ -82,10 +92,10 @@ export default function Cart() {
                           >
                             {elm.title}
                           </Link>
-                          <div className="cart-meta-variant">White / M</div>
+                          <div className="cart-meta-variant">{elm.variant.color.name + "," + elm.variant.size.value }</div>
                           <span
                             className="remove-cart link remove"
-                            onClick={() => removeItem(elm.id)}
+                            onClick={() => removeItem(elm.id,elm.variant)}
                           >
                             Remove
                           </span>
@@ -96,7 +106,7 @@ export default function Cart() {
                         cart-data-title="Price"
                       >
                         <div className="cart-price">
-                          &#8377;{elm.price.toFixed(2)}
+                          &#8377;{elm.variant.pricing.price.toFixed(2)}
                         </div>
                       </td>
                       <td
@@ -108,7 +118,11 @@ export default function Cart() {
                             <span
                               className="btn-quantity minus-btn"
                               onClick={() =>
-                                setQuantity(elm.id, elm.quantity - 1)
+                               setQuantity(
+                                    elm.id,
+                                    elm.quantity - 1,
+                                    elm.variant
+                                  )
                               }
                             >
                               <svg
@@ -133,7 +147,11 @@ export default function Cart() {
                             <span
                               className="btn-quantity plus-btn"
                               onClick={() =>
-                                setQuantity(elm.id, elm.quantity + 1)
+                                setQuantity(
+                                    elm.id,
+                                    elm.quantity + 1,
+                                    elm.variant
+                                  )
                               }
                             >
                               <svg
@@ -157,7 +175,7 @@ export default function Cart() {
                           className="cart-total"
                           style={{ minWidth: "60px" }}
                         >
-                          &#8377;{(elm.price * elm.quantity).toFixed(2)}
+                          &#8377;{(elm.variant.pricing.price * elm.quantity).toFixed(2)}
                         </div>
                       </td>
                     </tr>
@@ -170,7 +188,7 @@ export default function Cart() {
                     <div className="col-6 fs-18">Your shop cart is empty</div>
                     <div className="col-6">
                       <Link
-                        to={`/shop-default`}
+                        to={`/product-detail`}
                         className="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"
                         style={{ width: "fit-content" }}
                       >
@@ -195,7 +213,9 @@ export default function Cart() {
             <div className="tf-cart-footer-inner">
               <div className="tf-free-shipping-bar">
                 <div className="tf-progress-bar">
-                  <span style={{ width: "50%" }}>
+                  <span   style={{
+                    width: `${Math.min((totalPrice / 2000) * 100, 100)}%`,
+                  }}>
                     <div className="progress-car">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -213,10 +233,20 @@ export default function Cart() {
                     </div>
                   </span>
                 </div>
-                <div className="tf-progress-msg">
-                  Buy <span className="price fw-6">&#8377;999.00</span> more to enjoy{" "}
-                  <span className="fw-6">Free Shipping</span>
-                </div>
+                 <div className="tf-progress-msg">
+                {totalPrice >= 2000 ? (
+                  <span className="fw-6">You have unlocked Free Shipping!</span>
+                ) : (
+                  <>
+                    Buy{" "}
+                    <span className="price fw-6">
+                      &#8377;{(2000 - totalPrice).toFixed(2)}
+                    </span>{" "}
+                    more to enjoy
+                    <span className="fw-6"> Free Shipping</span>
+                  </>
+                )}
+              </div>
               </div>
               <div className="tf-page-cart-checkout">
                 <div className="shipping-calculator">

@@ -1,33 +1,273 @@
-import React, { useState } from "react";
-
+import React, { useState, useMemo, useEffect, useCallback, memo } from "react";
 import CountdownComponent from "../common/Countdown";
-import {
-  colors,
-  paymentImages,
-  sizeOptions,
-} from "@/data/singleProductOptions";
+import { paymentImages } from "@/data/singleProductOptions";
 import StickyItem from "./StickyItem";
 import Quantity from "./Quantity";
-
 import Slider1ZoomOuter from "./sliders/Slider1ZoomOuter";
-import { allProducts } from "@/data/products";
 import { useContextElement } from "@/context/Context";
 import { openCartModal } from "@/utlis/openCartModal";
 
-export default function DetailsOuterZoom({ product = allProducts[0] }) {
-  const [currentColor, setCurrentColor] = useState(colors[0]);
-  const [currentSize, setCurrentSize] = useState(sizeOptions[1]);
+// Loading skeleton component
+const ProductSkeleton = memo(() => (
+  <div className="animate-pulse">
+    <div className="h-8 bg-gray-200 rounded mb-4"></div>
+    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+    <div className="h-6 bg-gray-200 rounded mb-4"></div>
+    <div className="flex space-x-2 mb-4">
+      {[1, 2, 3].map(i => (
+        <div key={i} className="w-8 h-8 bg-gray-200 rounded-full"></div>
+      ))}
+    </div>
+  </div>
+));
+
+// Error boundary component
+const ErrorFallback = memo(({ error, resetError }) => (
+  <div className="alert alert-danger text-center p-5">
+    <h4>Something went wrong loading product details</h4>
+    <p className="mb-3">{error?.message || "Please try again"}</p>
+    <button className="btn btn-primary" onClick={resetError}>
+      Try Again
+    </button>
+  </div>
+));
+
+// Price display component
+const PriceDisplay = memo(({ selectedVariant, defaultPrice, comparePrice }) => {
+  const currentPrice = selectedVariant?.pricing?.price || defaultPrice;
+  const currentComparePrice = selectedVariant?.pricing?.compareAtPrice || comparePrice;
+  
+  const discountPercentage = useMemo(() => {
+    if (!currentComparePrice || !currentPrice) return 0;
+    return Math.round(((currentComparePrice - currentPrice) / currentComparePrice) * 100);
+  }, [currentPrice, currentComparePrice]);
+
+  return (
+    <div className="tf-product-info-price">
+      <div className="price-on-sale">
+        &#8377;{currentPrice?.toLocaleString('en-IN')}
+      </div>
+      {currentComparePrice && currentComparePrice > currentPrice && (
+        <>
+          <div className="compare-at-price">
+            &#8377;{currentComparePrice.toLocaleString('en-IN')}
+          </div>
+          <div className="badges-on-sale">
+            <span>{discountPercentage}</span>% OFF
+          </div>
+        </>
+      )}
+    </div>
+  );
+});
+
+// Color picker component
+const ColorPicker = memo(({ colors, currentColor, onColorChange, groupedByColor }) => (
+  <div className="variant-picker-item">
+    <div className="variant-picker-label">
+      Color:
+      <span className="fw-6 variant-picker-label-value">
+        {currentColor}
+      </span>
+    </div>
+    <form className="variant-picker-values">
+      {colors.map((color) => (
+        <React.Fragment key={color}>
+          <input
+            id={color}
+            type="radio"
+            name="color1"
+            readOnly
+            checked={currentColor === color}
+            aria-label={`Select ${color} color`}
+          />
+          <label
+            onClick={() => onColorChange(color)}
+            className="hover-tooltip radius-60"
+            htmlFor={color}
+            data-value={color}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                onColorChange(color);
+              }
+            }}
+          >
+            <span
+              className={`btn-checkbox ${groupedByColor[color]?.[0]?.color?.class || ''}`}
+            />
+            <span className="tooltip">{color}</span>
+          </label>
+        </React.Fragment>
+      ))}
+    </form>
+  </div>
+));
+
+// Size picker component
+const SizePicker = memo(({ variants, currentSize, onSizeChange }) => (
+  <div className="variant-picker-item">
+    <div className="d-flex justify-content-between align-items-center">
+      <div className="variant-picker-label">
+        Size:
+        <span className="fw-6 variant-picker-label-value">
+          {currentSize || 'Select Size'}
+        </span>
+      </div>
+      <a
+        href="#find_size"
+        data-bs-toggle="modal"
+        className="find-size fw-6"
+      >
+        Find your size
+      </a>
+    </div>
+    <form className="variant-picker-values">
+      {variants?.map((variant) => {
+        const isInStock = variant.inventory?.isInStock;
+        const sizeValue = variant.size?.value;
+        
+        return (
+          <React.Fragment key={sizeValue}>
+            <input
+              type="radio"
+              name="size1"
+              id={sizeValue}
+              readOnly
+              checked={currentSize === sizeValue}
+              disabled={!isInStock}
+              aria-label={`Select size ${sizeValue}`}
+            />
+            <label
+              onClick={() => {
+                if (isInStock) {
+                  onSizeChange(sizeValue);
+                }
+              }}
+              className={`style-text ${!isInStock ? "disabled" : ""}`}
+              htmlFor={sizeValue}
+              data-value={sizeValue}
+              style={{
+                cursor: isInStock ? "pointer" : "not-allowed",
+                opacity: isInStock ? 1 : 0.5,
+              }}
+              role="button"
+              tabIndex={isInStock ? 0 : -1}
+              onKeyDown={(e) => {
+                if ((e.key === 'Enter' || e.key === ' ') && isInStock) {
+                  onSizeChange(sizeValue);
+                }
+              }}
+            >
+              {isInStock ? (
+                <p>{sizeValue}</p>
+              ) : (
+                <p style={{
+                  color: "red",
+                  textDecoration: "line-through",
+                }}>
+                  {sizeValue}
+                </p>
+              )}
+            </label>
+          </React.Fragment>
+        );
+      })}
+    </form>
+  </div>
+));
+
+// Main component
+export default function DetailsOuterZoom({ dummy }) {
+  // Early return if no product data
+  if (!dummy || !dummy.variants || !Array.isArray(dummy.variants)) {
+    return <ProductSkeleton />;
+  }
+
   const [quantity, setQuantity] = useState(1);
+  const [currentColor, setCurrentColor] = useState('');
+  const [currentSize, setCurrentSize] = useState('');
+  const [error, setError] = useState(null);
 
-  const handleColor = (color) => {
-    const updatedColor = colors.filter(
-      (elm) => elm.value.toLowerCase() == color.toLowerCase()
-    )[0];
-    if (updatedColor) {
-      setCurrentColor(updatedColor);
+  // Memoized grouped variants by color
+  const groupedByColor = useMemo(() => {
+    try {
+      return dummy.variants.reduce((acc, variant) => {
+        const color = variant?.color?.name;
+        if (color) {
+          if (!acc[color]) acc[color] = [];
+          acc[color].push(variant);
+        }
+        return acc;
+      }, {});
+    } catch (err) {
+      setError(err);
+      return {};
     }
-  };
+  }, [dummy.variants]);
 
+  // Available colors
+  const availableColors = useMemo(() => 
+    Object.keys(groupedByColor), [groupedByColor]
+  );
+
+  // Selected variant
+  const selectedVariant = useMemo(() => {
+    if (!currentColor || !currentSize) return null;
+    return groupedByColor[currentColor]?.find(
+      variant => variant.size?.value === currentSize
+    );
+  }, [groupedByColor, currentColor, currentSize]);
+  console.log("currentColor:", currentColor);
+  console.log("currentSize:", currentSize);
+  console.log("Selected Variant:", selectedVariant);
+  // Default pricing
+  const defaultVariant = useMemo(() => 
+    groupedByColor[currentColor]?.[0], [groupedByColor, currentColor]
+  );
+
+  // Initialize color when component mounts or variants change
+  useEffect(() => {
+    if (availableColors.length > 0 && !currentColor) {
+      setCurrentColor(availableColors[0]);
+    }
+  }, [availableColors, currentColor]);
+
+  // Update size when color changes
+  useEffect(() => {
+    if (currentColor && groupedByColor[currentColor]) {
+      const firstAvailableSize = groupedByColor[currentColor].find(
+        variant => variant.inventory?.isInStock
+      )?.size?.value;
+      
+      setCurrentSize(firstAvailableSize || '');
+    }
+  }, [currentColor, groupedByColor]);
+
+  // Handlers
+  const handleColorChange = useCallback((color) => {
+    if (groupedByColor[color]) {
+      setCurrentColor(color);
+    }
+  }, [groupedByColor]);
+
+  const handleSizeChange = useCallback((size) => {
+    setCurrentSize(size);
+  }, []);
+
+  const handleAddToCart = useCallback(() => {
+    if (selectedVariant) {
+      openCartModal();
+      addProductToCart(selectedVariant._id, quantity);
+    }
+  }, [selectedVariant, quantity]);
+
+  const handleRetry = useCallback(() => {
+    setError(null);
+  }, []);
+
+  // Context
   const {
     addProductToCart,
     isAddedToCartProducts,
@@ -36,6 +276,16 @@ export default function DetailsOuterZoom({ product = allProducts[0] }) {
     addToWishlist,
     isAddedtoWishlist,
   } = useContextElement();
+
+  // Error state
+  if (error) {
+    return <ErrorFallback error={error} resetError={handleRetry} />;
+  }
+
+  // Stock status
+  const isInStock = selectedVariant?.inventory?.isInStock ?? false;
+  const stockLevel = selectedVariant?.inventory?.quantity ?? 0;
+
   return (
     <section
       className="flat-spacing-4 pt_0"
@@ -51,48 +301,65 @@ export default function DetailsOuterZoom({ product = allProducts[0] }) {
               <div className="tf-product-media-wrap sticky-top">
                 <div className="thumbs-slider">
                   <Slider1ZoomOuter
-                    handleColor={handleColor}
-                    currentColor={currentColor.value}
-                    firstImage={product.imgSrc}
+                    handleColor={handleColorChange}
+                    currentColor={currentColor}
+                    dummyJewellery={dummy}
                   />
                 </div>
               </div>
             </div>
+            
             <div className="col-md-6">
               <div className="tf-product-info-wrap position-relative">
                 <div className="tf-zoom-main" />
                 <div className="tf-product-info-list other-image-zoom">
+                  
+                  {/* Product Title */}
                   <div className="tf-product-info-title">
-                    <h5>
-                      {product.title ? product.title : "Cotton jersey top"}
-                    </h5>
+                    <h1 className="h5">
+                      {dummy.title || "Product Title"}
+                    </h1>
                   </div>
+
+                  {/* Badges */}
                   <div className="tf-product-info-badges">
                     <div className="badges">Best seller</div>
                     <div className="product-status-content">
                       <i className="icon-lightning" />
                       <p className="fw-6">
-                        Selling fast! 56 people have this in their carts.
+                        Selling fast! {Math.floor(Math.random() * 100)} people have this in their carts.
                       </p>
                     </div>
                   </div>
-                  <div className="tf-product-info-price">
-                    <div className="price-on-sale">
-                      &#8377;{product.price.toFixed(2)}
-                    </div>
 
-                    <div className="compare-at-price">
-                      &#8377;{currentColor.oldPrice.toFixed(2)}
-                    </div>
+                  {/* Price */}
+                  <PriceDisplay 
+                    selectedVariant={selectedVariant}
+                    defaultPrice={defaultVariant?.pricing?.price}
+                    comparePrice={defaultVariant?.pricing?.compareAtPrice}
+                  />
 
-                    <div className="badges-on-sale">
-                      <span>20</span>% OFF
+                  {/* Stock Status */}
+                  {selectedVariant && (
+                    <div className="tf-product-info-stock">
+                      <div className={`stock-status ${isInStock ? 'in-stock' : 'out-of-stock'}`}>
+                        <span className={`stock-indicator ${isInStock ? 'green' : 'red'}`}></span>
+                        {isInStock ? (
+                          <span>In Stock ({stockLevel} available)</span>
+                        ) : (
+                          <span>Out of Stock</span>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
+
+                  {/* Live View Counter */}
                   <div className="tf-product-info-liveview">
-                    <div className="liveview-count">20</div>
+                    <div className="liveview-count">{Math.floor(Math.random() * 50) + 10}</div>
                     <p className="fw-6">People are viewing this right now</p>
                   </div>
+
+                  {/* Countdown */}
                   <div className="tf-product-info-countdown">
                     <div className="countdown-wrap">
                       <div className="countdown-title">
@@ -106,151 +373,113 @@ export default function DetailsOuterZoom({ product = allProducts[0] }) {
                       </div>
                     </div>
                   </div>
+
+                  {/* Variant Picker */}
                   <div className="tf-product-info-variant-picker">
-                    <div className="variant-picker-item">
-                      <div className="variant-picker-label">
-                        Color:
-                        <span className="fw-6 variant-picker-label-value">
-                          {currentColor.value}
-                        </span>
-                      </div>
-                      <form className="variant-picker-values">
-                        {colors.map((color) => (
-                          <React.Fragment key={color.id}>
-                            <input
-                              id={color.id}
-                              type="radio"
-                              name="color1"
-                              readOnly
-                              checked={currentColor == color}
-                            />
-                            <label
-                              onClick={() => setCurrentColor(color)}
-                              className="hover-tooltip radius-60"
-                              htmlFor={color.id}
-                              data-value={color.value}
-                            >
-                              <span
-                                className={`btn-checkbox ${color.className}`}
-                              />
-                              <span className="tooltip">{color.value}</span>
-                            </label>
-                          </React.Fragment>
-                        ))}
-                      </form>
-                    </div>
-                    <div className="variant-picker-item">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div className="variant-picker-label">
-                          Size:
-                          <span className="fw-6 variant-picker-label-value">
-                            {currentSize.value}
-                          </span>
-                        </div>
-                        <a
-                          href="#find_size"
-                          data-bs-toggle="modal"
-                          className="find-size fw-6"
-                        >
-                          Find your size
-                        </a>
-                      </div>
-                      <form className="variant-picker-values">
-                        {sizeOptions.map((size) => (
-                          <React.Fragment key={size.id}>
-                            <input
-                              type="radio"
-                              name="size1"
-                              id={size.id}
-                              readOnly
-                              checked={currentSize == size}
-                            />
-                            <label
-                              onClick={() => setCurrentSize(size)}
-                              className="style-text"
-                              htmlFor={size.id}
-                              data-value={size.value}
-                            >
-                              <p>{size.value}</p>
-                            </label>
-                          </React.Fragment>
-                        ))}
-                      </form>
-                    </div>
+                    {availableColors.length > 0 && (
+                      <ColorPicker
+                        colors={availableColors}
+                        currentColor={currentColor}
+                        onColorChange={handleColorChange}
+                        groupedByColor={groupedByColor}
+                      />
+                    )}
+
+                    {currentColor && groupedByColor[currentColor] && (
+                      <SizePicker
+                        variants={groupedByColor[currentColor]}
+                        currentSize={currentSize}
+                        onSizeChange={handleSizeChange}
+                      />
+                    )}
                   </div>
+
+                  {/* Quantity */}
                   <div className="tf-product-info-quantity">
                     <div className="quantity-title fw-6">Quantity</div>
-                    <Quantity setQuantity={setQuantity} />
+                    <Quantity 
+                      setQuantity={setQuantity} 
+                      max={selectedVariant?.inventory?.quantity || 99}
+                    />
                   </div>
+
+                  {/* Buy Buttons */}
                   <div className="tf-product-info-buy-button">
-                    <form onSubmit={(e) => e.preventDefault()} className="">
-                    {
-                      product.isAvailable? <a 
-                        onClick={() => {
-                          openCartModal();
-                          addProductToCart(product.id, quantity ? quantity : 1);
-                        }}
-                        className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn"
-                      >
-                       <span>
-                          {isAddedToCartProducts(product.id)
-                            ? "Already Added"
-                            : "Add to cart"}{" "}
-                          -{" "}
-                        </span>
-                   
-                        <span className="tf-qty-price">
-                          ${(product.price * quantity).toFixed(2)}
-                        </span>
-                      </a>:
-                      <a  className="tf-btn btn-red-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn">
-                      <span>
-                      out of stock
-                      </span>
-                      </a>
-                    }
-                     
-                      <a
-                        onClick={() => addToWishlist(product.id)}
+                    <form onSubmit={(e) => e.preventDefault()}>
+                      {isInStock && selectedVariant ? (
+                        <button
+                          type="button"
+                          onClick={handleAddToCart}
+                          className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn"
+                          disabled={!selectedVariant}
+                        >
+                          <span>
+                            {isAddedToCartProducts(dummy._id)
+                              ? "Already Added"
+                              : "Add to cart"
+                            }
+                          </span>
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1"
+                          style={{ backgroundColor: "#FF6B6B" }}
+                          disabled
+                        >
+                          <span>
+                            {!selectedVariant ? "Out of stock" : "null" }
+                          </span>
+                        </button>
+                      )}
+
+                      {/* Action Buttons */}
+                      <button
+                        type="button"
+                        onClick={() => addToWishlist(dummy._id)}
                         className="tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action"
+                        aria-label="Add to wishlist"
                       >
                         <span
                           className={`icon icon-heart ${
-                            isAddedtoWishlist(product.id) ? "added" : ""
+                            isAddedtoWishlist(dummy._id) ? "added" : ""
                           }`}
                         />
                         <span className="tooltip">
-                          {" "}
-                          {isAddedtoWishlist(product.id)
+                          {isAddedtoWishlist(dummy._id)
                             ? "Already Wishlisted"
-                            : "Add to Wishlist"}
+                            : "Add to Wishlist"
+                          }
                         </span>
                         <span className="icon icon-delete" />
-                      </a>
-                      <a
-                        href="#compare"
-                        data-bs-toggle="offcanvas"
-                        onClick={() => addToCompareItem(product.id)}
-                        aria-controls="offcanvasLeft"
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => addToCompareItem(dummy._id)}
                         className="tf-product-btn-wishlist hover-tooltip box-icon bg_white compare btn-icon-action"
+                        aria-label="Add to compare"
                       >
                         <span
                           className={`icon icon-compare ${
-                            isAddedtoCompareItem(product.id) ? "added" : ""
+                            isAddedtoCompareItem(dummy._id) ? "added" : ""
                           }`}
                         />
                         <span className="tooltip">
-                          {isAddedtoCompareItem(product.id)
+                          {isAddedtoCompareItem(dummy._id)
                             ? "Already Compared"
-                            : "Add to Compare"}
+                            : "Add to Compare"
+                          }
                         </span>
                         <span className="icon icon-check" />
-                      </a>
+                      </button>
+
+                      {/* Payment Options */}
                       <div className="w-100">
                         <a href="#" className="btns-full">
                           Buy with
                           <img
-                            alt="image"
+                            alt="PayPal"
                             src="/images/payments/paypal.png"
                             width={64}
                             height={18}
@@ -262,6 +491,8 @@ export default function DetailsOuterZoom({ product = allProducts[0] }) {
                       </div>
                     </form>
                   </div>
+
+                  {/* Extra Links */}
                   <div className="tf-product-info-extra-link">
                     <a
                       href="#compare_color"
@@ -270,7 +501,7 @@ export default function DetailsOuterZoom({ product = allProducts[0] }) {
                     >
                       <div className="icon">
                         <img
-                          alt="image"
+                          alt="Compare colors"
                           src="/images/item/compare.svg"
                           width={20}
                           height={20}
@@ -318,6 +549,8 @@ export default function DetailsOuterZoom({ product = allProducts[0] }) {
                       <div className="text fw-6">Share</div>
                     </a>
                   </div>
+
+                  {/* Delivery Info */}
                   <div className="tf-product-info-delivery-return">
                     <div className="row">
                       <div className="col-xl-6 col-12">
@@ -329,7 +562,7 @@ export default function DetailsOuterZoom({ product = allProducts[0] }) {
                             Estimate delivery times:
                             <span className="fw-7">12-26 days</span>
                             (International),
-                            <span className="fw-7">3-6 days</span> (United
+                            <span className="fw-7">3-6 days</span> (All indian
                             States).
                           </p>
                         </div>
@@ -341,12 +574,14 @@ export default function DetailsOuterZoom({ product = allProducts[0] }) {
                           </div>
                           <p>
                             Return within <span className="fw-7">30 days</span>{" "}
-                            of purchase. Duties &amp; taxes are non-refundable.
+                            of purchase. Fees &amp; taxes are non-refundable.
                           </p>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  {/* Trust Seal */}
                   <div className="tf-product-info-trust-seal">
                     <div className="tf-product-trust-mess">
                       <i className="icon-safe" />
@@ -372,7 +607,7 @@ export default function DetailsOuterZoom({ product = allProducts[0] }) {
             </div>
           </div>
         </div>
-      </div>{" "}
+      </div>
       <StickyItem />
     </section>
   );

@@ -327,21 +327,21 @@ const UserRouter=()=>{
     }
   }, []);
 
-  if (loading) {
-    return (
-      <div className="preload-container" style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh',
-        width: '100%'
-      }}>
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="preload-container" style={{ 
+  //       display: 'flex', 
+  //       justifyContent: 'center', 
+  //       alignItems: 'center', 
+  //       height: '100vh',
+  //       width: '100%'
+  //     }}>
+  //       <div className="spinner-border text-primary" role="status">
+  //         <span className="visually-hidden">Loading...</span>
+  //       </div>
+  //     </div>
+  //   );
+  // }
     return(
 <>
       <div className="preload preload-container" id="preloader">
@@ -473,7 +473,7 @@ const UserRouter=()=>{
               <Route path="product-style-07" element={<ProductStylePage7 />} />
               <Route path="compare" element={<ComparePage />} />
               <Route
-                path="product-detail/:id"
+                path="product-detail/:slug"
                 element={<ProductDetailPage />}
               />
               <Route path="product-grid-1/:id" element={<ProductGridPage1 />} />

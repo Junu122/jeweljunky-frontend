@@ -9,7 +9,15 @@
   display: flex;
   gap: 10px;
 }
-
+.bg_gold{
+  background-color: #D4AF37 ;
+}
+.bg_silver{
+  background-color: #9A9A9A;
+}
+.bg_rosegold{
+  background-color: #E8B4B8 ;
+}
 .tf-product-media-thumbs {
   width: calc(14% - 10px);
   max-height: 846px;
@@ -1903,7 +1911,7 @@
       &:hover {
         border-color: var(--white);
         .swatch-value {
-          border-color: #85715e;
+          border-color: #4d2a0b;
         }
       }
     }

@@ -3,7 +3,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Link } from "react-router-dom";
 import { Navigation } from "swiper/modules";
-export default function Categories() {
+export default function Categories({categories,facets}) {
+
   return (
     <section className="flat-spacing-12 bg_grey-3">
       <div className="container">
@@ -41,30 +42,46 @@ export default function Categories() {
               nextEl: ".snbn130",
             }}
           >
-            {collectionData3.map((item, index) => (
+            {categories?.map((item, index) => (
               <SwiperSlide key={index}>
                 <div className="collection-item-circle hover-img">
                   <Link
-                    to={`/shop-collection-list/${item.title}`}
+                    to={`/shop-collection-list/${item.name}`}
                     className="collection-image img-style"
                   >
                     <img
                       className="lazyload"
-                      data-src={item.imgSrc}
-                      alt={item.imgAlt}
-                      src={item.imgSrc}
-                      width={item.imgWidth}
-                      height={item.imgHeight}
+                      data-src={item.image.url}
+                      alt={item.image.alt}
+                      src={item.image.url}
+                      width={400}
+                      height={200}
                     />
                   </Link>
                   <div className="collection-content text-center">
                     <Link
-                      to={`/shop-collection-list/${item.title}`}
+                      to={`/shop-collection-list/${item.name}`}
                       className="link title fw-5"
                     >
-                      {item.title}
+                      {item.name}
                     </Link>
-                    <div className="count">{item.itemCount} items</div>
+                   {/* {
+                    facets.map((facet) => {
+                      if (facet.name === item.name) {
+                        return (
+                          <div key={facet.name} className="count">
+                            {facet.count} items
+                          </div>
+                        );
+                      }
+                      return null;
+                    })
+                   } */}
+                  
+                 
+                    
+      
+                   
                   </div>
                 </div>
               </SwiperSlide>

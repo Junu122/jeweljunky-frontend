@@ -8,7 +8,7 @@ const metadata = {
   title: "Page Not Found || Jewel Junky ",
   description: "Jewel Junky",
 };
-export default function PageNotFoundPage() {
+export default function PageNotFoundPage({message,onRetry}) {
   return (
     <>
       <MetaComponent meta={metadata} />
@@ -25,17 +25,17 @@ export default function PageNotFoundPage() {
                   height="319"
                 />
               </div>
-              <div className="title">Oops...That link is broken.</div>
+              <div className="title">{message}</div>
+             
               <p>
-                Sorry for the inconvenience. Go to our homepage to check out our
-                latest collections.
+                Sorry for the inconvenience.
               </p>
-              <Link
-                to="/"
+              <button
+                onClick={onRetry}
                 className="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn"
               >
-                Go to Home
-              </Link>
+                Retry
+              </button>
             </div>
           </div>
         </div>

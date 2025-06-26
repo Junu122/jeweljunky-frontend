@@ -5116,7 +5116,7 @@
   .wrap-slider {
     .box-content {
       p {
-        display: none;
+        display: block;
       }
     }
     .card-box {
@@ -5277,7 +5277,7 @@
   .card-product {
     .countdown-box,
     .size-list,
-    .wishlist,
+    // .wishlist,
     .compare {
       display: none;
     }
