@@ -1,36 +1,127 @@
 import { useContextElement } from "@/context/Context";
 import { Jewelleryproducts, products1 } from "@/data/products";
-
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { cartService } from "@/services/cartService";
+import { toast } from 'sonner'
 export default function ShopCart() {
-  const { cartProducts, totalPrice, setCartProducts, setQuickViewItem } =
+  const { cartProducts, totalPrice, setCartProducts, isAuthenticated } =
     useContextElement();
-  const setQuantity = (id, quantity, variant) => {
-    if (quantity >= 1) {
-      const item = cartProducts.find(
-        (elm) =>
-          elm.id == id &&
-          JSON.stringify(elm.variant) === JSON.stringify(variant)
-      );
+const [quantityUpdating, setQuantityUpdating] = useState({});
+
+  // Function to update quantity with backend sync and inventory validation
+  const setQuantity = async (id, quantity, variant) => {
+    if(!isAuthenticated){
+     return toast.error("please login to update")
+    }
+    // Find the cart item
+    const item = cartProducts.find(
+      (elm) =>
+        elm.productId == id &&
+        JSON.stringify(elm.variantId) === JSON.stringify(variant)
+    );
+
+    if (!item) return;
+
+    // Get the inventory quantity for this variant
+    const maxQuantity = item.product.variants.find(v => 
+      JSON.stringify(v.id || v._id) === JSON.stringify(variant)
+    )?.inventory?.quantity || 0;
+
+    // Validate quantity
+    if (quantity < 1) {
+      alert("Quantity cannot be less than 1");
+      return;
+    }
+
+    if (quantity > maxQuantity) {
+      alert(`Only ${maxQuantity} items available in stock`);
+      return;
+    }
+
+    // Set loading state
+    const updateKey = `${id}-${JSON.stringify(variant)}`;
+    setQuantityUpdating(prev => ({ ...prev, [updateKey]: true }));
+
+    try {
+      // API call to update quantity in backend
+      const updateData={
+         productId: id._id,
+          variantId: variant,
+          quantity: quantity
+      }
+      const response = await cartService.updateQuantity(updateData);
+      console.log(response,"..............")
+     toast.success(response?.message)
+
+      // if (!response.ok) {
+      //   throw new Error('Failed to update quantity');
+      // }
+
+      // const result = await response.json();
+
+      // Update local state only if backend update is successful
       const items = [...cartProducts];
       const itemIndex = items.indexOf(item);
       item.quantity = quantity;
       items[itemIndex] = item;
       setCartProducts(items);
+
+    } catch (error) {
+      toast.error(error?.message)
+      console.error('Error updating quantity:', error);
+     
+    } finally {
+      // Remove loading state
+      setQuantityUpdating(prev => {
+        const updated = { ...prev };
+        delete updated[updateKey];
+        return updated;
+      });
     }
   };
-  const removeItem = (id, variant) => {
-    setCartProducts((pre) => [
-      ...pre.filter(
-        (elm) =>
-          elm.id !== id ||
-          JSON.stringify(elm.variant) !== JSON.stringify(variant)
-      ),
-    ]);
+
+  // Function to remove item with backend sync
+  const removeItem = async (id, variant) => {
+    try {
+      // API call to remove item from backend
+      const removeData={
+        productId:id._id,
+        variantId:variant
+      }
+      const response = await cartService.removeFromCart(removeData)
+      toast.success(response?.message)
+      console.log("remove from cart response ..*************              :",response)
+
+      // Update local state only if backend removal is successful
+      setCartProducts((prev) => [
+        ...prev.filter(
+          (elm) =>
+
+            elm.productId !== id ||
+            JSON.stringify(elm.variantId) !== JSON.stringify(variant)
+        ),
+      ]);
+
+    } catch (error) {
+      toast.error(error.message)
+      console.error('Error removing item:', error);
+      alert('Failed to remove item. Please try again.');
+    }
   };
+
+  // Helper function to get available quantity for a variant
+  const getAvailableQuantity = (product, variantId) => {
+    const variant = product.variants.find(v => 
+      JSON.stringify(v.id || v._id) === JSON.stringify(variantId)
+    );
+    return variant?.inventory?.quantity || 0;
+  };
+
+
 
   const addNoteRef = useRef();
   const addGiftRef = useRef();
@@ -91,79 +182,106 @@ export default function ShopCart() {
               <div className="tf-mini-cart-main">
                 <div className="tf-mini-cart-sroll">
                   <div className="tf-mini-cart-items">
-                    {cartProducts.map((elm, i) => (
-                      <div key={i} className="tf-mini-cart-item">
-                        <div className="tf-mini-cart-image">
-                          <Link to={`/product-detail/${elm.id}`}>
-                            <img
-                              alt="image"
-                              src={elm.variant.images[0].url}
-                              width={668}
-                              height={932}
-                              style={{ objectFit: "cover" }}
-                            />
-                          </Link>
-                        </div>
-                        <div className="tf-mini-cart-info">
-                          <Link
-                            className="title link"
-                            to={`/product-detail/${elm.id}`}
-                          >
-                            {elm.title}
-                          </Link>
-                          <div className="meta-variant">
-                            {elm.product.title}
-                          </div>
-                          <div className="price fw-6">
-                            &#8377;{elm.variant.pricing.price.toFixed(2)}
-                          </div>
-                          <div className="tf-mini-cart-btns">
-                            <div className="wg-quantity small">
-                              <span
-                                className="btn-quantity minus-btn"
-                                onClick={() =>
-                                  setQuantity(
-                                    elm.id,
-                                    elm.quantity - 1,
-                                    elm.variant
-                                  )
-                                }
-                              >
-                                -
-                              </span>
-                              <input
-                                type="text"
-                                name="number"
-                                value={elm.quantity}
-                                min={1}
-                                onChange={(e) =>
-                                  setQuantity(elm.id, e.target.value / 1)
-                                }
+                    {cartProducts.map((elm, i) => {   
+                          const availableQuantity = getAvailableQuantity(elm.product, elm.variantId);
+                      const updateKey = `${elm.productId}-${JSON.stringify(elm.variantId)}`;
+                      const isUpdating = quantityUpdating[updateKey];
+                      return (
+                        <div key={i} className="tf-mini-cart-item">
+                          <div className="tf-mini-cart-image">
+                            <Link to={`/product-detail/${elm.product._id}`}>
+                              <img
+                                alt="image"
+                                src={elm?.product?.variants[0]?.images[0]?.url}
+                                width={668}
+                                height={932}
+                                style={{ objectFit: "cover" }}
                               />
-                              <span
-                                className="btn-quantity plus-btn"
-                                onClick={() =>
-                                  setQuantity(
-                                    elm.id,
-                                    elm.quantity + 1,
-                                    elm.variant
-                                  )
-                                }
-                              >
-                                +
-                              </span>
-                            </div>
-                            <div
-                              className="tf-mini-cart-remove"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => removeItem(elm.id, elm.variant)}
+                            </Link>
+                          </div>
+                          <div className="tf-mini-cart-info">
+                            <Link
+                              className="title link"
+                              to={`/product-detail/${elm.product._id}`}
                             >
-                              Remove
+                              {elm.product.title}
+                            </Link>
+                            <div className="meta-variant">
+                              {elm.product.title}
+                            </div>
+                            <div className="price fw-6">
+                              &#8377;{elm.product.variants[0].pricing.price.toFixed(2)}
+                            </div>
+                            
+                            {/* Stock availability indicator */}
+                            <div className="stock-info" style={{ fontSize: '12px', color: availableQuantity < 5 ? '#ff6b6b' : '#28a745' }}>
+                              {availableQuantity < 5 && availableQuantity > 0 && `Only ${availableQuantity} left in stock`}
+                              {availableQuantity === 0 && 'Out of stock'}
+                              {availableQuantity >= 5 && 'In stock'}
+                            </div>
+                            
+                            <div className="tf-mini-cart-btns">
+                              <div className="wg-quantity small">
+                                <span
+                                  className={`btn-quantity minus-btn ${elm.quantity <= 1 || isUpdating ? 'disabled' : ''}`}
+                                  onClick={() => {
+                                    if (elm.quantity > 1 && !isUpdating) {
+                                      setQuantity(elm.productId, elm.quantity - 1, elm.variantId);
+                                    }
+                                  }}
+                                  style={{ 
+                                    opacity: elm.quantity <= 1 || isUpdating ? 0.5 : 1,
+                                    cursor: elm.quantity <= 1 || isUpdating ? 'not-allowed' : 'pointer'
+                                  }}
+                                >
+                                  {isUpdating ? '...' : '-'}
+                                </span>
+                                <input
+                                  type="number"
+                                  name="number"
+                                  value={elm.quantity}
+                                  min={1}
+                                  max={availableQuantity}
+                                  disabled={isUpdating}
+                                  onChange={(e) => {
+                                    const newValue = parseInt(e.target.value) || 1;
+                                    if (newValue !== elm.quantity) {
+                                      setQuantity(elm.productId, newValue, elm.variantId);
+                                    }
+                                  }}
+                                  style={{ 
+                                    opacity: isUpdating ? 0.5 : 1,
+                                    cursor: isUpdating ? 'not-allowed' : 'text'
+                                  }}
+                                />
+                                <span
+                                  className={`btn-quantity plus-btn ${elm.quantity >= availableQuantity || isUpdating ? 'disabled' : ''}`}
+                                  onClick={() => {
+                                    if (elm.quantity < availableQuantity && !isUpdating) {
+                                      setQuantity(elm.productId, elm.quantity + 1, elm.variantId);
+                                    }
+                                  }}
+                                  style={{ 
+                                    opacity: elm.quantity >= availableQuantity || isUpdating ? 0.5 : 1,
+                                    cursor: elm.quantity >= availableQuantity || isUpdating ? 'not-allowed' : 'pointer'
+                                  }}
+                                >
+                                  {isUpdating ? '...' : '+'}
+                                </span>
+                              </div>
+                              <div
+                                className="tf-mini-cart-remove"
+                                style={{ cursor: "pointer" }}
+                                onClick={() => removeItem(elm.productId, elm.variantId)}
+                              >
+                                Remove
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    
+                    })}
 
                     {!cartProducts.length && (
                       <div className="container">
@@ -184,7 +302,7 @@ export default function ShopCart() {
                       </div>
                     )}
                   </div>
-                  <div className="tf-minicart-recommendations">
+                  {/* <div className="tf-minicart-recommendations">
                     <div className="tf-minicart-recommendations-heading">
                       <div className="tf-minicart-recommendations-title">
                         You may also like
@@ -239,11 +357,11 @@ export default function ShopCart() {
                         </SwiperSlide>
                       ))}
                     </Swiper>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="tf-mini-cart-bottom">
-                <div className="tf-mini-cart-tool">
+                {/* <div className="tf-mini-cart-tool">
                   <div
                     className="tf-mini-cart-tool-btn btn-add-note"
                     onClick={() => addNoteRef.current.classList.add("open")}
@@ -295,7 +413,7 @@ export default function ShopCart() {
                       />
                     </svg>
                   </div>
-                </div>
+                </div> */}
                 <div className="tf-mini-cart-bottom-wrap">
                   <div className="tf-cart-totals-discounts">
                     <div className="tf-cart-total">Subtotal</div>

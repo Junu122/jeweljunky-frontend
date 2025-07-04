@@ -1,5 +1,3 @@
-import { Jewelleryproducts } from "@/data/products";
-import { dummyJewellery } from "@/data/products";
 import { useContextElement } from "@/context/Context";
 import { useEffect, useState } from "react";
 import { ProductCardWishlist } from "../shopCards/ProductCardWishlist";
@@ -9,19 +7,18 @@ import { Link } from "react-router-dom";
 export default function Wishlist() {
   const { wishList } = useContextElement();
   const [wishListItems, setWishListItems] = useState([]);
-useEffect(() => {
-  if (wishList && wishList.length > 0) {
-    const wishListIds = wishList.map(item => item.productId); 
-    const filteredItems = dummyJewellery.filter(product => 
-      wishListIds.includes(product.id)
-    );
-    setWishListItems(filteredItems);
-  } else {
-    setWishListItems([]); // clear if wishlist is empty
-  }
-}, [wishList]);
+ useEffect(() => {
+    if (wishList && wishList.length > 0) {
+      const wishLists = wishList.map(item => {
+        return item.productId || item;
+      }); 
+      setWishListItems(wishLists);
+    } else {
+      setWishListItems([]); // clear if wishlist is empty
+    }
+  }, [wishList]);
 
-  console.log("wishlist items   :",wishListItems)
+  console.log("wishlist items .......  :",wishList)
 
   return (
     <section className="flat-spacing-2">

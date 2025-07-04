@@ -1,30 +1,113 @@
 import { useContextElement } from "@/context/Context";
-
+import { cartService } from "@/services/cartService";
+import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 export default function Cart() {
-  const { cartProducts, setCartProducts, totalPrice } = useContextElement();
-  const setQuantity = (id, quantity, variant) => {
-    if (quantity >= 1) {
-      const item = cartProducts.find(
-        (elm) =>
-          elm.id == id &&
-          JSON.stringify(elm.variant) === JSON.stringify(variant)
-      );
+  const { cartProducts, setCartProducts, totalPrice,isAuthenticated } = useContextElement();
+  const [quantityUpdating, setQuantityUpdating] = useState({});
+  const setQuantity = async (id, quantity, variant) => {
+    if (!isAuthenticated) {
+      return toast.error("please login to update");
+    }
+    // Find the cart item
+    const item = cartProducts.find(
+      (elm) =>
+        elm.productId == id &&
+        JSON.stringify(elm.variantId) === JSON.stringify(variant)
+    );
+
+    if (!item) return;
+
+    // Get the inventory quantity for this variant
+    const maxQuantity =
+      item.product.variants.find(
+        (v) => JSON.stringify(v.id || v._id) === JSON.stringify(variant)
+      )?.inventory?.quantity || 0;
+
+    // Validate quantity
+    if (quantity < 1) {
+      alert("Quantity cannot be less than 1");
+      return;
+    }
+
+    if (quantity > maxQuantity) {
+      alert(`Only ${maxQuantity} items available in stock`);
+      return;
+    }
+
+    // Set loading state
+    const updateKey = `${id}-${JSON.stringify(variant)}`;
+    setQuantityUpdating((prev) => ({ ...prev, [updateKey]: true }));
+
+    try {
+      // API call to update quantity in backend
+      const updateData = {
+        productId: id._id,
+        variantId: variant,
+        quantity: quantity,
+      };
+      const response = await cartService.updateQuantity(updateData);
+      console.log(response, "..............");
+      toast.success(response?.message);
+
+      // if (!response.ok) {
+      //   throw new Error('Failed to update quantity');
+      // }
+
+      // const result = await response.json();
+
+      // Update local state only if backend update is successful
       const items = [...cartProducts];
       const itemIndex = items.indexOf(item);
       item.quantity = quantity;
       items[itemIndex] = item;
       setCartProducts(items);
+    } catch (error) {
+      toast.error(error?.message);
+      console.error("Error updating quantity:", error);
+    } finally {
+      // Remove loading state
+      setQuantityUpdating((prev) => {
+        const updated = { ...prev };
+        delete updated[updateKey];
+        return updated;
+      });
     }
   };
-  const removeItem = (id, variant) => {
-    setCartProducts((pre) => [
-      ...pre.filter(
-        (elm) =>
-          elm.id !== id ||
-          JSON.stringify(elm.variant) !== JSON.stringify(variant)
-      ),
-    ]);
+
+  const removeItem = async (id, variant) => {
+    try {
+      const removeData = {
+        productId: id._id,
+        variantId: variant,
+      };
+      const response = await cartService.removeFromCart(removeData);
+      toast.success(response?.message);
+      console.log(
+        "remove from cart response ..*************              :",
+        response
+      );
+
+      // Update local state only if backend removal is successful
+      setCartProducts((prev) => [
+        ...prev.filter(
+          (elm) =>
+            elm.productId !== id ||
+            JSON.stringify(elm.variantId) !== JSON.stringify(variant)
+        ),
+      ]);
+    } catch (error) {
+      toast.error(error.message);
+      console.error("Error removing item:", error);
+    }
+  };
+
+    const getAvailableQuantity = (product, variantId) => {
+    const variant = product.variants.find(v => 
+      JSON.stringify(v.id || v._id) === JSON.stringify(variantId)
+    );
+    return variant?.inventory?.quantity || 0;
   };
   return (
     <section className="flat-spacing-11">
@@ -71,115 +154,171 @@ export default function Cart() {
                   </tr>
                 </thead>
                 <tbody>
-                  {cartProducts.map((elm, i) => (
-                    <tr key={i} className="tf-cart-item file-delete">
-                      <td className="tf-cart-item_product">
-                        <Link
-                          to={`/product-detail/${elm.id}`}
-                          className="img-box"
-                        >
-                          <img
-                            alt="img-product"
-                            src={elm.variant.images[0].url}
-                            width={668}
-                            height={932}
-                          />
-                        </Link>
-                        <div className="cart-info">
+                  {cartProducts.map((elm, i) => {
+                    const availableQuantity = getAvailableQuantity(
+                      elm.product,
+                      elm.variantId
+                    );
+                    const updateKey = `${elm.productId}-${JSON.stringify(
+                      elm.variantId
+                    )}`;
+                    const isUpdating = quantityUpdating[updateKey];
+
+                    return (
+                      <tr key={i} className="tf-cart-item file-delete">
+                        <td className="tf-cart-item_product">
                           <Link
-                            to={`/product-detail/${elm.id}`}
-                            className="cart-title link"
+                            to={`/product-detail/${elm.product._id}`}
+                            className="img-box"
                           >
-                            {elm.title}
-                          </Link>
-                          <div className="cart-meta-variant">{elm.variant.color.name + "," + elm.variant.size.value }</div>
-                          <span
-                            className="remove-cart link remove"
-                            onClick={() => removeItem(elm.id,elm.variant)}
-                          >
-                            Remove
-                          </span>
-                        </div>
-                      </td>
-                      <td
-                        className="tf-cart-item_price"
-                        cart-data-title="Price"
-                      >
-                        <div className="cart-price">
-                          &#8377;{elm.variant.pricing.price.toFixed(2)}
-                        </div>
-                      </td>
-                      <td
-                        className="tf-cart-item_quantity"
-                        cart-data-title="Quantity"
-                      >
-                        <div className="cart-quantity">
-                          <div className="wg-quantity">
-                            <span
-                              className="btn-quantity minus-btn"
-                              onClick={() =>
-                               setQuantity(
-                                    elm.id,
-                                    elm.quantity - 1,
-                                    elm.variant
-                                  )
-                              }
-                            >
-                              <svg
-                                className="d-inline-block"
-                                width={9}
-                                height={1}
-                                viewBox="0 0 9 1"
-                                fill="currentColor"
-                              >
-                                <path d="M9 1H5.14286H3.85714H0V1.50201e-05H3.85714L5.14286 0L9 1.50201e-05V1Z" />
-                              </svg>
-                            </span>
-                            <input
-                              type="text"
-                              name="number"
-                              value={elm.quantity}
-                              min={1}
-                              onChange={(e) =>
-                                setQuantity(elm.id, e.target.value / 1)
-                              }
+                            <img
+                              alt="img-product"
+                              src={elm?.product?.variants[0].images[0].url}
+                              width={668}
+                              height={932}
                             />
+                          </Link>
+                          <div className="cart-info">
+                            <Link
+                              to={`/product-detail/${elm.product._id}`}
+                              className="cart-title link"
+                            >
+                              {elm.product.title}
+                            </Link>
+                            <div className="cart-meta-variant">
+                              {elm.product.variants[0].color.name +
+                                "," +
+                                elm.product.variants[0].size.value}
+                            </div>
                             <span
-                              className="btn-quantity plus-btn"
+                              className="remove-cart link remove"
                               onClick={() =>
-                                setQuantity(
-                                    elm.id,
-                                    elm.quantity + 1,
-                                    elm.variant
-                                  )
+                                removeItem(elm.productId, elm.variantId)
                               }
                             >
-                              <svg
-                                className="d-inline-block"
-                                width={9}
-                                height={9}
-                                viewBox="0 0 9 9"
-                                fill="currentColor"
-                              >
-                                <path d="M9 5.14286H5.14286V9H3.85714V5.14286H0V3.85714H3.85714V0H5.14286V3.85714H9V5.14286Z" />
-                              </svg>
+                              Remove
                             </span>
                           </div>
-                        </div>
-                      </td>
-                      <td
-                        className="tf-cart-item_total"
-                        cart-data-title="Total"
-                      >
-                        <div
-                          className="cart-total"
-                          style={{ minWidth: "60px" }}
+                        </td>
+                        <td
+                          className="tf-cart-item_price"
+                          cart-data-title="Price"
                         >
-                          &#8377;{(elm.variant.pricing.price * elm.quantity).toFixed(2)}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                          <div className="cart-price">
+                            &#8377;
+                            {elm.product.variants[0].pricing.price.toFixed(2)}
+                          </div>
+                        </td>
+                        <td
+                          className="tf-cart-item_quantity"
+                          cart-data-title="Quantity"
+                        >
+                          <div className="cart-quantity">
+                            <div className="wg-quantity">
+                              <span
+                                className={`btn-quantity minus-btn ${
+                                  elm.quantity <= 1 || isUpdating
+                                    ? "disabled"
+                                    : ""
+                                }`}
+                                onClick={() => {
+                                  if (elm.quantity > 1 && !isUpdating) {
+                                    setQuantity(
+                                      elm.productId,
+                                      elm.quantity - 1,
+                                      elm.variantId
+                                    );
+                                  }
+                                }}
+                                style={{
+                                  opacity:
+                                    elm.quantity <= 1 || isUpdating ? 0.5 : 1,
+                                  cursor:
+                                    elm.quantity <= 1 || isUpdating
+                                      ? "not-allowed"
+                                      : "pointer",
+                                }}
+                              >
+                                {isUpdating ? "..." : "-"}
+                              </span>
+                              <input
+                                type="number"
+                                name="number"
+                                value={elm.quantity}
+                                min={1}
+                                max={availableQuantity}
+                                disabled={isUpdating}
+                                onChange={(e) => {
+                                  const newValue =
+                                    parseInt(e.target.value) || 1;
+                                  if (newValue !== elm.quantity) {
+                                    setQuantity(
+                                      elm.productId,
+                                      newValue,
+                                      elm.variantId
+                                    );
+                                  }
+                                }}
+                                style={{
+                                  opacity: isUpdating ? 0.5 : 1,
+                                  cursor: isUpdating ? "not-allowed" : "text",
+                                }}
+                              />
+                              <span
+                                className={`btn-quantity plus-btn ${
+                                  elm.quantity >= availableQuantity ||
+                                  isUpdating
+                                    ? "disabled"
+                                    : ""
+                                }`}
+                                onClick={() => {
+                                  if (
+                                    elm.quantity < availableQuantity &&
+                                    !isUpdating
+                                  ) {
+                                    setQuantity(
+                                      elm.productId,
+                                      elm.quantity + 1,
+                                      elm.variantId
+                                    );
+                                  }
+                                }}
+                                style={{
+                                  opacity:
+                                    elm.quantity >= availableQuantity ||
+                                    isUpdating
+                                      ? 0.5
+                                      : 1,
+                                  cursor:
+                                    elm.quantity >= availableQuantity ||
+                                    isUpdating
+                                      ? "not-allowed"
+                                      : "pointer",
+                                }}
+                              >
+                                {isUpdating ? "..." : "+"}
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          className="tf-cart-item_total"
+                          cart-data-title="Total"
+                        >
+                          <div
+                            className="cart-total"
+                            style={{ minWidth: "60px" }}
+                          >
+                            &#8377;
+                            {(
+                              elm.product.variants[0].pricing.price *
+                              elm.quantity
+                            ).toFixed(2)}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
               {!cartProducts.length && (
@@ -213,9 +352,11 @@ export default function Cart() {
             <div className="tf-cart-footer-inner">
               <div className="tf-free-shipping-bar">
                 <div className="tf-progress-bar">
-                  <span   style={{
-                    width: `${Math.min((totalPrice / 2000) * 100, 100)}%`,
-                  }}>
+                  <span
+                    style={{
+                      width: `${Math.min((totalPrice / 2000) * 100, 100)}%`,
+                    }}
+                  >
                     <div className="progress-car">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -233,20 +374,22 @@ export default function Cart() {
                     </div>
                   </span>
                 </div>
-                 <div className="tf-progress-msg">
-                {totalPrice >= 2000 ? (
-                  <span className="fw-6">You have unlocked Free Shipping!</span>
-                ) : (
-                  <>
-                    Buy{" "}
-                    <span className="price fw-6">
-                      &#8377;{(2000 - totalPrice).toFixed(2)}
-                    </span>{" "}
-                    more to enjoy
-                    <span className="fw-6"> Free Shipping</span>
-                  </>
-                )}
-              </div>
+                <div className="tf-progress-msg">
+                  {totalPrice >= 2000 ? (
+                    <span className="fw-6">
+                      You have unlocked Free Shipping!
+                    </span>
+                  ) : (
+                    <>
+                      Buy{" "}
+                      <span className="price fw-6">
+                        &#8377;{(2000 - totalPrice).toFixed(2)}
+                      </span>{" "}
+                      more to enjoy
+                      <span className="fw-6"> Free Shipping</span>
+                    </>
+                  )}
+                </div>
               </div>
               <div className="tf-page-cart-checkout">
                 <div className="shipping-calculator">
@@ -429,7 +572,7 @@ export default function Cart() {
                 <div className="tf-cart-totals-discounts">
                   <h3>Subtotal</h3>
                   <span className="total-value">
-                    &#8377;{totalPrice.toFixed(2)} 
+                    &#8377;{totalPrice.toFixed(2)}
                   </span>
                 </div>
                 <p className="tf-cart-tax">
@@ -450,7 +593,7 @@ export default function Cart() {
                 </div>
                 <div className="cart-checkout-btn">
                   <Link
-                    to={`/checkout`}
+                    to={cartProducts.length>0?`/checkout` : `/view-cart`}
                     className="tf-btn w-100 btn-fill animate-hover-btn radius-3 justify-content-center"
                   >
                     <span>Check out</span>

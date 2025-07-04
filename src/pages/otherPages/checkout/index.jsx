@@ -5,8 +5,8 @@ import React from "react";
 
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
-  title: "Checkout || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "Checkout || Jewel-Junky",
+  description: "jewel junky checkout page",
 };
 export default function CheckoutPage() {
   return (

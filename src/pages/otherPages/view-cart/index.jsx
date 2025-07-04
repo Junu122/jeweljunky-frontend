@@ -7,8 +7,8 @@ import React from "react";
 
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
-  title: "View Cart || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "View Cart || Jewel Junky Cart page",
+  description: "jewel junky cart page",
 };
 export default function ViewCartPage() {
   return (

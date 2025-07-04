@@ -2,11 +2,11 @@ import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 import CountdownComponent from "../common/Countdown";
-
+import { toast } from 'sonner'
 export const ProductCardWishlist = ({ product }) => {
-  console.log("wishlist product", product);
+
   
-  const { setQuickViewItem, getWishlistItem } = useContextElement();
+  const {  getWishlistItem } = useContextElement();
   const {
     setQuickAddItem,
     addToWishlist,
@@ -17,7 +17,7 @@ export const ProductCardWishlist = ({ product }) => {
   } = useContextElement();
 
   // Get the wishlist item to retrieve the selected variant
-  const wishlistItem = getWishlistItem(product.id);
+  const wishlistItem = getWishlistItem(product?.id || []);
   
   const [currentImage, setCurrentImage] = useState('');
   const [currentColor, setCurrentColor] = useState('');
@@ -95,8 +95,25 @@ export const ProductCardWishlist = ({ product }) => {
     setCurrentVariant(selectedVariant);
   };
 
+  const handleRemoveProduct=async(productid)=>{
+   const result=await removeFromWishlist(productid);
+   if(result?.success){
+     toast.success(result.message, {
+      description: " 🖤",
+      duration: 4000,
+   
+    });
+   }else{
+         toast.error("error occured", {
+      description: result.message,
+      duration: 4000,
+   
+    });
+   }
+   console.log("result in removing product",result)
+  }
   // Show loading state if data is not ready
-  if (!currentVariant || !currentImage) {
+  if ( !currentImage) {
     return <div>Loading...</div>;
   }
 
@@ -125,7 +142,7 @@ export const ProductCardWishlist = ({ product }) => {
         </Link>
         <div className="list-product-btn type-wishlist">
           <a
-            onClick={() => removeFromWishlist(product.id)}
+            onClick={() => handleRemoveProduct(product._id)}
             className="box-icon bg_white wishlist"
           >
             <span className="tooltip">Remove Wishlist</span>
@@ -136,7 +153,11 @@ export const ProductCardWishlist = ({ product }) => {
         <div className="list-product-btn">
           <a
             href="#quick_add"
-            onClick={() => setQuickAddItem(product.id)}
+              onClick={() => setQuickAddItem({
+                  productid:product._id,
+                  variant:groupedByColor[currentColor],
+                  realproduct:product
+                })}
             data-bs-toggle="modal"
             className="box-icon bg_white quick-add tf-btn-loading"
           >
@@ -144,7 +165,7 @@ export const ProductCardWishlist = ({ product }) => {
             <span className="tooltip">Quick Add</span>
           </a>
           <a
-            onClick={() => addToWishlist(product.id, currentVariant)}
+            // onClick={() => addToWishlist(product.id, currentVariant)}
             className={`box-icon bg_white  wishlist btn-icon-action ${
               isAddedtoWishlist(product.id) ? "added" : ""
             }`}
@@ -161,7 +182,7 @@ export const ProductCardWishlist = ({ product }) => {
             </span>
             <span className="icon icon-delete" />
           </a>
-          <a
+          {/* <a
             href="#compare"
             data-bs-toggle="offcanvas"
             aria-controls="offcanvasLeft"
@@ -179,8 +200,8 @@ export const ProductCardWishlist = ({ product }) => {
                 : "Add to Compare"}
             </span>
             <span className="icon icon-check" />
-          </a>
-          <a
+          </a> */}
+          {/* <a
             href="#quick_view"
             onClick={() => setQuickViewItem(product)}
             data-bs-toggle="modal"
@@ -188,7 +209,7 @@ export const ProductCardWishlist = ({ product }) => {
           >
             <span className="icon icon-view" />
             <span className="tooltip">Quick View</span>
-          </a>
+          </a> */}
         </div>
         
         {product.countdown && (
@@ -243,7 +264,9 @@ export const ProductCardWishlist = ({ product }) => {
                 onMouseOver={() => handleColorChange(color)}
               >
                 <span className="tooltip">{color}</span>
-                <span className={`swatch-value ${groupedByColor[color][0].color.class}`} />
+                <span  style={{
+                    backgroundColor: groupedByColor[color][0].color.value,
+                  }} className={`swatch-value `} />
                 <img
                   className="lazyload"
                   data-src={groupedByColor[color][0].images[0].url}

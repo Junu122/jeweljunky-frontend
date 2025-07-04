@@ -24,12 +24,14 @@ export const userServices={
             const response=await axiosinstance.post('/user/login',loginData,{withCredentials:true})
             return response
         } catch (error) {
-            console.log(error)
+            console.log(error,"error in userservice")
+            return error
+            
         }
     },
     async checkauth(){
         try {
-            const response=await userAxiosInstance.get('/user/check-auth',{withCredentials:true});
+            const response=await axiosinstance.get('/user/check-auth',{withCredentials:true});
             console.log(response,".......")
             return response
         } catch (error) {
@@ -38,7 +40,7 @@ export const userServices={
     },
     async getuser(){
         try {
-            const response=await userAxiosInstance.get('/user/check-user',{withCredentials:true})
+            const response=await axiosinstance.get('/user/check-user',{withCredentials:true})
             return response.data
         } catch (error) {
             console.log(error)

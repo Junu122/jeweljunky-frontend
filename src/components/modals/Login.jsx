@@ -69,9 +69,16 @@ export default function Login() {
          
           closeBtn.click();
         }
+      }else{
+        if(response.error=="passworderror"){
+          setValidationErrors({password:response.message})
+        }
+        if(response.error=="usererror"){
+          setValidationErrors({credential:response.message})
+        }
       }
     } catch (error) {
-      
+      console.log("login error",error)
     }
   }
 
@@ -108,7 +115,7 @@ export default function Login() {
                   Email or Phone *
                 </label>
               </div>
-             {validationErrors && <p className="error-message">{validationErrors.credential}</p> }
+             {validationErrors && <p className="error-message" style={{color:"red"}}>{validationErrors.credential}</p> }
               <div className="tf-field style-1">
                 <input
                   className="tf-field-input tf-input"
@@ -121,7 +128,7 @@ export default function Login() {
                 <label className="tf-field-label" htmlFor="">
                   Password *
                 </label>
-                {validationErrors && <p className="error-message">{validationErrors.password}</p> }
+                {validationErrors && <p className="error-message" style={{color:"red"}}>{validationErrors.password}</p> }
               </div>
               <div>
                 <a

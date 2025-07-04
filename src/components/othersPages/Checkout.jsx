@@ -213,7 +213,7 @@ export default function Checkout() {
                       <figure className="img-product">
                         <img
                           alt="product"
-                          src={elm.imgSrc}
+                          src={elm.product.variants[0].images[0].url}
                           width={720}
                           height={1005}
                         />
@@ -221,11 +221,11 @@ export default function Checkout() {
                       </figure>
                       <div className="content">
                         <div className="info">
-                          <p className="name">{elm.title}</p>
+                          <p className="name">{elm.productId.title}</p>
                           <span className="variant">Brown / M</span>
                         </div>
                         <span className="price">
-                          &#8377;{(elm.price * elm.quantity).toFixed(2)}
+                          &#8377;{(elm.product.variants[0].pricing.price * elm.quantity).toFixed(2)}
                         </span>
                       </div>
                     </li>

@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "./Nav";
-
+import { useContextElement } from "@/context/Context";
 import { Link } from "react-router-dom";
 import CartLength from "../common/CartLength";
 import WishlistLength from "../common/WishlistLength";
@@ -11,10 +11,13 @@ export default function Header2({
   isArrow = false,
   Linkfs = "",
 }) {
+  const { isAuthenticated, loading, user } = useContextElement();
   return (
     <header
       id="header"
-      className={`header-default ${uppercase ? "header-uppercase" : ""} "header-style-2"`}
+      className={`header-default ${
+        uppercase ? "header-uppercase" : ""
+      } "header-style-2"`}
     >
       <div className="px_15 lg-px_40">
         <div className="row wrapper-header align-items-center">
@@ -48,7 +51,6 @@ export default function Header2({
                 height="21"
               />
             </Link>
-
           </div>
           <div className="col-xl-6 tf-md-hidden">
             <nav className="box-navigation text-center">
@@ -78,13 +80,15 @@ export default function Header2({
                 </a>
               </li>
               <li className="nav-account">
-                <a
-                  href="#login"
-                  data-bs-toggle="modal"
-                  className="nav-icon-item"
-                >
-                  <i className="icon icon-account" />
-                </a>
+                {!loading && (
+                  <a
+                    href={isAuthenticated ? "/my-account" : "#login"}
+                    data-bs-toggle={!isAuthenticated ? "modal" : null}
+                    className="nav-icon-item"
+                  >
+                    <i className="icon icon-account" />
+                  </a>
+                )}
               </li>
               <li className="nav-wishlist">
                 <Link to={`/wishlist`} className="nav-icon-item">

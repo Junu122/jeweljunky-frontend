@@ -95,7 +95,8 @@ const ColorPicker = memo(({ colors, currentColor, onColorChange, groupedByColor 
             }}
           >
             <span
-              className={`btn-checkbox ${groupedByColor[color]?.[0]?.color?.class || ''}`}
+              className={`btn-checkbox `}
+              style={{backgroundColor:`${groupedByColor[color]?.[0]?.color?.value }`}}
             />
             <span className="tooltip">{color}</span>
           </label>
@@ -257,9 +258,10 @@ export default function DetailsOuterZoom({ dummy }) {
   }, []);
 
   const handleAddToCart = useCallback(() => {
+   
     if (selectedVariant) {
-      openCartModal();
-      addProductToCart(selectedVariant._id, quantity);
+      // openCartModal();
+      addProductToCart(dummy._id,selectedVariant, quantity);
     }
   }, [selectedVariant, quantity]);
 
@@ -275,6 +277,7 @@ export default function DetailsOuterZoom({ dummy }) {
     isAddedtoCompareItem,
     addToWishlist,
     isAddedtoWishlist,
+    isAuthenticated
   } = useContextElement();
 
   // Error state
@@ -376,6 +379,7 @@ export default function DetailsOuterZoom({ dummy }) {
 
                   {/* Variant Picker */}
                   <div className="tf-product-info-variant-picker">
+                  
                     {availableColors.length > 0 && (
                       <ColorPicker
                         colors={availableColors}
@@ -399,7 +403,7 @@ export default function DetailsOuterZoom({ dummy }) {
                     <div className="quantity-title fw-6">Quantity</div>
                     <Quantity 
                       setQuantity={setQuantity} 
-                      max={selectedVariant?.inventory?.quantity || 99}
+                      maxvalue={selectedVariant?.inventory?.quantity }
                     />
                   </div>
 
@@ -414,7 +418,7 @@ export default function DetailsOuterZoom({ dummy }) {
                           disabled={!selectedVariant}
                         >
                           <span>
-                            {isAddedToCartProducts(dummy._id)
+                            {isAddedToCartProducts(dummy._id,selectedVariant._id)
                               ? "Already Added"
                               : "Add to cart"
                             }
@@ -437,13 +441,14 @@ export default function DetailsOuterZoom({ dummy }) {
                       <button
                         type="button"
                         onClick={() => addToWishlist(dummy._id)}
-                        className="tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action"
+                        className={`tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action
+                        ${isAddedtoWishlist(dummy._id) ? "added" : ""}`}
                         aria-label="Add to wishlist"
+                        style={{backgroundColor:`${isAddedtoWishlist?"black" :"red"}`}}
+                        
                       >
                         <span
-                          className={`icon icon-heart ${
-                            isAddedtoWishlist(dummy._id) ? "added" : ""
-                          }`}
+                          className={`icon icon-heart`}
                         />
                         <span className="tooltip">
                           {isAddedtoWishlist(dummy._id)
@@ -454,7 +459,7 @@ export default function DetailsOuterZoom({ dummy }) {
                         <span className="icon icon-delete" />
                       </button>
 
-                      <button
+                      {/* <button
                         type="button"
                         onClick={() => addToCompareItem(dummy._id)}
                         className="tf-product-btn-wishlist hover-tooltip box-icon bg_white compare btn-icon-action"
@@ -472,7 +477,7 @@ export default function DetailsOuterZoom({ dummy }) {
                           }
                         </span>
                         <span className="icon icon-check" />
-                      </button>
+                      </button> */}
 
                       {/* Payment Options */}
                       <div className="w-100">

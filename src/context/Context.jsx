@@ -1,10 +1,12 @@
 import { allProducts, Jewelleryproducts,dummyJewellery} from "@/data/products";
 import { wishlistService } from "@/services/wishlistService";
 import { openCartModal } from "@/utlis/openCartModal";
+import { toast } from 'sonner'
 // import { openCart } from "@/utlis/toggleCart";
 import React, { useEffect } from "react";
 import { useContext, useState } from "react";
 import { userServices } from "@/services/userService";
+import { cartService } from "@/services/cartService";
 const dataContext = React.createContext();
 export const useContextElement = () => {
   return useContext(dataContext);
@@ -24,7 +26,7 @@ export default function Context({ children }) {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
- 
+
 
   // Check authentication status on component mount only (not on every isAuthenticated change)
 const loadData=async()=>{
@@ -32,6 +34,7 @@ const loadData=async()=>{
   if(response?.user){
       setUser(response?.user)
     setIsAuthenticated(true)
+   
   }else{
     setIsAuthenticated(false)
   }
@@ -56,9 +59,36 @@ const loadData=async()=>{
       setLoading(false);
     }
   };
-  //   useEffect(() => {
-  //    loadData()
-  // }, []); 
+
+  const loadWishlistFromServer=async(forceLoad = false)=>{
+    if(!isAuthenticated && !forceLoad) return;
+    try {
+      const response=await wishlistService.getUserWishlist();
+      if(response.success){
+        const userWishlist=response?.wishList?.products;
+        setWishList(userWishlist);
+      }
+    } catch (error) {
+      console.log("error in userwishlist  :",error)
+    }
+  }
+
+  const loadCartFromServer=async(forceLoad=false)=>{
+    if(!isAuthenticated && !forceLoad)return
+
+    try {
+      const response=await cartService.getCartProducts()
+      console.log("cart products  :........:",response);
+      if(response?.success){
+        const userCart=response?.cart?.items;
+        setCartProducts(userCart)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }
+
 
   // Login functionality
   const login = async (formData) => {
@@ -66,6 +96,8 @@ const loadData=async()=>{
       const response = await userServices.userLogin(formData);
       setUser(response?.data?.existUser);
       setIsAuthenticated(true);
+      await loadWishlistFromServer(true);
+      console.log("response in login  :",response)
       return response.data;
     } catch (error) {
   
@@ -75,39 +107,67 @@ const loadData=async()=>{
 
   useEffect(() => {
     const subtotal = cartProducts.reduce((accumulator, product) => {
-      return accumulator + product.quantity * product.variant.pricing.price;
+      return accumulator + product.quantity * product.productId.variants[0].pricing.price;
     }, 0);
     setTotalPrice(subtotal);
   }, [cartProducts]);
+  console.log("cart products :",cartProducts)
 
-  const addProductToCart = (id, variant,qty) => {
-   
-    const product = dummyJewellery.find((elm) => elm.id == id);
-   
-    if (!cartProducts.find((elm) => elm.id == id &&  JSON.stringify(elm.variant) === JSON.stringify(variant))  || !cartProducts.length=== 0) {
+
+  const addProductToCart =async (id, variant,qty) => {
+    if(!isAuthenticated){
+      return toast.error("please login to add product to cart")
+    }
+
       const item = {
-       
-        id: id,
-        product: product,
+        productId: id,
         quantity: qty ? qty : 1,
-        variant:variant 
+        variantId:variant._id 
       };
-      setCartProducts((pre) => [...pre, item]);
-      openCartModal();
+
+      const existingCartProduct=cartProducts.find((elm)=>{
+        elm.productId._id === id && elm.variantId===variant
+      })
+
+
+      if(existingCartProduct){
+        return {success:false,message:"product already exist"}
+      }
+      try {
+        const response=await cartService.addToCart(item);
+        console.log("response in add to cart  :",response)
+        if(response.success){
+         await  loadCartFromServer(true)
+           openCartModal();
+           toast.success("product added to cart")
+        }
+     
+      } catch (error) {
+        if(error?.response){
+            toast.error(error.response.data.message)
+        }else{
+          toast.error(error.message)
+        }
+
+      
+      }
+      // setCartProducts((pre) => [...pre, item]);
+    
 
       // openCart();
-    }
+
   };
   const isAddedToCartProducts = (id,selectedVariant) => {
+    console.log("id,selected variants",id,selectedVariant)
    
-    if (cartProducts.find((elm) => elm.id == id && JSON.stringify(elm.variant) === JSON.stringify(selectedVariant))) {
+    if (cartProducts.find((elm) => elm.productId._id.toString()  === id.toString() && elm.variantId.toString()===selectedVariant.toString()   )) {
       return true;
     }
     return false;
   };
 
-  const updateQuantity = (id, qty) => {
-    if (isAddedToCartProducts(id)) {
+  const updateQuantity = (id, qty,variantId) => {
+    if (isAddedToCartProducts(id,variantId)) {
       let item = cartProducts.filter((elm) => elm.id == id)[0];
       let items = [...cartProducts];
       const itemIndex = items.indexOf(item);
@@ -124,9 +184,12 @@ const loadData=async()=>{
 
 
   const addToWishlist =async (id, currentVariant) => {
+      if (!isAuthenticated) {
+      setError("Please login to add items to wishlist");
+      return { success: false, message: "Please login to add items to wishlist" };
+    }
 
-    console.log("id   :",id)
-    console.log("currentVariant   :",currentVariant)
+
     
     const wishlistItem = {
       productId: id,
@@ -135,27 +198,53 @@ const loadData=async()=>{
       size: currentVariant?.size?.value || null
     };
     
-    const existingItemIndex = wishList.findIndex(item => item.productId === id);
+    const existingItemIndex = wishList.findIndex(item => item.productId._id === id);
+
+
   
 
     try {
-      if(existingItemIndex==-1){
-        setWishList((pre) => [...pre, wishlistItem]);
+      if(existingItemIndex===-1){
+        // setWishList((pre) => [...pre, wishlistItem]);
       const response=  await wishlistService.addToWishlist(wishlistItem);
-
-      console.log(response,"00000000000000000000000")
+       if(response.success) {
+          // Reload wishlist from server to get the complete data
+          await loadWishlistFromServer(true);
+        }
+        return {success:true,message:"product wishlisted"}
+   
       }else{
         const response=await wishlistService.removeFromWishlist(id);
-         setWishList((pre) => pre.filter(item => item.productId !== wishlistItem.productId));
-        console.log(response,"response on removing wishlist product")
+         if(response.success) {
+          // Update local state
+          setWishList(response?.wishList?.products || []);
+        }
+        return {success:true,message:"product removed succesfully"}
+       
       }
     } catch (error) {
-      console.log(error)
+         return {success:false,message:error.message}
+    
+        
+    
+      // return error.message
     }
   };
 
-  const removeFromWishlist = (id) => {
-    setWishList((pre) => pre.filter(item => item.productId !== id));
+  const removeFromWishlist =async (id) => {
+     if (!isAuthenticated) {
+      setError("error in removing product");
+      return { success: false, message: "Please login to remove from wishlist" };
+    }
+    try {
+      const response=await wishlistService.removeFromWishlist(id);
+        setWishList(response?.wishList?.products);
+        return {success:true,message:"product removed succesfully"}
+
+    } catch (error) {
+      return {success:false,message:error.message}
+    }
+    // setWishList((pre) => pre.filter(item => item.productId !== id));
   };
 
   const addToCompareItem = (id) => {
@@ -164,21 +253,40 @@ const loadData=async()=>{
     }
   };
   const removeFromCompareItem = (id) => {
+
     if (compareItem.includes(id)) {
       setCompareItem((pre) => [...pre.filter((elm) => elm != id)]);
     }
   };
 
   // Updated to work with new wishlist structure
-  const isAddedtoWishlist = (id) => {
+  // const isAddedtoWishlist = (id) => {
  
-    return wishList.some(item => item.productId === id);
-  };
+  //   return wishList.some(item => item.productId._id === id);
+  // };
+
+  const isAddedtoWishlist = (id) => {
+  // Add null/undefined check for wishList
+  if (!wishList || !Array.isArray(wishList)) {
+    return false;
+  }
+  return wishList.some(item => item.productId._id === id);
+};
 
   // New function to get wishlist item with variant info
+  // const getWishlistItem = (productId) => {
+  //   return wishList.find(item => item.productId === productId);
+  // };
+
   const getWishlistItem = (productId) => {
-    return wishList.find(item => item.productId === productId);
-  };
+  // Add null/undefined check for wishList
+  if (!wishList || !Array.isArray(wishList)) {
+    return null;
+  }
+  return wishList.find(item => item.productId === productId);
+};
+
+ 
 
   const isAddedtoCompareItem = (id) => {
     if (compareItem.includes(id)) {
@@ -187,46 +295,54 @@ const loadData=async()=>{
     return false;
   };
 
-  useEffect(() => {
-    const items = JSON.parse(localStorage.getItem("cartList"));
-    if (items?.length) {
-      setCartProducts(items);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const items = JSON.parse(localStorage.getItem("cartList"));
+  //   if (items?.length) {
+  //     setCartProducts(items);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    localStorage.setItem("cartList", JSON.stringify(cartProducts));
-  }, [cartProducts]);
+  // useEffect(() => {
+  //   localStorage.setItem("cartList", JSON.stringify(cartProducts));
+  // }, [cartProducts]);
 
-  useEffect(() => {
-    const items = JSON.parse(localStorage.getItem("wishlist"));
-    if (items?.length) {
-      // Handle backward compatibility - convert old format to new format if needed
-      const formattedItems = items.map(item => {
-        if (typeof item === 'string' || typeof item === 'number') {
-          // Old format - just product ID
-          return {
-            productId: item,
-            variantId: null,
-            color: null,
-            size: null
-          };
-        }
-        // New format - already an object
-        return item;
-      });
-      setWishList(formattedItems);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const items = JSON.parse(localStorage.getItem("wishlist"));
+  //   if (items?.length) {
 
-  useEffect(() => {
-    localStorage.setItem("wishlist", JSON.stringify(wishList));
-  }, [wishList]);
+  //     const formattedItems = items.map(item => {
+  //       if (typeof item === 'string' || typeof item === 'number') {
+         
+  //         return {
+  //           productId: item,
+  //           variantId: null,
+  //           color: null,
+  //           size: null
+  //         };
+  //       }
+       
+  //       return item;
+  //     });
+  //     setWishList(formattedItems);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   localStorage.setItem("wishlist", JSON.stringify(wishList));
+  // }, [wishList]);
 
   // This useEffect will run whenever isAuthenticated changes
   // You can use this to debug or perform actions on auth state change
+
+       useEffect(() => {
+     loadData()
+  }, []); 
   useEffect(() => {
-    
+    if(isAuthenticated){
+      loadWishlistFromServer(true);
+      loadCartFromServer(true)
+      
+    }
   }, [isAuthenticated]);
 
   const contextElement = {

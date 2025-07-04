@@ -4,7 +4,10 @@ import { useContextElement } from "@/context/Context";
 import CountdownComponent from "../common/Countdown";
 import { useSearchParams } from "react-router-dom";
 import { useProductView } from "@/hooks/userProductView";
+import { toast } from 'sonner'
+import {useNavigate} from 'react-router-dom'
 export const ProductCard = ({ product }) => {
+  const navigate=useNavigate()
   const { trackView } = useProductView();
   const [searchParams, setSearchParams] = useSearchParams();
   const colors = searchParams.get('filter.p.color');
@@ -13,13 +16,11 @@ export const ProductCard = ({ product }) => {
   const [currentColor, setCurrentColor] = useState();
   const [currentVariant, setCurrentVariant] = useState(product?.variants[0]);
   
-  const { setQuickViewItem } = useContextElement();
+  const { isAuthenticated, loading} = useContextElement();
   const {
     setQuickAddItem,
     addToWishlist,
     isAddedtoWishlist,
-    addToCompareItem,
-    isAddedtoCompareItem,
   } = useContextElement();
 
   const groupedByColor = useMemo(() => {
@@ -84,6 +85,33 @@ export const ProductCard = ({ product }) => {
     .replace(/-+$/, '');            // Trim - from end of text
 }
 
+
+const handleWishlistToggle=async(productId,currentVariant)=>{   
+    const result= await  addToWishlist(productId,currentVariant);
+     console.log("result  :",result.message)
+    if(!result?.success){
+     
+         toast.error("error occured", {
+      description: result.message,
+      duration: 4000,
+    });
+    return;
+    }else{
+      toast.success(result.message, {
+      description: " 🖤",
+      duration: 4000,
+      action: {
+        label: "Wishlist",
+        onClick: () => {
+           navigate('/wishlist')
+          console.log("Navigate to login");
+        },
+      },
+    });
+    }
+    console.log("result  :",result)
+}
+
   const handleProductClick=()=>{
     trackView(product._id);
   }
@@ -138,8 +166,14 @@ export const ProductCard = ({ product }) => {
                 <span className="icon icon-bag" />
                 <span className="tooltip">Quick Add</span>
               </a>
-              <a
-                onClick={() => addToWishlist(product?._id,currentVariant)}
+              {
+                !loading && (
+                  <a
+                 
+                  href={!isAuthenticated && "#login"}
+                   data-bs-toggle={!isAuthenticated ? "modal" : null}
+
+                onClick={() =>handleWishlistToggle(product?._id,currentVariant)}
                 className={`box-icon bg_white  wishlist btn-icon-action ${
                   isAddedtoWishlist(product?._id) ? "added" : ""
                 }`}
@@ -156,6 +190,10 @@ export const ProductCard = ({ product }) => {
                 </span>
                 <span className="icon icon-delete" />
               </a>
+                )
+
+              }
+              
               {/* <a
                 href="#compare"
                 data-bs-toggle="offcanvas"

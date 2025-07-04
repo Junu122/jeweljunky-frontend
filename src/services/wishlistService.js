@@ -18,7 +18,18 @@ export const wishlistService={
             const response=await axiosinstance.delete('/wishlist/removefromwishlist',{data:{id:id},withCredentials:true});
             return response.data
         } catch (error) {
+           console.log(error)
             throw error
+        }
+    },
+    async getUserWishlist(){
+        try {
+            const response=await axiosinstance.get('/wishlist/getwishlist',{withCredentials:true})
+            return response.data
+        } catch (error) {
+            console.log("error",error)
+            throw error;
+          
         }
     }
 }
