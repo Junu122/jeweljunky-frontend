@@ -7,7 +7,7 @@ const axiosinstance = axios.create({
   baseURL: 'https://jewel-backend-theta.vercel.app/api',
   
 
-  timeout: 1000,
+  timeout: 5000,
   
 
   headers: {
