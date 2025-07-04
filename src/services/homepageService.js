@@ -18,7 +18,7 @@ export const useHomePageData = () => {
         [key]: { ...prev[key], loading: true, error: null }
       }));
 
-      const response = await axiosinstance.get(endpoint)
+      const response = await axiosinstance.get(endpoint,{withCredentials:true})
      
 
     //   if (!response.ok) {
