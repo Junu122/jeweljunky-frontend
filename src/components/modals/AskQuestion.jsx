@@ -18,7 +18,7 @@ export default function AskQuestion() {
           <div className="overflow-y-auto">
             <form onSubmit={(e) => e.preventDefault()} className="">
               <fieldset className="">
-                <label htmlFor="">Name *</label>
+                <label >Nameeeee *</label>
                 <input
                   type="text"
                   placeholder=""
@@ -31,7 +31,7 @@ export default function AskQuestion() {
                 />
               </fieldset>
               <fieldset className="">
-                <label htmlFor="">Email *</label>
+                <label >Email *</label>
                 <input
                   type="email"
                   placeholder=""
@@ -45,7 +45,7 @@ export default function AskQuestion() {
                 />
               </fieldset>
               <fieldset className="">
-                <label htmlFor="">Phone number</label>
+                <label >Phone number</label>
                 <input
                   type="number"
                   placeholder=""
@@ -58,7 +58,7 @@ export default function AskQuestion() {
                 />
               </fieldset>
               <fieldset className="">
-                <label htmlFor="">Message</label>
+                <label >Message</label>
                 <textarea
                   name="message"
                   rows={4}

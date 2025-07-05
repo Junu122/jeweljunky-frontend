@@ -31,9 +31,9 @@ export default function ResetPass() {
                   type="email"
                   autoComplete="abc@xyz.com"
                   required
-                  name=""
+                  name="email"
                 />
-                <label className="tf-field-label" htmlFor="">
+                <label className="tf-field-label" htmlFor="email">
                   Email *
                 </label>
               </div>

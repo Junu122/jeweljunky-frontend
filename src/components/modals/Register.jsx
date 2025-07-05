@@ -248,7 +248,7 @@ export default function Register() {
                       className="tf-field-input tf-input"
                       placeholder=" "
                     />
-                    <label className="tf-field-label">Name *</label>
+                    <label className="tf-field-label" htmlFor="name">Name *</label>
                   </div>
                   <ErrorMessage
                     name="name"
@@ -265,7 +265,7 @@ export default function Register() {
                           className="tf-field-input tf-input"
                           placeholder=" "
                         />
-                        <label className="tf-field-label">Phone Number *</label>
+                        <label className="tf-field-label" htmlFor="phone">Phone Number *</label>
                       </div>
                       <ErrorMessage
                         name="phone"
@@ -282,7 +282,7 @@ export default function Register() {
                           className="tf-field-input tf-input"
                           placeholder=" "
                         />
-                        <label className="tf-field-label">Email *</label>
+                        <label className="tf-field-label" htmlFor="email">Email *</label>
                       </div>
                       <ErrorMessage
                         name="email"
@@ -300,7 +300,7 @@ export default function Register() {
                       placeholder=" "
                       autoComplete="new-password"
                     />
-                    <label className="tf-field-label">Password *</label>
+                    <label className="tf-field-label" htmlFor="password">Password *</label>
                   </div>
                   <ErrorMessage
                     name="password"
