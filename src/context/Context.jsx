@@ -96,6 +96,7 @@ const loadData=async()=>{
       const response = await userServices.userLogin(formData);
       setUser(response?.data?.existUser);
       setIsAuthenticated(true);
+      toast.success("login succesfull")
       await loadWishlistFromServer(true);
       console.log("response in login  :",response)
       return response.data;
