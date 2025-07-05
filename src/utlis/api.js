@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const axiosinstance = axios.create({
   baseURL: 'https://jewel-backend-theta.vercel.app/api',
-  timeout: 5000,
+  timeout: 10000,
   withCredentials: true, // This is crucial for CORS credentials
   headers: {
     'Content-Type': 'application/json',
