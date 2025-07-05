@@ -6,7 +6,7 @@ export default function MyAccount() {
   return (
     <div className="my-account-content account-dashboard">
       <div className="mb_60">
-        <h5 className="fw-5 mb_20">Hello {user?user.name:"no user "}</h5>
+        <h5 className="fw-5 mb_20">Hello {user?.name}</h5>
         <p>
           From your account dashboard you can view your{" "}
           <Link className="text_primary" to={`/my-account-orders`}>
