@@ -2,6 +2,10 @@ import UserRouter from "../routes/userRouter";
 import { Routes,Route } from "react-router-dom";
 import Context from "@/context/Context";
 import { Toaster } from 'sonner'
+import GoogleOAuthWrapper from "./components/googleauth/GoogleOAuthWrapper";
+import dotenv from 'dotenv';
+
+
 function App() {
  
  
@@ -14,6 +18,7 @@ function App() {
 
   return (
   <>
+<GoogleOAuthWrapper>
   <Context>
    <Routes>
        <Route path="/*" element={<UserRouter />}/>
@@ -33,7 +38,7 @@ function App() {
         }}
       />
   </Context>
-  
+  </GoogleOAuthWrapper>
   </>
   );
 }

@@ -57,6 +57,35 @@ export default function Orders() {
                 </Link>
               </td>
             </tr>
+              <tr className="tf-order-item">
+              <td>#567</td>
+              <td>August 3, 2024</td>
+              <td>On hold</td>
+              <td>$400.0 for 1 items</td>
+              <td>
+                <Link
+                  to={`/my-account-orders-details`}
+                  className="tf-btn btn-fill animate-hover-btn rounded-0 justify-content-center"
+                >
+                  <span>View</span>
+                </Link>
+              </td>
+            </tr>
+              <tr className="tf-order-item">
+              <td>#567</td>
+              <td>August 3, 2024</td>
+              <td>On hold</td>
+              <td>$400.0 for 1 items</td>
+              <td>
+                <Link
+                  to={`/my-account-orders-details`}
+                  className="tf-btn btn-fill animate-hover-btn rounded-0 justify-content-center"
+                >
+                  <span>View</span>
+                </Link>
+              </td>
+            </tr>
+            
           </tbody>
         </table>
       </div>

@@ -361,7 +361,7 @@ const UserRouter=()=>{
               <Route path="home-03" element={<Homepage3 />} />
               <Route path="home-04" element={<Homepage4 />} />
               <Route path="home-05" element={<Homepage5 />} />
-              <Route path="home-06" element={<Homepage6 />} />
+              <Route path="/" element={<Homepage6 />} />
               <Route
                 path="home-personalized-pod"
                 element={<HomePersonalizedPodPage />}

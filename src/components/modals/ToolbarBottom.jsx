@@ -2,7 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CartLength from "../common/CartLength";
 import WishlistLength from "../common/WishlistLength";
+import { useContextElement } from "@/context/Context";
 export default function ToolbarBottom() {
+  const { isAuthenticated, loading, user } = useContextElement();
   return (
     <div className="tf-toolbar-bottom type-1150">
       <div className="toolbar-item active">
@@ -30,12 +32,25 @@ export default function ToolbarBottom() {
         </a>
       </div>
       <div className="toolbar-item">
-        <a href="#login" data-bs-toggle="modal">
+      {
+        !loading && (
+          <a
+            href={isAuthenticated ? "/my-account" : "#login"}
+            data-bs-toggle={!isAuthenticated ? "modal" : null}>
+              <div className="toolbar-icon">
+            <i className="icon-account" />
+          </div>
+          <div className="toolbar-label">Account</div>
+
+          </a>
+        )
+      }
+        {/* <a href="#login" data-bs-toggle="modal">
           <div className="toolbar-icon">
             <i className="icon-account" />
           </div>
           <div className="toolbar-label">Account</div>
-        </a>
+        </a> */}
       </div>
       <div className="toolbar-item">
         <Link to={`/wishlist`}>

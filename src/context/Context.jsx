@@ -106,6 +106,72 @@ const loadData=async()=>{
     }
   };
 
+  const googleSignup=async(tokenResponse)=>{
+    try {
+      const response=await userServices.googleRegister(tokenResponse);
+      console.log('Google registration response in context.....:', response);
+      setUser(response?.data?.user);
+      setIsAuthenticated(true);
+      toast.success("Google registration successful");
+      await loadWishlistFromServer(true);
+      return response.data;
+
+    } catch (error) {
+      console.log("error in context google signup :",error)
+      return { success: false, message: error.response?.data?.message || "Google registration failed" };
+    }
+  }
+
+
+  const googleSignin = async (tokenResponse) => {
+    try {
+      const response=await userServices.googleLogin(tokenResponse);
+      setUser(response?.data?.user);
+      setIsAuthenticated(true);
+      toast.success("Google signin successful");
+      await loadWishlistFromServer(true);
+      return response.data;
+
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message || "Google registration failed" };
+    }
+
+  }
+  //logout functionality
+  const logout=async()=>{
+    try {
+       setLoading(true);
+      // Call logout API if you have one
+      await userServices.userLogout();
+      
+      // Clear all user-related state
+      setUser(null);
+      setIsAuthenticated(false);
+      setCartProducts([]);
+      setWishList([]);
+      setError(null);
+      
+      // Show success message
+      toast.success("Logged out successfully");
+      
+      return { success: true, message: "Logged out successfully" };
+    } catch (error) {
+       console.error("Logout error:", error);
+      
+      // Even if API call fails, clear local state
+      setUser(null);
+      setIsAuthenticated(false);
+      setCartProducts([]);
+      setWishList([]);
+      setError(null);
+      
+      toast.success("Logged out successfully");
+      return { success: true, message: "Logged out successfully" };
+    }finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     const subtotal = cartProducts.reduce((accumulator, product) => {
       return accumulator + product.quantity * product.productId.variants[0].pricing.price;
@@ -371,7 +437,10 @@ const loadData=async()=>{
     isAuthenticated,
     user,
     loading,
-    checkAuthStatus, // Exposing this so you can manually check status if needed
+    checkAuthStatus,
+    logout,
+    googleSignup,
+    googleSignin
   };
   return (
     <dataContext.Provider value={contextElement}>

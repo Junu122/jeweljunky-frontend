@@ -5,8 +5,8 @@ import MyAccount from "@/components/othersPages/dashboard/MyAccount";
 import React from "react";
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
-  title: "My Account || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "My Account || jewel junkie",
+  description: "Manage your account details, view orders, and update preferences.",
 };
 export default function MyAccountPage() {
   return (

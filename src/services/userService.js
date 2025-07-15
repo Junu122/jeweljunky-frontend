@@ -45,5 +45,31 @@ export const userServices={
         } catch (error) {
             console.log(error)
         }
+    },
+    async userLogout(){
+        try {
+            const response=await axiosinstance.post('/user/logout',{withCredentials:true})
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    async googleRegister(googleData){
+        try {
+            const response=await axiosinstance.post('/user/google-signup',googleData,{withCredentials:true})
+            return response
+        } catch (error) {
+            throw error
+            
+        }
+    },
+    async googleLogin(googleData){
+        try {
+            const response=await axiosinstance.post('/user/google-signin',googleData,{withCredentials:true});
+            console.log(response,"google login response in service")
+            return response
+        } catch (error) {
+            throw error
+        }
     }
 }
