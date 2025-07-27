@@ -7,7 +7,7 @@ export const userServices={
             console.log(response)
             return response
         } catch (error) {
-            console.log(error)
+            throw error
         }
     },
     async verifyOtp(userData){
@@ -16,7 +16,7 @@ export const userServices={
             const response=await axiosinstance.post('/user/verifyotp',userData,{withCredentials:true})
             return response
         } catch (error) {
-            console.log(error)
+            throw error
         }
     },
     async userLogin(loginData){
@@ -24,8 +24,7 @@ export const userServices={
             const response=await axiosinstance.post('/user/login',loginData,{withCredentials:true})
             return response
         } catch (error) {
-            console.log(error,"error in userservice")
-            return error
+        throw error
             
         }
     },

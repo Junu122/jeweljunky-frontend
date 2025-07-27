@@ -19,7 +19,7 @@ export default function Products() {
   };
 
   return (
-    <section className="flat-spacing-5 pt_0 flat-seller">
+    <section className="flat-spacing-5 pt_0 flat-seller" >
       <div className="container">
         <div className="flat-title">
           <span className="title wow fadeInUp" data-wow-delay="0s">

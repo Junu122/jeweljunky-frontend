@@ -1,43 +1,36 @@
-import React, { useState, useEffect,useRef  } from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { userServices } from "@/services/userService";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useContextElement } from "@/context/Context";
-import { initializeApp } from 'firebase/app';
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, signInWithCustomToken } from 'firebase/auth';
-import { auth } from "@/utlis/firebase";
-
-
 
 export default function Register() {
   // State management
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [registrationType, setRegistrationType] = useState("mobile");
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(0);
-  const [mobileValue, setMobileValue] = useState({
+  const [registrationData, setRegistrationData] = useState({
     name: "",
-    phone: "",
+    email: "",
+    password: "",
   });
-  const [confirmationResult, setConfirmationResult] = useState(null);
-  const recaptchaVerifierRef = useRef(null);
-  // const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
 
   const { googleSignup } = useContextElement();
 
-  // Initialize reCAPTCHA
-
   // Validation schemas
-  const mobileValidationSchema = Yup.object({
-    phone: Yup.string()
-      .matches(/^[6-9]\d{9}$/, "Phone number must be 10 digits starting with 6-9")
-      .required("Phone number is required"),
+  const registrationValidationSchema = Yup.object({
     name: Yup.string()
       .min(3, "Name must be at least 3 characters")
-      .required("Name is required")
+      .required("Name is required"),
+    email: Yup.string()
+      .email("Please enter a valid email address")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required")
   });
 
   const otpValidationSchema = Yup.object({
@@ -47,73 +40,56 @@ export default function Register() {
   });
 
   // Initial values
-  const mobileInitialValues = {
+  const initialValues = {
     name: "",
-    phone: ""
+    email: "",
+    password: ""
   };
 
   const handleBack = () => {
     setSubmitting(false);
     setOtpSent(false);
-    setConfirmationResult(null);
     setOtp("");
     setTimer(0);
+    setError("");
   };
 
-  // Handle OTP sending
- const handleSendOTP = async (values) => {
+  // Handle sending OTP to email
+  const handleSendOTP = async (values) => {
     setError("");
     setSubmitting(true);
-    
-    try {
-      const backendResponse = await userServices.userRegister(values);
-      console.log("Backend response:", backendResponse);
-      
-      if (!backendResponse?.data?.success) {
-        setError(backendResponse?.data?.message);
-        setSubmitting(false);
-        return;
-      }
+    setRegistrationData(values);
 
-      const formattedPhone = `+91${values.phone}`;
+    try {
+      // TODO: Replace with your email OTP service call
+      // Example: const response = await userServices.sendEmailOTP(values.email);
+      const response=await userServices.userRegister(values);
+      console.log(response,"response in userregister")
+      console.log("Sending OTP to email:", values.email);
+      console.log("Registration data:", values);
       
-    const recaptcha=new RecaptchaVerifier(auth,'recaptcha',{})
-     console.log("Recaptcha initialized:", recaptcha);
-      const confirmation = await signInWithPhoneNumber(
-        auth,
-        formattedPhone,
-        recaptcha
-      );
-      console.log("OTP sent successfully:", confirmation);
-      // setConfirmationResult(confirmation);
-      // setMobileValue(values);
-      // setOtpSent(true);
-      
-      // Start timer
-      setTimer(60);
-      const countdown = setInterval(() => {
-        setTimer((prevTimer) => {
-          if (prevTimer <= 1) {
-            clearInterval(countdown);
-            return 0;
-          }
-          return prevTimer - 1;
-        });
-      }, 1000);
+      // Simulate OTP sending (replace with actual API call)
+      // if (response?.data?.success) {
+        setOtpSent(true);
+        
+        // Start timer
+        setTimer(60);
+        const countdown = setInterval(() => {
+          setTimer((prevTimer) => {
+            if (prevTimer <= 1) {
+              clearInterval(countdown);
+              return 0;
+            }
+            return prevTimer - 1;
+          });
+        }, 1000);
+      // } else {
+      //   setError(response?.data?.message || "Failed to send OTP");
+      // }
 
     } catch (error) {
       console.error("OTP sending error:", error);
-      let errorMessage = "Failed to send OTP. Please try again.";
-      
-      if (error.code === 'auth/invalid-phone-number') {
-        errorMessage = "Invalid phone number format";
-      } else if (error.code === 'auth/too-many-requests') {
-        errorMessage = "Too many requests. Please try again later.";
-      } else if (error.code === 'auth/quota-exceeded') {
-        errorMessage = "SMS quota exceeded. Please try again later.";
-      }
-      
-      setError(errorMessage);
+      setError(error.response.data.message);
     } finally {
       setSubmitting(false);
     }
@@ -122,33 +98,33 @@ export default function Register() {
   // Handle resend OTP
   const handleResendOTP = async () => {
     if (timer > 0) return;
-
+    
     setError("");
     setSubmitting(true);
-
+    
     try {
-      const formattedPhone = `+91${mobileValue.phone}`;
+      // TODO: Replace with your email OTP service call
+      // const response = await userServices.sendEmailOTP(registrationData.email);
       
-      // Create a new reCAPTCHA verifier for resend
-      const newVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        size: 'invisible',
-      });
+      console.log("Resending OTP to email:", registrationData.email);
+      const response=await userServices.userRegister(registrationData);
+      // Simulate resend OTP (replace with actual API call)
+      // if (response?.data?.success) {
+        // Restart timer
+        setTimer(60);
+        const countdown = setInterval(() => {
+          setTimer((prevTimer) => {
+            if (prevTimer <= 1) {
+              clearInterval(countdown);
+              return 0;
+            }
+            return prevTimer - 1;
+          });
+        }, 1000);
+      // } else {
+      //   setError(response?.data?.message || "Failed to resend OTP");
+      // }
       
-      const confirmation = await signInWithPhoneNumber(auth, formattedPhone, newVerifier);
-      setConfirmationResult(confirmation);
-      
-      // Start timer again
-      setTimer(60);
-      const countdown = setInterval(() => {
-        setTimer((prevTimer) => {
-          if (prevTimer <= 1) {
-            clearInterval(countdown);
-            return 0;
-          }
-          return prevTimer - 1;
-        });
-      }, 1000);
-
     } catch (error) {
       console.error("Resend OTP error:", error);
       setError("Failed to resend OTP. Please try again.");
@@ -159,8 +135,8 @@ export default function Register() {
 
   // Handle OTP verification and registration
   const handleVerifyOTP = async () => {
-    if (!confirmationResult) {
-      setError("Please request OTP first");
+    if (otp.length !== 6) {
+      setError("Please enter a valid 6-digit OTP");
       return;
     }
 
@@ -168,22 +144,19 @@ export default function Register() {
     setError("");
 
     try {
-      // Verify OTP with Firebase
-      const result = await confirmationResult.confirm(otp);
-      
-      // Get the ID token from Firebase
-      const idToken = await result.user.getIdToken();
-      
-      // Send to backend for final verification and user creation
+      // TODO: Replace with your OTP verification and registration service call
       const userData = {
-        ...mobileValue,
-        otp,
-        idToken
+        ...registrationData,
+        otp
       };
 
-      const response = await userServices.verifyOtp(userData);
+      console.log("Verifying OTP and registering user:", userData);
       
-      if (response?.data?.success) {
+      // Example API call (replace with actual implementation)
+      const response = await userServices.verifyOtp(userData);
+      console.log(response)
+      // Simulate successful registration (replace with actual API response handling)
+      // if (response?.data?.success) {
         const registerModal = document.getElementById("register");
         const closeBtn = registerModal.querySelector('[data-bs-dismiss="modal"]');
         if (closeBtn) {
@@ -191,34 +164,14 @@ export default function Register() {
           closeBtn.click();
         }
         
-        // You might want to store the user token or update context here
-        // const { token, user } = response.data.data;
-        // localStorage.setItem('token', token);
-        // updateUserContext(user);
-        
-      } else {
-        setError(response?.data?.message || "Registration failed");
-      }
+       
 
     } catch (error) {
       console.error("OTP verification error:", error);
-      
-      let errorMessage = "Invalid OTP. Please try again.";
-      if (error.code === 'auth/invalid-verification-code') {
-        errorMessage = "Invalid OTP code";
-      } else if (error.code === 'auth/code-expired') {
-        errorMessage = "OTP has expired. Please request a new one.";
-      }
-      
-      setError(errorMessage);
+      setError("Invalid OTP. Please try again.");
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const handleRegistrationType = (type) => {
-    setError("");
-    setRegistrationType(type);
   };
 
   // Handle Google Sign In
@@ -259,9 +212,6 @@ export default function Register() {
             <span className="icon-close icon-close-popup" data-bs-dismiss="modal" />
           </div>
 
-        
-          
-
           {!otpSent ? (
             <div className="tf-login-form">
               {/* Google Registration Button */}
@@ -270,6 +220,7 @@ export default function Register() {
                   type="button"
                   className="google-register-btn"
                   onClick={googleLogin}
+                  disabled={submitting}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -282,18 +233,23 @@ export default function Register() {
                     fontSize: "14px",
                     fontWeight: "500",
                     color: "#3c4043",
-                    cursor: "pointer",
+                    cursor: submitting ? "not-allowed" : "pointer",
                     transition: "all 0.2s ease",
                     marginBottom: "16px",
                     fontFamily: "Roboto, sans-serif",
+                    opacity: submitting ? 0.6 : 1,
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.backgroundColor = "#f8f9fa";
-                    e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+                    if (!submitting) {
+                      e.target.style.backgroundColor = "#f8f9fa";
+                      e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = "#fff";
-                    e.target.style.boxShadow = "none";
+                    if (!submitting) {
+                      e.target.style.backgroundColor = "#fff";
+                      e.target.style.boxShadow = "none";
+                    }
                   }}
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" style={{ marginRight: "12px" }}>
@@ -306,9 +262,13 @@ export default function Register() {
                 </button>
               </div>
 
+              <div className="text-center mb-3">
+                <span className="text-muted">or</span>
+              </div>
+
               <Formik
-                initialValues={mobileInitialValues}
-                validationSchema={mobileValidationSchema}
+                initialValues={initialValues}
+                validationSchema={registrationValidationSchema}
                 onSubmit={handleSendOTP}
                 enableReinitialize
               >
@@ -319,6 +279,7 @@ export default function Register() {
                       type="text"
                       className="tf-field-input tf-input"
                       placeholder=" "
+                      disabled={submitting}
                     />
                     <label className="tf-field-label" htmlFor="name">
                       Name *
@@ -328,20 +289,34 @@ export default function Register() {
 
                   <div className="tf-field style-1">
                     <Field
-                      name="phone"
-                      type="text"
+                      name="email"
+                      type="email"
                       className="tf-field-input tf-input"
                       placeholder=" "
-                      maxLength="10"
+                      disabled={submitting}
                     />
-                    <label className="tf-field-label" htmlFor="phone">
-                      Phone Number *
+                    <label className="tf-field-label" htmlFor="email">
+                      Email Address *
                     </label>
                   </div>
-                  <ErrorMessage name="phone" component="p" className="text-danger small" />
+                  <ErrorMessage name="email" component="p" className="text-danger small" />
+
+                  <div className="tf-field style-1">
+                    <Field
+                      name="password"
+                      type="password"
+                      className="tf-field-input tf-input"
+                      placeholder=" "
+                      disabled={submitting}
+                    />
+                    <label className="tf-field-label" htmlFor="password">
+                      Password *
+                    </label>
+                  </div>
+                  <ErrorMessage name="password" component="p" className="text-danger small" />
 
                   {error && <p className="text-danger small mb-3 mt-2">{error}</p>}
-                   <div id="recaptcha"></div>
+                  
                   <div className="bottom">
                     <div className="w-100">
                       <button
@@ -349,7 +324,7 @@ export default function Register() {
                         className="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"
                         disabled={submitting}
                       >
-                        <span>{submitting ? "Sending OTP..." : "Get OTP"}</span>
+                        <span>{submitting ? "Sending OTP..." : "Register"}</span>
                       </button>
                     </div>
                     <div className="w-100 mt-3">
@@ -370,9 +345,9 @@ export default function Register() {
             // OTP Verification Form
             <div className="tf-login-form">
               <div className="text-center mb-4">
-                <h5>Verify Mobile Number</h5>
+                <h5>Verify Email Address</h5>
                 <p className="text-muted">
-                  We've sent an OTP to your mobile number +91{mobileValue.phone}
+                  We've sent an OTP to your email address {registrationData.email}
                 </p>
               </div>
 
@@ -382,22 +357,26 @@ export default function Register() {
                   className="tf-field-input tf-input"
                   placeholder=" "
                   value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
                   maxLength="6"
+                  disabled={submitting}
                 />
                 <label className="tf-field-label">Enter 6-digit OTP *</label>
               </div>
 
               {error && <p className="text-danger small mb-3">{error}</p>}
 
-              <div className="d-flex justify-content-end mb-3">
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <div className="text-muted small">
+                  {timer > 0 ? `Resend OTP in ${timer}s` : "Didn't receive OTP?"}
+                </div>
                 <button
                   type="button"
-                  className="btn btn-link p-0"
+                  className="btn btn-link p-0 text-primary"
                   onClick={handleResendOTP}
                   disabled={timer > 0 || submitting}
                 >
-                  {timer > 0 ? `Resend OTP in ${timer}s` : "Resend OTP"}
+                  Resend OTP
                 </button>
               </div>
 
@@ -409,7 +388,7 @@ export default function Register() {
                     onClick={handleVerifyOTP}
                     disabled={submitting || otp.length !== 6}
                   >
-                    <span>{submitting ? "Verifying..." : "Verify & Register"}</span>
+                    <span>{submitting ? "Verifying..." : "Verify & Complete Registration"}</span>
                   </button>
                 </div>
 
@@ -418,6 +397,7 @@ export default function Register() {
                     type="button"
                     className="btn btn-link fw-6 w-100 p-0"
                     onClick={handleBack}
+                    disabled={submitting}
                   >
                     <i className="icon icon-arrow1-left me-2"></i>
                     Back to registration

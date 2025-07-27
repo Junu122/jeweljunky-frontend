@@ -8,11 +8,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { ProductCard } from "@/components/shopCards/ProductCard";
 export default function Products({ title,data}) {
   return (
-    <section className="flatd-spacing-2 pt_0 mt-4">
+    <section className="flatd-spacing-2 pt_0 mt-4" style={{paddingBottom:"3rem"}}>
       <div className="container">
         <div className="flat-title d-flex flex-column justify-content-center align-items-center text-center px-0">
-          <h3 className="title">{title}</h3>
-          <div className=" " data-wow-delay="0.2s">
+          <h3 className="title" style={{fontSize:"40px"}}>{title}</h3>
+          <div className=" " data-wow-delay="0.2s" style={{fontSize:"25px"}}>
            {data?.subtitle}
           </div>
         </div>

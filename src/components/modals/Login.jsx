@@ -75,10 +75,14 @@ export default function Login() {
       }else{
         if(response.error=="passworderror"){
           setValidationErrors({password:response.message})
-        }
-        if(response.error=="usererror"){
+        }else if
+        (response.error=="usererror"){
           setValidationErrors({credential:response.message})
+        }else{
+          setError(response.message)
         }
+      
+
       }
     } catch (error) {
       console.log("login error",error)
@@ -145,11 +149,11 @@ export default function Login() {
                   autoComplete="abc@xyz.com"
                 />
                 <label className="tf-field-label" htmlFor="">
-                   Phone *
+                   Email *
                 </label>
               </div>
              {validationErrors && <p className="error-message" style={{color:"red"}}>{validationErrors.credential}</p> }
-              {/* <div className="tf-field style-1">
+              <div className="tf-field style-1">
                 <input
                   className="tf-field-input tf-input"
                   placeholder=" "
@@ -162,7 +166,7 @@ export default function Login() {
                   Password *
                 </label>
                 {validationErrors && <p className="error-message" style={{color:"red"}}>{validationErrors.password}</p> }
-              </div> */}
+              </div>
               <div>
                 {/* <a
                   href="#forgotPassword"
@@ -180,6 +184,9 @@ export default function Login() {
                   <i className="fab fa-google me-2"></i>
                   <span>Continue with Google</span>
                 </button> */}
+                  <div className="text-center mb-3">
+                <span className="text-muted">or</span>
+              </div>
                  <button
                   type="button"
                   className="google-register-btn"
