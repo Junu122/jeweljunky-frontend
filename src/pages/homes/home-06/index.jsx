@@ -91,9 +91,9 @@ export default function Homepage6() {
       {/* <Banner /> */}
       {/* <BestsellerSection /> */}
 
-      <Productsp />
-      <Features2 bgColor="" />
-      <Location />
+      {/* <Productsp /> */}
+      {/* <Features2 bgColor="" />
+      <Location /> */}
       <div className="mt-5"></div>
       <Brands />
       <Footer1 bgColor="background-gray" />

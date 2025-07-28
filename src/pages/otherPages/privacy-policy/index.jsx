@@ -1,16 +1,17 @@
 import MetaComponent from "@/components/common/MetaComponent";
 import Footer1 from "@/components/footers/Footer1";
 import Header2 from "@/components/headers/Header2";
+import { sizeOptions } from "@/data/singleProductOptions";
 import React from "react";
 const metadata = {
-  title: "Privacy Policy || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "Privacy Policy || Jewel Junkie privacy policy",
+  description: "privacy policy of jewel junkie",
 };
 export default function ProvacyPolicyPage() {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <Header2 />
+      {/* <Header2 /> */}
       <>
         {/* page-title */}
         <div className="tf-page-title style-2">
@@ -23,18 +24,18 @@ export default function ProvacyPolicyPage() {
         <section className="flat-spacing-25">
           <div className="container">
             <div className="tf-main-area-page">
-              <h4>The Company Private Limited Policy</h4>
+              <h4>Jewel Junkie Policy</h4>
               <p>
-                The Company Private Limited and each of their respective
-                subsidiary, parent and affiliated companies is deemed to operate
-                this Website (“we” or “us”) recognizes that you care how
-                information about you is used and shared. We have created this
-                Privacy Policy to inform you what information we collect on the
-                Website, how we use your information and the choices you have
-                about the way your information is collected and used. Please
-                read this Privacy Policy carefully. Your use of the Website
-                indicates that you have read and accepted our privacy practices,
-                as outlined in this Privacy Policy.
+                The Jewel Junkie and each of their respective subsidiary, parent
+                and affiliated companies is deemed to operate this Website (“we”
+                or “us”) recognizes that you care how information about you is
+                used and shared. We have created this Privacy Policy to inform
+                you what information we collect on the Website, how we use your
+                information and the choices you have about the way your
+                information is collected and used. Please read this Privacy
+                Policy carefully. Your use of the Website indicates that you
+                have read and accepted our privacy practices, as outlined in
+                this Privacy Policy.
               </p>
               <p>
                 Please be advised that the practices described in this Privacy
@@ -68,7 +69,40 @@ export default function ProvacyPolicyPage() {
               <p>
                 If you have any questions regarding this Privacy Policy, you
                 should contact our Customer Service Department by email at
-                marketing@company.com
+                jeweljunkieinfo@gmail.com
+              </p>
+
+              <h4 style={{ fontSize: "1rem" }}>Information We Collect</h4>
+              <p>
+                Name, Email address, Billing and shipping addresses, Phone
+                number, Payment method information (we do not store payment
+                details such as credit card numbers)
+              </p>
+
+              <h4 style={{ fontSize: "1rem" }}>How We Use Your Information</h4>
+              <p>
+                Process and fulfill your jewelry orders, Send order
+                confirmations and shipping notifications, Handle returns,
+                exchanges, and customer service inquiries, Respond to your
+                questions and provide customer support, Send important updates
+                about your orders or account, Communicate about our products,
+                services, and promotions Improve our website and services,
+                Analyze customer preferences and shopping patterns, Prevent
+                fraud and ensure security, Comply with legal obligations
+              </p>
+
+              <h4 style={{ fontSize: "1rem" }}>
+                Information Sharing and Disclosure
+              </h4>
+              <p>
+                We do not sell, trade, or rent your personal information to
+                third parties. We may share your information only in the
+                following circumstances: Shipping companies to deliver your
+                orders, Payment processors to handle transactions (they do not
+                receive your payment details), Email service providers for
+                communications, Website hosting and maintenance providers, When
+                required by law or legal process, To protect our rights,
+                property, or safety, To prevent fraud or security threats
               </p>
             </div>
           </div>

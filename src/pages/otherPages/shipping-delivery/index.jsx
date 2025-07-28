@@ -3,19 +3,19 @@ import Footer1 from "@/components/footers/Footer1";
 import Header2 from "@/components/headers/Header2";
 import React from "react";
 const metadata = {
-  title: "Shipping Delivery || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "Shipping Delivery policy || Jewel Junkie Shipping & Delivery policy",
+  description: "Shipping and Delivery Policy",
 };
 export default function ShopingDeliveryPage() {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <Header2 />
+      {/* <Header2 /> */}
       <>
         {/* page-title */}
         <div className="tf-page-title style-2">
           <div className="container-full">
-            <div className="heading text-center">Shipping &amp; Delivery</div>
+            <div className="heading text-center">Shipping &amp; Delivery policy</div>
           </div>
         </div>
         {/* /page-title */}
@@ -24,30 +24,24 @@ export default function ShopingDeliveryPage() {
           <div className="container">
             <div className="tf-main-area-page tf-page-delivery">
               <div className="box">
+                <h4>Shipping</h4>
+                <p>All orders shipped with trusted delivery partners.</p>
+                <p>Always free shipping for orders over &#8377;2000</p>
+                <p>Once shipped, you’ll receive a tracking link via SMS or Whatsapp or Email.</p>
+                <p>For any queries, contact us at jeweljunkieinfo@gmail.com</p>
+              </div>
+              <div className="box">
                 <h4>Delivery</h4>
-                <p>All orders shipped with UPS Express.</p>
-                <p>Always free shipping for orders over US $250.</p>
-                <p>All orders are shipped with a UPS tracking number.</p>
+                <p>
+                  Delivery estimates are shown after succesfully order placed. 
+                  These estimates depend on your specific pincode and area. 
+                </p>
+                <p>
+                 Occasional delays may occur due to weather, local restrictions, or courier-related issues.
+                </p>
+               
               </div>
-              <div className="box">
-                <h4>Returns</h4>
-                <p>
-                  Items returned within 14 days of their original shipment date
-                  in same as new condition will be eligible for a full refund or
-                  store credit.
-                </p>
-                <p>
-                  Refunds will be charged back to the original form of payment
-                  used for purchase.
-                </p>
-                <p>
-                  Customer is responsible for shipping charges when making
-                  returns and shipping/handling fees of original purchase is
-                  non-refundable.
-                </p>
-                <p>All sale items are final purchases.</p>
-              </div>
-              <div className="box">
+              {/* <div className="box">
                 <h4>Help</h4>
                 <p>
                   Give us a shout if you have any other questions and/or
@@ -60,7 +54,7 @@ export default function ShopingDeliveryPage() {
                   </a>
                 </p>
                 <p>Phone: +1 (23) 456 789</p>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>

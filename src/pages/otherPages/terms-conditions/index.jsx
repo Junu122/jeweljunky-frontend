@@ -3,14 +3,14 @@ import Footer1 from "@/components/footers/Footer1";
 import Header2 from "@/components/headers/Header2";
 import React from "react";
 const metadata = {
-  title: "Terms Conditions || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "Terms Conditions || Jewel Junkie Terms and Condition",
+  description: "Jewel Junkie Terms and Condition",
 };
 export default function TermsConditionsPage() {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <Header2 />
+      {/* <Header2 /> */}
       <>
         {/* page-title */}
         <div className="tf-page-title style-2">
@@ -28,7 +28,7 @@ export default function TermsConditionsPage() {
                 <p>
                   We reserve the right to update or modify these terms and
                   conditions at any time without prior notice. Your use of
-                  shop.company.com and shop.beetle.com.sg following any such
+                  jeweljunkie  following any such
                   change constitutes your agreement to follow and be bound by
                   the terms and conditions as changed. For this reason, we
                   encourage you to review these terms and conditions whenever
@@ -38,7 +38,7 @@ export default function TermsConditionsPage() {
               <div className="box">
                 <h4>Limitations of Liability</h4>
                 <p>
-                  The Company Pte Ltd shall not assume any responsibility, and
+                  The Jewel Junkie shall not assume any responsibility, and
                   shall not be liable for, any damages to, or viruses that may
                   infect, your computer, telecommunication equipment, or other
                   property caused by or arising from your access to, use of, or
@@ -85,8 +85,7 @@ export default function TermsConditionsPage() {
                   Private Limited. Consequently, the material on this website
                   may not be copied, reproduced, modified, posted, transmitted,
                   distributed, in whole or in part in any form whatsoever,
-                  without the prior written consent of The Company Private
-                  Limited. All rights reserved.
+                  without the prior written consent of The jewel Junkie. All rights reserved.
                 </p>
               </div>
               <div className="box">
@@ -124,15 +123,7 @@ export default function TermsConditionsPage() {
                   claims with carriers for damaged and/or lost shipments.
                 </p>
               </div>
-              <div className="box">
-                <h4>Duties and Taxes</h4>
-                <p>
-                  You are responsible for duties and taxes outside Singapore.
-                  All items entering a foreign country are subject to customs
-                  inspection and assessment of the duties and taxes in
-                  accordance with that country’s national laws.
-                </p>
-              </div>
+          
               <div className="box">
                 <h4>Your Account</h4>
                 <p>
@@ -148,46 +139,8 @@ export default function TermsConditionsPage() {
                   to place the order.
                 </p>
               </div>
-              <div className="box">
-                <h4>Exchange and Refund Policy (Singapore Outlets Only)</h4>
-                <p>
-                  New, unused full-price merchandise purchased at store retail
-                  store may be exchange at any boutique with an original receipt
-                  within 7 days of purchase. After 7 days, the merchandise may
-                  not be exchanged.We offer a no-refund policy on all
-                  merchandises, however, for merchandise qualifying for an
-                  exchange, item may be exchange for store credits which may be
-                  used at our Singapore outlets only.Merchandise on sale may not
-                  be exchanged or returned. All merchandise must be returned in
-                  sellable condition, otherwise, an exchange would not be
-                  allowed.We reserve the right to reject any form of exchange
-                  without the original receipt.
-                </p>
-              </div>
-              <div className="box">
-                <h4>Exchange and Refund Policy (Online Shop)</h4>
-                <span>Electronic Communications</span>
-                <p>
-                  When you visit this website and/or send email to us, you
-                  consent to receive electronic communications from us. You
-                  agree that all agreements, notices, disclosures and other
-                  communications that we sent you electronically satisfy any
-                  legal requirement that such communications be in writing
-                </p>
-                <p>
-                  Exclusions of Warranties
-                  <br />
-                  The Company Private Limited makes no representative or
-                  warranty regarding the good working order or condition of this
-                  website, its suitability for use, or that its use will be
-                  uninterrupted or error-free. All information or material
-                  provided in this website to you â€œas isâ€ and without
-                  warranties of any kind, expressed or implied, including
-                  without limitation, warranties or conditions of
-                  merchantability, fitness, quality, durability or suitability
-                  for any particular purpose, or non-infringement.
-                </p>
-              </div>
+             
+         
             </div>
           </div>
         </section>

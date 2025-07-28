@@ -37,6 +37,10 @@ import Homepage3 from "../src/pages/homes/home-03";
 import Homepage4 from "../src/pages/homes/home-04";
 import Homepage5 from "../src/pages/homes/home-05";
 import Homepage6 from "../src/pages/homes/home-06";
+
+import DeliveryReturnPage from "@/pages/otherPages/delivery-return";
+import ShopingDeliveryPage from "@/pages/otherPages/shipping-delivery";
+import PrivacyPolicy from "../src/pages/otherPages/privacy-policy/index"
 import HomePersonalizedPodPage from "../src/pages/homes/home-personalized-pod";
 import HomePickleBallPage from "../src/pages/homes/home-pickleball";
 import HomeCeramicPage from "../src/pages/homes/home-ceramic";
@@ -677,6 +681,9 @@ const UserRouter=()=>{
               <Route path="blog-detail/:id" element={<BlogDetailsPage />} />
               <Route path="*" element={<PageNotFoundPage />} />
               <Route path="login" element={<Login />} />
+              <Route path="privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="shipping-delivery" element={<ShopingDeliveryPage />} />
+              <Route path="return-refund" element={<DeliveryReturnPage />} />
             </Route>
           </Routes>
         </div>

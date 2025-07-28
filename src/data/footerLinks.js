@@ -1,11 +1,11 @@
 export const footerLinks = [
   { href: "/privacy-policy", text: "Privacy Policy" },
-  { href: "/delivery-return", text: "Returns + Exchanges" },
+  { href: "/return-refund", text: "Returns + refund" },
   { href: "/shipping-delivery", text: "Shipping" },
   { href: "/terms-conditions", text: "Terms & Conditions" },
-  { href: "/faq-1", text: "FAQ’s" },
-  { href: "/compare", text: "Compare" },
-  { href: "/wishlist", text: "My Wishlist" },
+  // { href: "/faq-1", text: "FAQ’s" },
+  // { href: "/compare", text: "Compare" },
+  // { href: "/wishlist", text: "My Wishlist" },
 ];
 export const aboutLinks = [
   { href: "/about-us", text: "Our Story" },
