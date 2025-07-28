@@ -1,14 +1,13 @@
 import { sliderData5 } from "@/data/heroslides";
 import { useState } from "react";
-
 import { Link } from "react-router-dom";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function Hero({herodata}) {
   const [heroData,setheroData]=useState(herodata)
-
- console.log("herodata?herodata.herosection  :",herodata)
+  console.log("herodata?herodata.herosection  :",herodata)
+  
   return (
     <section className="tf-slideshow slider-effect-fade position-relative">
       <Swiper
@@ -28,8 +27,14 @@ export default function Hero({herodata}) {
                 data-src={slide.imgSrc}
                 alt={slide.alt}
                 src={slide.imgSrc}
-                width={2000}
-                height={838}
+                
+                style={{
+                  width: '100%',
+                  height:'800px',
+                 
+                  objectPosition: 'center',
+                  display: 'block'
+                }}
               />
               <div className="box-content">
                 <div className="container">
