@@ -10,26 +10,26 @@ import React from "react";
 
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
-  title: "About Us || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "About Us || jewel junkie about us",
+  description: "about us",
 };
 export default function AboutUsPage() {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <Header2 />
-      <Hero />
+      {/* <Header2 /> */}
+      {/* <Hero /> */}
       <FlatTitle />
       <div className="container">
         <div className="line"></div>
       </div>
       <About />
       <Features />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <div className="container">
         <div className="line"></div>
       </div>
-      <ShopGram />
+      {/* <ShopGram /> */}
       <Footer1 />
     </>
   );

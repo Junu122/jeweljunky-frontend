@@ -6,14 +6,14 @@ import React from "react";
 
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
-  title: "Contact 2 || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "Contact 2 || jewel junkie contact us",
+  description: "contact us",
 };
 export default function ContactPage2() {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <Header2 />
+      {/* <Header2 /> */}
       <div className="tf-page-title style-2">
         <div className="container-full">
           <div className="heading text-center">Contact Us</div>

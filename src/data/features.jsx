@@ -296,27 +296,27 @@ export const recentCollectionSlides = [
 export const iconBoxes4 = [
   {
     iconClass: "icon-materials",
-    title: "High-Quality Materials",
+    title: "Premium Materials",
     description:
-      "Crafted with precision and excellence, our activewear is meticulously engineered using premium materials to ensure unmatched comfort and durability.",
+      "Crafted with the finest metals, genuine gemstones, and quality materials, our jewelry pieces are designed to last a lifetime while maintaining their brilliance.",
   },
   {
     iconClass: "icon-design",
-    title: "Laconic Design",
+    title: "Timeless Design",
     description:
-      "Simplicity refined. Our activewear embodies the essence of minimalistic design, delivering effortless style that speaks volumes.",
+      "Each piece features carefully curated designs that blend contemporary trends with classic elegance, creating jewelry that never goes out of style.",
   },
   {
     iconClass: "icon-sizes",
-    title: "Various Sizes",
+    title: "Perfect Fit",
     description:
-      "Designed for every body and anyone, our activewear embraces diversity with a wide range of sizes and shapes, celebrating the beauty of individuality.",
+      "From delicate pieces to bold statements, our collection offers various sizes and styles to complement every individual's unique taste and preference.",
   },
   {
-    iconClass: "icon-design",
-    title: "Laconic Design",
+    iconClass: "icon-sparkle",
+    title: "Exceptional Sparkle",
     description:
-      "Simplicity refined. Our activewear embodies the essence of minimalistic design, delivering effortless style that speaks volumes.",
+      "Every gemstone is hand-selected for its brilliance and clarity, ensuring each piece catches the light beautifully and adds radiance to your look.",
   },
 ];
 

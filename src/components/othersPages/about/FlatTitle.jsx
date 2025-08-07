@@ -5,15 +5,15 @@ export default function FlatTitle() {
     <section className="flat-spacing-9">
       <div className="container">
         <div className="flat-title my-0">
-          <span className="title">We are Ecomus</span>
+          <span className="title">We are Jewel Junkie</span>
           <p className="sub-title text_black-2">
-            Welcome to our classic women's clothing store, where we believe
+            Welcome to our exquisite jewelry collection, where we believe
             <br className="d-xl-block d-none" />
-            that timeless style never goes out of fashion. Our collection
-            features classic <br className="d-xl-block d-none" />
-            pieces that are both stylish and versatile, perfect for building a
+            that every piece tells a story. Our curated selection features
             <br className="d-xl-block d-none" />
-            wardrobe that will last for years.
+            stunning designs that are both elegant and bold, perfect for
+            <br className="d-xl-block d-none" />
+            expressing your unique style and making every moment sparkle.
           </p>
         </div>
       </div>

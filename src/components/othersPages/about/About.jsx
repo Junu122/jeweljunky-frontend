@@ -6,7 +6,7 @@ export default function About() {
       <section className="flat-spacing-23 flat-image-text-section">
         <div className="container">
           <div className="tf-grid-layout md-col-2 tf-img-with-text style-4">
-            <div className="tf-image-wrap">
+            {/* <div className="tf-image-wrap">
               <img
                 className="lazyload w-100"
                 data-src="/images/collections/collection-69.jpg"
@@ -15,22 +15,22 @@ export default function About() {
                 width={600}
                 height={499}
               />
-            </div>
+            </div> */}
             <div className="tf-content-wrap px-0 d-flex justify-content-center w-100">
               <div>
-                <div className="heading">Established - 1995</div>
+                <div className="heading">Our Story</div>
                 <div className="text">
-                  Ecomus was founded in 1995 by Jane Smith, a fashion lover with
-                  a <br className="d-xl-block d-none" />
-                  passion for timeless style. Jane had always been drawn to
-                  classic <br className="d-xl-block d-none" />
-                  pieces that could be worn season after season, and she
-                  believed that <br className="d-xl-block d-none" />
-                  there was a gap in the market for a store that focused solely
-                  on classic <br className="d-xl-block d-none" />
-                  women's clothing. She opened the first store in a small town
-                  in New <br className="d-xl-block d-none" />
-                  England, where it quickly became a local favorite.
+                  Jewel Junkie was born from a deep passion for exquisite jewelry
+                  <br className="d-xl-block d-none" />
+                  and the belief that every person deserves to shine. We started
+                  <br className="d-xl-block d-none" />
+                  with a vision to create a space where jewelry lovers could
+                  <br className="d-xl-block d-none" />
+                  discover unique pieces that speak to their soul. From delicate
+                  <br className="d-xl-block d-none" />
+                  everyday essentials to statement pieces that turn heads, we
+                  <br className="d-xl-block d-none" />
+                  curate collections that celebrate individuality and style.
                 </div>
               </div>
             </div>
@@ -44,20 +44,20 @@ export default function About() {
               <div>
                 <div className="heading">Our mission</div>
                 <div className="text">
-                  Our mission is to empower people through sustainable fashion.
+                  Our mission is to help you express your unique story through
                   <br className="d-xl-block d-none" />
-                  We want everyone to look and feel good, while also doing our
-                  part to <br className="d-xl-block d-none" />
-                  help the environment.We believe that fashion should be
-                  stylish, <br className="d-xl-block d-none" />
-                  affordable and accessible to everyone. Body positivity and
-                  inclusivity <br className="d-xl-block d-none" />
-                  are values that are at the heart of our brand.
+                  beautiful, quality jewelry. We believe that jewelry is more than
+                  <br className="d-xl-block d-none" />
+                  just an accessory - it's a form of self-expression, a way to
+                  <br className="d-xl-block d-none" />
+                  celebrate life's precious moments, and a reflection of your
+                  <br className="d-xl-block d-none" />
+                  inner sparkle. Every piece we offer is chosen with love and care.
                 </div>
               </div>
             </div>
             <div className="grid-img-group">
-              <div className="tf-image-wrap box-img item-1">
+              {/* <div className="tf-image-wrap box-img item-1">
                 <div className="img-style">
                   <img
                     className="lazyload"
@@ -68,9 +68,9 @@ export default function About() {
                     height={388}
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="tf-image-wrap box-img item-2">
-                <div className="img-style">
+                {/* <div className="img-style">
                   <img
                     className="lazyload"
                     src="/images/collections/collection-70.jpg"
@@ -79,7 +79,7 @@ export default function About() {
                     width={400}
                     height={438}
                   />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

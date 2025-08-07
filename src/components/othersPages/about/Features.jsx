@@ -8,15 +8,15 @@ export default function Features() {
       <div className="container">
         <div className="bg_grey-2 radius-10 flat-wrap-iconbox">
           <div className="flat-title lg">
-            <span className="title fw-5">Quality is our priority</span>
+            <span className="title fw-5">Craftsmanship is our passion</span>
             <div>
               <p className="sub-title text_black-2">
-                Our talented stylists have put together outfits that are perfect
-                for the season.
+                Our expert curators have handpicked jewelry pieces that showcase
+                exceptional artistry and timeless beauty.
               </p>
               <p className="sub-title text_black-2">
-                They've variety of ways to inspire your next fashion-forward
-                look.
+                Discover a variety of styles to express your unique personality
+                and elevate every occasion.
               </p>
             </div>
           </div>

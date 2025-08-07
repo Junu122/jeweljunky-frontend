@@ -104,11 +104,11 @@ export default function Footer1({ bgColor = "" }) {
                       </p>
                     </li>
                   </ul>
-                  <Link to={`/contact-1`} className="tf-btn btn-line">
+                  <Link to={`/contact-2`} className="tf-btn btn-line">
                     Get direction
                     <i className="icon icon-arrow1-top-left" />
                   </Link>
-                  <ul className="tf-social-icon d-flex gap-10">
+                  {/* <ul className="tf-social-icon d-flex gap-10">
                     <li>
                       <a
                         href="#"
@@ -149,7 +149,7 @@ export default function Footer1({ bgColor = "" }) {
                         <i className="icon fs-14 icon-pinterest-1" />
                       </a>
                     </li>
-                  </ul>
+                  </ul> */}
                 </div>
               </div>
               <div className="col-xl-3 col-md-6 col-12 footer-col-block">
@@ -179,7 +179,7 @@ export default function Footer1({ bgColor = "" }) {
                 <ul className="footer-menu-list tf-collapse-content">
                   {aboutLinks.slice(0, 4).map((link, index) => (
                     <li key={index}>
-                      <Link to={"/"} className="footer-menu_item">
+                      <Link to={link.href} className="footer-menu_item">
                         {link.text}
                       </Link>
                     </li>
