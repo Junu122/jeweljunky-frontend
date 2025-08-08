@@ -116,13 +116,13 @@ const SizePicker = memo(({ variants, currentSize, onSizeChange }) => (
           {currentSize || 'Select Size'}
         </span>
       </div>
-      <a
+      {/* <a
         href="#find_size"
         data-bs-toggle="modal"
         className="find-size fw-6"
       >
         Find your size
-      </a>
+      </a> */}
     </div>
     <form className="variant-picker-values">
       {variants?.map((variant) => {
