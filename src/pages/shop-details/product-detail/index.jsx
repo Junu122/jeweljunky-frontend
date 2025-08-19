@@ -180,7 +180,7 @@ export default function ProductDetailPage() {
       <DetailsOuterZoom dummy={product} />
       
       {/* Uncomment these components as needed */}
-      {/* <ShopDetailsTab dummyJewellery={product} /> */}
+      <ShopDetailsTab dummyJewellery={product} />
       {/* <Products /> */}
       {/* <RecentProducts /> */}
       

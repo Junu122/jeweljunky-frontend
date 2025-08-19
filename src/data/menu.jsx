@@ -597,81 +597,81 @@ export const pages = [
     className: "menu-link-text link text_black-2",
     links: null,
   },
-  {
-    href: "#",
-    text: "Brands",
-    className: "menu-link-text link text_black-2",
-    links: [
-      {
-        href: "/brands",
-        text: "Brands",
-        className: "menu-link-text link text_black-2 position-relative",
-        label: "New",
-      },
-      {
-        href: "/brands-v2",
-        text: "Brand V2",
-        className: "menu-link-text link text_black-2",
-      },
-    ],
-  },
-  {
-    href: "#",
-    text: "Contact",
-    className: "menu-link-text link text_black-2",
-    links: [
-      {
-        href: "/contact-1",
-        text: "Contact 1",
-        className: "menu-link-text link text_black-2",
-      },
-      {
-        href: "/contact-2",
-        text: "Contact 2",
-        className: "menu-link-text link text_black-2",
-      },
-    ],
-  },
-  {
-    href: "#",
-    text: "FAQ",
-    className: "menu-link-text link text_black-2",
-    links: [
-      {
-        href: "/faq-1",
-        text: "FAQ 01",
-        className: "menu-link-text link text_black-2",
-      },
-      {
-        href: "/faq-2",
-        text: "FAQ 02",
-        className: "menu-link-text link text_black-2",
-      },
-    ],
-  },
-  {
-    href: "#",
-    text: "Store",
-    className: "menu-link-text link text_black-2",
-    links: [
-      {
-        href: "/our-store",
-        text: "Our store",
-        className: "menu-link-text link text_black-2",
-      },
-      {
-        href: "/store-locations",
-        text: "Store locator",
-        className: "menu-link-text link text_black-2",
-      },
-    ],
-  },
-  {
-    href: "/timeline",
-    text: "Timeline",
-    className: "menu-link-text link text_black-2 position-relative",
-    label: "New",
-  },
+  // {
+  //   href: "#",
+  //   text: "Brands",
+  //   className: "menu-link-text link text_black-2",
+  //   links: [
+  //     {
+  //       href: "/brands",
+  //       text: "Brands",
+  //       className: "menu-link-text link text_black-2 position-relative",
+  //       label: "New",
+  //     },
+  //     {
+  //       href: "/brands-v2",
+  //       text: "Brand V2",
+  //       className: "menu-link-text link text_black-2",
+  //     },
+  //   ],
+  // },
+  // {
+  //   href: "#",
+  //   text: "Contact",
+  //   className: "menu-link-text link text_black-2",
+  //   links: [
+  //     {
+  //       href: "/contact-1",
+  //       text: "Contact 1",
+  //       className: "menu-link-text link text_black-2",
+  //     },
+  //     {
+  //       href: "/contact-2",
+  //       text: "Contact ",
+  //       className: "menu-link-text link text_black-2",
+  //     },
+  //   ],
+  // },
+  // {
+  //   href: "#",
+  //   text: "FAQ",
+  //   className: "menu-link-text link text_black-2",
+  //   links: [
+  //     {
+  //       href: "/faq-1",
+  //       text: "FAQ 01",
+  //       className: "menu-link-text link text_black-2",
+  //     },
+  //     {
+  //       href: "/faq-2",
+  //       text: "FAQ 02",
+  //       className: "menu-link-text link text_black-2",
+  //     },
+  //   ],
+  // },
+  // {
+  //   href: "#",
+  //   text: "Store",
+  //   className: "menu-link-text link text_black-2",
+  //   links: [
+  //     {
+  //       href: "/our-store",
+  //       text: "Our store",
+  //       className: "menu-link-text link text_black-2",
+  //     },
+  //     {
+  //       href: "/store-locations",
+  //       text: "Store locator",
+  //       className: "menu-link-text link text_black-2",
+  //     },
+  //   ],
+  // },
+  // {
+  //   href: "/timeline",
+  //   text: "Timeline",
+  //   className: "menu-link-text link text_black-2 position-relative",
+  //   label: "New",
+  // },
   {
     href: "/view-cart",
     text: "View cart",
@@ -682,23 +682,23 @@ export const pages = [
     text: "Check out",
     className: "menu-link-text link text_black-2 position-relative",
   },
-  {
-    href: "#",
-    text: "Payment",
-    className: "menu-link-text link text_black-2",
-    links: [
-      {
-        href: "/payment-confirmation",
-        text: "Payment Confirmation",
-        className: "menu-link-text link text_black-2",
-      },
-      {
-        href: "/payment-failure",
-        text: "Payment Failure",
-        className: "menu-link-text link text_black-2",
-      },
-    ],
-  },
+  // {
+  //   href: "#",
+  //   text: "Payment",
+  //   className: "menu-link-text link text_black-2",
+  //   links: [
+  //     {
+  //       href: "/payment-confirmation",
+  //       text: "Payment Confirmation",
+  //       className: "menu-link-text link text_black-2",
+  //     },
+  //     {
+  //       href: "/payment-failure",
+  //       text: "Payment Failure",
+  //       className: "menu-link-text link text_black-2",
+  //     },
+  //   ],
+  // },
   {
     href: "#",
     text: "My account",
@@ -736,16 +736,16 @@ export const pages = [
       },
     ],
   },
-  {
-    href: "/invoice",
-    text: "Invoice",
-    className: "menu-link-text link text_black-2 position-relative",
-  },
-  {
-    href: "/page-not-found",
-    text: "404",
-    className: "menu-link-text link text_black-2 position-relative",
-  },
+  // {
+  //   href: "/invoice",
+  //   text: "Invoice",
+  //   className: "menu-link-text link text_black-2 position-relative",
+  // },
+  // {
+  //   href: "/page-not-found",
+  //   text: "404",
+  //   className: "menu-link-text link text_black-2 position-relative",
+  // },
 ];
 
 export const blogLinks = [

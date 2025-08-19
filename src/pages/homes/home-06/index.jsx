@@ -95,7 +95,7 @@ export default function Homepage6() {
       {/* <Features2 bgColor="" />
       <Location /> */}
       <div className="mt-5"></div>
-      <Brands />
+      {/* <Brands /> */}
       <Footer1 bgColor="background-gray" />
     </>
   );

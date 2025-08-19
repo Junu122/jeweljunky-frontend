@@ -54,6 +54,7 @@ export const userServices={
         }
     },
     async googleRegister(googleData){
+       
         try {
             const response=await axiosinstance.post('/user/google-signup',googleData,{withCredentials:true})
             return response
@@ -63,6 +64,7 @@ export const userServices={
         }
     },
     async googleLogin(googleData){
+         console.log("Google data in service:", googleData);
         try {
             const response=await axiosinstance.post('/user/google-signin',googleData,{withCredentials:true});
             console.log(response,"google login response in service")

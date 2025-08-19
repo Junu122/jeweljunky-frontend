@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 const tabs = [
-  { title: "Description", active: true },
-  { title: "Review", active: false },
-  { title: "Shiping", active: false },
-  { title: "Return Polocies", active: false },
+  { title: "Description", active: true }
+  // { title: "Review", active: false },
+  // { title: "Shiping", active: false },
+  // { title: "Return Polocies", active: false },
 ];
 
 export default function ShopDetailsTab({dummyJewellery}) {
@@ -48,16 +48,16 @@ export default function ShopDetailsTab({dummyJewellery}) {
                         <ul><li>{dummyJewellery.brand}</li></ul>
                         
                      
-                        <h3 className="fs-16 fw-5">Material </h3>
+                        <h3 className="fs-16 fw-5">Name </h3>
                         <ul >
-                          {dummyJewellery.material.primary.map((material)=>(
-                            <li>{material}</li>
-                          ))}
+                         
+                            <li>{dummyJewellery.title}</li>
+                         
                         </ul>
-                         <h3 className="fs-16 fw-5">Weight </h3>
+                         {/* <h3 className="fs-16 fw-5">Weight </h3>
                          <ul className="mb-0">
                           <li>{dummyJewellery.weight.value} <span>{dummyJewellery.weight.unit}</span></li>
-                         </ul>
+                         </ul> */}
                       </div>
                       <div className="left">
                         <h3 className="fs-16 fw-5">Materials Care</h3>
@@ -65,13 +65,13 @@ export default function ShopDetailsTab({dummyJewellery}) {
                           <div className="icon">
                             <i className="icon-machine" />
                           </div>
-                          <span>Machine wash max. 30ºC. Short spin.</span>
+                          <span>Avoid contact with water, perfumes, lotions, and other chemicals to maintain the finish and longevity of the piece.</span>
                         </div>
                         <div className="d-flex gap-10 mb_15 align-items-center">
                           <div className="icon">
-                            <i className="icon-iron" />
+                            <i className="icon-bleach" />
                           </div>
-                          <span>Iron maximum 110ºC.</span>
+                          <span>Do not use harsh cleaning agents or abrasive materials, especially on plated or delicate pieces.</span>
                         </div>
                         <div className="d-flex gap-10 mb_15 align-items-center">
                           <div className="icon">
@@ -83,14 +83,9 @@ export default function ShopDetailsTab({dummyJewellery}) {
                           <div className="icon">
                             <i className="icon-dry-clean" />
                           </div>
-                          <span>Do not dry clean.</span>
+                          <span>Store in a dry, airtight container or soft pouch to prevent scratches and oxidation..</span>
                         </div>
-                        <div className="d-flex gap-10 align-items-center">
-                          <div className="icon">
-                            <i className="icon-tumble-dry" />
-                          </div>
-                          <span>Tumble dry, medium hear.</span>
-                        </div>
+                     
                       </div>
                     </div>
                   </div>

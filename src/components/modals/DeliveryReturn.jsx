@@ -19,10 +19,10 @@ export default function DeliveryReturn() {
             <div className="tf-product-popup-delivery">
               <div className="title">Delivery</div>
               <p className="text-paragraph">
-                All orders shipped with  Express.
+                All orders shipped with  trusted Delivery Partners.
               </p>
               <p className="text-paragraph">
-                Always free shipping for orders over US &#8377; 250.
+                Always free shipping for orders over  &#8377; 2000.
               </p>
               <p className="text-paragraph">
                 All orders are shipped with a tracking number.
@@ -31,18 +31,15 @@ export default function DeliveryReturn() {
             <div className="tf-product-popup-delivery">
               <div className="title">Returns</div>
               <p className="text-paragraph">
-                Items returned within 14 days of their original shipment date in
-                same as new condition will be eligible for a full refund or
-                store credit.
+            You can raise a return request from here within 2 days of the delivery of the order
+
+
               </p>
               <p className="text-paragraph">
-                Refunds will be charged back to the original form of payment
-                used for purchase.
+              Items sold under special offers where you have applied a coupon code at checkout are not eligible for returns.
               </p>
               <p className="text-paragraph">
-                Customer is responsible for shipping charges when making returns
-                and shipping/handling fees of original purchase is
-                non-refundable.
+            Items sold at a strike-through or discounted price (without applying a coupon) are eligible for return.
               </p>
               <p className="text-paragraph">
                 All sale items are final purchases.

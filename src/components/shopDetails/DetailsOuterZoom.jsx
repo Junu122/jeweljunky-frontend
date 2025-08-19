@@ -438,7 +438,7 @@ export default function DetailsOuterZoom({ dummy }) {
                       )}
 
                       {/* Action Buttons */}
-                      <button
+                      {/* <button
                         type="button"
                         onClick={() => addToWishlist(dummy._id)}
                         className={`tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action
@@ -457,7 +457,7 @@ export default function DetailsOuterZoom({ dummy }) {
                           }
                         </span>
                         <span className="icon icon-delete" />
-                      </button>
+                      </button> */}
 
                       {/* <button
                         type="button"
@@ -480,7 +480,7 @@ export default function DetailsOuterZoom({ dummy }) {
                       </button> */}
 
                       {/* Payment Options */}
-                      <div className="w-100">
+                      {/* <div className="w-100">
                         <a href="#" className="btns-full">
                           Buy with
                           <img
@@ -493,13 +493,13 @@ export default function DetailsOuterZoom({ dummy }) {
                         <a href="#" className="payment-more-option">
                           More payment options
                         </a>
-                      </div>
+                      </div> */}
                     </form>
                   </div>
 
                   {/* Extra Links */}
                   <div className="tf-product-info-extra-link">
-                    <a
+                    {/* <a
                       href="#compare_color"
                       data-bs-toggle="modal"
                       className="tf-product-extra-icon"
@@ -513,8 +513,8 @@ export default function DetailsOuterZoom({ dummy }) {
                         />
                       </div>
                       <div className="text fw-6">Compare color</div>
-                    </a>
-                    <a
+                    </a> */}
+                    {/* <a
                       href="#ask_question"
                       data-bs-toggle="modal"
                       className="tf-product-extra-icon"
@@ -523,7 +523,7 @@ export default function DetailsOuterZoom({ dummy }) {
                         <i className="icon-question" />
                       </div>
                       <div className="text fw-6">Ask a question</div>
-                    </a>
+                    </a> */}
                     <a
                       href="#delivery_return"
                       data-bs-toggle="modal"
@@ -565,10 +565,11 @@ export default function DetailsOuterZoom({ dummy }) {
                           </div>
                           <p>
                             Estimate delivery times:
-                            <span className="fw-7">12-26 days</span>
-                            (International),
-                            <span className="fw-7">3-6 days</span> (All indian
-                            States).
+                            
+                            (Delivery estimates are shown after succesfully order shipped,usually),
+                            <span className="fw-7">2-7 days</span>
+                            {/* <span className="fw-7">3-6 days</span> (All indian
+                            States). */}
                           </p>
                         </div>
                       </div>
@@ -578,8 +579,8 @@ export default function DetailsOuterZoom({ dummy }) {
                             <i className="icon-return-order" />
                           </div>
                           <p>
-                            Return within <span className="fw-7">30 days</span>{" "}
-                            of purchase. Fees &amp; taxes are non-refundable.
+                            Return within <span className="fw-7">2 days</span>{" "}
+                            of purchase. Fees &amp; delivery charges are non-refundable.
                           </p>
                         </div>
                       </div>
@@ -595,7 +596,7 @@ export default function DetailsOuterZoom({ dummy }) {
                         Checkout
                       </p>
                     </div>
-                    <div className="tf-payment">
+                    {/* <div className="tf-payment">
                       {paymentImages.map((image, index) => (
                         <img
                           key={index}
@@ -605,7 +606,7 @@ export default function DetailsOuterZoom({ dummy }) {
                           height={image.height}
                         />
                       ))}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

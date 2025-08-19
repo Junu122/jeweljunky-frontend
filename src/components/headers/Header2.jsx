@@ -70,14 +70,14 @@ export default function Header2({
           <div className="col-xl-3 col-md-4 col-3">
             <ul className="nav-icon d-flex justify-content-end align-items-center gap-20">
               <li className="nav-search">
-                <a
+                {/* <a
                   href="#"
                   data-bs-toggle="offcanvas"
                   aria-controls="offcanvasLeft"
                   className="nav-icon-item"
                 >
                   <i className="icon icon-search" />
-                </a>
+                </a> */}
               </li>
               <li className="nav-account">
                 {!loading && (

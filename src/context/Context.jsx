@@ -124,6 +124,7 @@ const loadData=async()=>{
 
 
   const googleSignin = async (tokenResponse) => {
+    console.log("Google token response in context:", tokenResponse);
     try {
       const response=await userServices.googleLogin(tokenResponse);
       setUser(response?.data?.user);

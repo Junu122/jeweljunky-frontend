@@ -54,7 +54,7 @@ export default function DeliveryReturnPage() {
                 <h4>Refund</h4>
                 <ul className="tag-list">
                   <li>
-                   Refunds are processed in 7–10 working days as per RBI guidelines, following item pickup and verification.
+                   Refunds are credited in 7–10 working days as per RBI guidelines, following item pickup and verification.
                   </li>
                   <li>
                     Prepaid orders : Refunded to original payment method.

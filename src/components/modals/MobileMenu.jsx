@@ -138,35 +138,37 @@ export default function MobileMenu() {
                 <i className="icon icon-heart" />
                 Wishlist
               </Link>
-              <Link to={`/home-search`} className="site-nav-icon">
+              {/* <Link to={`/home-search`} className="site-nav-icon">
                 <i className="icon icon-search" />
                 Search
-              </Link>
+              </Link> */}
             </div>
             <div className="mb-notice">
-              <Link to={`/contact-1`} className="text-need">
+              <Link to={`/contact-2`} className="text-need">
                 Need help ?
               </Link>
             </div>
             <ul className="mb-info">
               <li>
-                Address: 1234 Fashion Street, Suite 567, <br />
-                New York, NY 10001
+              Jewel Junkie, <br />
+               kottappadi,
+                 malappuram <br />
+                kerala, IN
               </li>
               <li>
-                Email: <b>info@fashionshop.com</b>
+                Email: <b>jeweljunkieinfo@gmail.com</b>
               </li>
               <li>
-                Phone: <b>(212) 555-1234</b>
+                Phone: <b>(+91) 8111-9111-90</b>
               </li>
             </ul>
           </div>
         </div>
         <div className="mb-bottom">
-          <Link to={`/login`} className="site-nav-icon">
+          {/* <Link to={`/login`} className="site-nav-icon">
             <i className="icon icon-account" />
             Login
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@ export default function Login() {
       [name]: value
     });
   }
-    console.log(formData)
+  
     const validateForm = () => {
     const errors = {
       credential: '',
@@ -92,12 +92,13 @@ export default function Login() {
 
     const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log("google login response", tokenResponse);
+     
       try {
       
         setError("");
 
         const response = await googleSignin(tokenResponse);
+        
         if (response?.success) {
           const loginModal = document.getElementById("login");
           const closeBtn = loginModal.querySelector('[data-bs-dismiss="modal"]');
