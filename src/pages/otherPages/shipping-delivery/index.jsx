@@ -32,6 +32,7 @@ export default function ShopingDeliveryPage() {
               </div>
               <div className="box">
                 <h4>Delivery</h4>
+                <p>Estimate delivery times: (Delivery estimates are shown after succesfully order shipped,usually),2-7 days</p>
                 <p>
                   Delivery estimates are shown after succesfully order placed. 
                   These estimates depend on your specific pincode and area. 
