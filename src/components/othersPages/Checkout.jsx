@@ -1,8 +1,48 @@
 import { useContextElement } from "@/context/Context";
-
+import { axiosinstance } from "@/utlis/api";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 export default function Checkout() {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://mercury.phonepe.com/web/bundle/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script); // cleanup on unmount
+    };
+  }, []);
   const { cartProducts, setCartProducts, totalPrice } = useContextElement();
+  const initiatePayment=async(e)=>{
+    e.preventDefault();
+    alert("Redirecting to payment gateway");
+    if(!cartProducts.length){
+      alert("Your cart is empty");
+      return;
+    }
+    //call the backend api to create order and get the order id and other details
+    const response=await axiosinstance.post('/payment/create-payment-intent',{cartProducts,totalPrice},{withCredentials:true});
+    console.log(response)
+    if(response?.data?.redirectUrl){
+      const tokenUrl=response?.data?.redirectUrl;
+      function callback (response) {
+  console.log("Payment callback response..........:", response);
+  if (response === 'USER_CANCEL') {
+    alert("Payment cancelled by user");
+    return;
+  } else if (response === 'CONCLUDED') {
+   alert("Payment successful");
+    return;
+  }
+}
+    window.PhonePeCheckout.transact({tokenUrl });
+
+
+    }else{
+      alert("Something went wrong");
+    }
+  }
   return (
     <section className="flat-spacing-11">
       <div className="container">
@@ -204,7 +244,7 @@ export default function Checkout() {
             <div className="tf-cart-footer-inner">
               <h5 className="fw-5 mb_20">Your order</h5>
               <form
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={initiatePayment}
                 className="tf-page-cart-checkout widget-wrap-checkout"
               >
                 <ul className="wrap-checkout-product">
@@ -250,7 +290,7 @@ export default function Checkout() {
                   </div>
                 )}
                 <div className="coupon-box">
-                  <input required type="text" placeholder="Discount code" />
+                  <input  type="text" placeholder="Discount code" />
                   <a
                     href="#"
                     className="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn"
@@ -263,7 +303,7 @@ export default function Checkout() {
                   <h6 className="total fw-5">&#8377;{totalPrice}</h6>
                 </div>
                 <div className="wd-check-payment">
-                  <div className="fieldset-radio mb_20">
+                  {/* <div className="fieldset-radio mb_20">
                     <input
                       required
                       type="radio"
@@ -283,7 +323,7 @@ export default function Checkout() {
                       className="tf-check"
                     />
                     <label htmlFor="delivery">Cash on delivery</label>
-                  </div>
+                  </div> */}
                   <p className="text_black-2 mb_20">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for
