@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-export default function PaymentFailure() {
+export default function PaymentFail() {
   return (
     <section className="flat-spacing-11">
       <div className="container">

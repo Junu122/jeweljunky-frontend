@@ -168,6 +168,7 @@ import HomeMenPage from "../src/pages/homes/home-men";
 import ComparePage from "../src/pages/otherPages/compare";
 import HomeParallaxPage from "../src/pages/homes/home-parallax";
 import { useContextElement } from "@/context/Context";
+
 const UserRouter=()=>{
  const { loading } = useContextElement();
  const { pathname } = useLocation();
@@ -625,6 +626,8 @@ const UserRouter=()=>{
                 path="payment-confirmation"
                 element={<PaymentCOnfirmationPage />}
               />
+
+              
 
               <Route
                 path="my-account-orders"

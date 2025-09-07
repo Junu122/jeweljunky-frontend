@@ -172,6 +172,7 @@ import HomeMenPage from "../src/pages/homes/home-men";
 import ComparePage from "../src/pages/otherPages/compare";
 import HomeParallaxPage from "../src/pages/homes/home-parallax";
 import { useContextElement } from "@/context/Context";
+import PaymentStatus from "@/pages/otherPages/payment-status/PaymentStatus";
 const UserRouter=()=>{
  const { loading } = useContextElement();
  const { pathname } = useLocation();
@@ -359,6 +360,7 @@ const UserRouter=()=>{
         <Header2 />
           <Routes>
             <Route path="/">
+              
               <Route index element={<Homepage6 />} />
               <Route path="home-multi-brand" element={<HomeMultiBrandPage />} />
               <Route path="home-02" element={<Homepage2 />} />
@@ -624,6 +626,7 @@ const UserRouter=()=>{
               />
 
               <Route path="checkout" element={<CheckoutPage />} />
+              <Route path="payment-status/:orderId" element={<PaymentStatus />} />
               <Route path="payment-failure" element={<PaymentFailurePage />} />
               <Route
                 path="payment-confirmation"
