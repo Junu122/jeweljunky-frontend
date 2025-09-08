@@ -139,7 +139,7 @@ const PaymentSuccessPage = ({data}) => {
                         style={{ background: 'linear-gradient(135deg, #f8f9ff, #e6f3ff)' }}
                       >
                         <div className="small text-muted fw-semibold mb-1">Order ID</div>
-                        <div className="h6 fw-bold mb-0" style={{ color: '#4a5568' }}>{data?.orderId}</div>
+                        <div className="h6 fw-bold mb-0" style={{ color: '#4a5568' }}>{data?.merchantOrderId}</div>
                       </div>
                     </div>
                   </div>

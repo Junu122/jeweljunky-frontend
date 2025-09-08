@@ -335,8 +335,8 @@ const PaymentFailurePage = ({data}) => {
             <div className="error-code">{data?.errorCode}</div>
             <div className="error-description">
               Your payment was declined or could not be processed. Please check your payment details or try a different payment method.
-              <p className="error-message"><span style={{color:"#2d3748",fontWeight:"900",fontSize:"1rem"}}>TXN ID:</span>{data?.paymentDetails[0].transactionId}</p>
-              <p className="error-message"><span style={{color:"#2d3748",fontWeight:"900",fontSize:"1rem"}}>ORDER ID:</span>{data?.orderId}</p>
+              <p className="error-message"><span style={{color:"#2d3748",fontWeight:"900",fontSize:"1rem"}}>ORDER ID:</span>{data?.merchantOrderId}</p>
+             
                <p className="error-message"><span style={{color:"#2d3748",fontWeight:"900",fontSize:"1rem"}}>AMOUNT:</span>&#8377;{data?.amount/100}</p>
             </div>
           </div>
