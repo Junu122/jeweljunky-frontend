@@ -647,7 +647,7 @@ const UserRouter=()=>{
                 element={<MyAccountWishlistPage />}
               />
               <Route
-                path="my-account-orders-details"
+                path="my-account-orders-details/:orderid"
                 element={<MyAccountOrderDetailsPage />}
               />
               <Route path="invoice" element={<InvoicePage />} />

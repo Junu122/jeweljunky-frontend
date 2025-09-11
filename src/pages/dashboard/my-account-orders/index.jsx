@@ -5,11 +5,31 @@ import Orders from "@/components/othersPages/dashboard/Orders";
 import React from "react";
 
 import MetaComponent from "@/components/common/MetaComponent";
+import { useEffect } from "react";
+import { axiosinstance } from "@/utlis/api";
+import { useState } from "react";
 const metadata = {
-  title: "My Account Orders || Ecomus - Ultimate Reactjs Ecommerce Template",
-  description: "Ecomus - Ultimate Reactjs Ecommerce Template",
+  title: "My Account Orders || JEWELJUNKIE",
+  description: "JEWEL JUNKIE",
 };
+
+
 export default function MyAccountOrderPage() {
+  const [data,setData]=useState()
+  useEffect(()=>{
+  const fetchuserorders=async()=>{
+    try {
+      const response=await axiosinstance.get('/orders/getuserorders',{withCredentials:true})
+      console.log("user orders ..................",response.data)
+      setData(response?.data?.orders)
+    } catch (error) {
+      console.log("fetch user orders error",error)
+      alert(error?.response?.data || "Something went wrong")
+      
+    }
+  }
+  fetchuserorders()
+},[])
   return (
     <>
       <MetaComponent meta={metadata} />
@@ -26,7 +46,7 @@ export default function MyAccountOrderPage() {
               <DashboardNav />
             </div>
             <div className="col-lg-9">
-              <Orders />
+              <Orders data={data}/>
             </div>
           </div>
         </div>
