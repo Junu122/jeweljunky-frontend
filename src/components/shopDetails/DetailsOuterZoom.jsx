@@ -286,7 +286,7 @@ export default function DetailsOuterZoom({ dummy }) {
   }
 
   // Stock status
-  const isInStock = selectedVariant?.inventory?.isInStock ?? false;
+  const isInStock = selectedVariant?.inventory?.quantity > 0;
   const stockLevel = selectedVariant?.inventory?.quantity ?? 0;
 
   return (
@@ -350,7 +350,7 @@ export default function DetailsOuterZoom({ dummy }) {
                         {isInStock ? (
                           <span>In Stock ({stockLevel} available)</span>
                         ) : (
-                          <span>Out of Stock</span>
+                          <span style={{color:"red"}}>Out of Stock</span>
                         )}
                       </div>
                     </div>
@@ -363,7 +363,7 @@ export default function DetailsOuterZoom({ dummy }) {
                   </div>
 
                   {/* Countdown */}
-                  <div className="tf-product-info-countdown">
+                  {/* <div className="tf-product-info-countdown">
                     <div className="countdown-wrap">
                       <div className="countdown-title">
                         <i className="icon-time tf-ani-tada" />
@@ -375,7 +375,7 @@ export default function DetailsOuterZoom({ dummy }) {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Variant Picker */}
                   <div className="tf-product-info-variant-picker">
@@ -432,7 +432,7 @@ export default function DetailsOuterZoom({ dummy }) {
                           disabled
                         >
                           <span>
-                            {!selectedVariant ? "Out of stock" : "null" }
+                            {!selectedVariant ? "Out of stock" : "Out of stock" }
                           </span>
                         </button>
                       )}

@@ -1,8 +1,23 @@
 import React from "react";
-
+import {useNavigate} from "react-router-dom";
 import { Link } from "react-router-dom";
 import { tfLoopItems } from "@/data/products";
 export default function SearchModal() {
+  const navigate=useNavigate();
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const handleSearchInputSubmit=(e)=>{
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // You can implement your search logic here
+      // For example: navigate to search results page
+      navigate(`/product-detail?search=${encodeURIComponent(searchQuery.trim())}`);
+    
+    }
+  }
+
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  }
   return (
     <div className="offcanvas offcanvas-end canvas-search" id="canvasSearch">
       <div className="canvas-wrapper">
@@ -19,11 +34,12 @@ export default function SearchModal() {
           </div>
           <div className="tf-search-sticky">
             <form
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleSearchInputSubmit}
               className="tf-mini-search-frm"
             >
               <fieldset className="text">
                 <input
+                 onChange={handleSearchInputChange}
                   type="text"
                   placeholder="Search"
                   className=""
@@ -47,32 +63,23 @@ export default function SearchModal() {
                 <div className="tf-search-content-title fw-5">Quick link</div>
                 <ul className="tf-quicklink-list">
                   <li className="tf-quicklink-item">
-                    <Link to={`/shop-default`} className="">
-                      Fashion
+                    <Link to={`/product-detail`} className="">
+                      Our Products
                     </Link>
                   </li>
                   <li className="tf-quicklink-item">
                     <Link to={`/shop-default`} className="">
-                      Men
+                      Categories
                     </Link>
                   </li>
-                  <li className="tf-quicklink-item">
-                    <Link to={`/shop-default`} className="">
-                      Women
-                    </Link>
-                  </li>
-                  <li className="tf-quicklink-item">
-                    <Link to={`/shop-default`} className="">
-                      Accessories
-                    </Link>
-                  </li>
+                
                 </ul>
               </div>
               <div className="tf-col-content">
-                <div className="tf-search-content-title fw-5">
+                {/* <div className="tf-search-content-title fw-5">
                   Need some inspiration?
-                </div>
-                <div className="tf-search-hidden-inner">
+                </div> */}
+                {/* <div className="tf-search-hidden-inner">
                   {tfLoopItems.map((product, index) => (
                     <div className="tf-loop-item" key={index}>
                       <div className="image">
@@ -108,7 +115,7 @@ export default function SearchModal() {
                       </div>
                     </div>
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

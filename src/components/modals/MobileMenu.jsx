@@ -44,91 +44,98 @@ export default function MobileMenu() {
           <ul className="nav-ul-mb" id="wrapper-menu-navigation">
             {navItems.map((item, i) => (
               <li key={i} className="nav-mb-item">
-                {/* <a
-                  href={`#${item.id}`}
-                  className={`collapsed mb-menu-link current ${
-                    isMenuActive(item) ? "activeMenu" : ""
-                  }`}
-                  data-bs-toggle="collapse"
-                  aria-expanded="true"
-                  aria-controls={item.id}
-                >
-                  <span>{item.label}</span>
-                  <span className="btn-open-sub" />
-                </a> */}
-                <Link
-                  to={item.href}
-                  className={`mb-menu-link collapsed   ${
-                    isMenuActive(item) ? "activeMenu" : ""
-                  }`}
-                >
-                  {item.label}
-{/* 
-                  <div className="demo-label">
-                    <span className="demo-new">New</span>
-                  </div> */}
-                </Link>
-                {/* <div id={item.id} className="collapse">
-                  <ul className="sub-nav-menu">
-                    {item.links.map((subItem, i2) => (
-                      <li key={i2}>
-                        {subItem.links ? (
-                          <>
-                            <a
-                              href={`#${subItem.id}`}
-                              className={`sub-nav-link collapsed  ${
+                {item.label === "Pages" ? (
+                  // For "Pages" - show collapsible submenu
+                  <a
+                    href={`#${item.id}`}
+                    className={`collapsed mb-menu-link current ${
+                      isMenuActive(item) ? "activeMenu" : ""
+                    }`}
+                    data-bs-toggle="collapse"
+                    aria-expanded="true"
+                    aria-controls={item.id}
+                  >
+                    <span>{item.label}</span>
+                    <span className="btn-open-sub" />
+                  </a>
+                ) : (
+                  // For other items - redirect to page
+                  <Link
+                    to={item.href}
+                    className={`mb-menu-link ${
+                      isMenuActive(item) ? "activeMenu" : ""
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                  </Link>
+                )}
+
+                {/* Only show submenu for "Pages" */}
+                {item.label === "Pages" && (
+                  <div id={item.id} className="collapse">
+                    <ul className="sub-nav-menu">
+                      {item?.links?.map((subItem, i2) => (
+                        <li key={i2}>
+                          {subItem.links ? (
+                            <>
+                              <a
+                                href={`#${subItem.id}`}
+                                className={`sub-nav-link collapsed  ${
+                                  isMenuActive(subItem) ? "activeMenu" : ""
+                                }`}
+                                data-bs-toggle="collapse"
+                                aria-expanded="true"
+                                aria-controls={subItem.id}
+                              >
+                                <span>{subItem.label}</span>
+                                <span className="btn-open-sub" />
+                              </a>
+                              <div id={subItem.id} className="collapse">
+                                <ul className="sub-nav-menu sub-menu-level-2">
+                                  {subItem.links.map((innerItem, i3) => (
+                                    <li key={i3}>
+                                      <Link
+                                        to={innerItem.href}
+                                        className={`sub-nav-link  ${
+                                          isMenuActive(innerItem)
+                                            ? "activeMenu"
+                                            : ""
+                                        }`}
+                                      >
+                                        {innerItem.label}
+                                        {innerItem.demoLabel && (
+                                          <div className="demo-label">
+                                            <span className="demo-new">
+                                              New
+                                            </span>
+                                          </div>
+                                        )}
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </>
+                          ) : (
+                            <Link
+                              to={subItem.href}
+                              className={`sub-nav-link ${
                                 isMenuActive(subItem) ? "activeMenu" : ""
                               }`}
-                              data-bs-toggle="collapse"
-                              aria-expanded="true"
-                              aria-controls={subItem.id}
                             >
-                              <span>{subItem.label}</span>
-                              <span className="btn-open-sub" />
-                            </a>
-                            <div id={subItem.id} className="collapse">
-                              <ul className="sub-nav-menu sub-menu-level-2">
-                                {subItem.links.map((innerItem, i3) => (
-                                  <li key={i3}>
-                                    <Link
-                                      to={innerItem.href}
-                                      className={`sub-nav-link  ${
-                                        isMenuActive(innerItem)
-                                          ? "activeMenu"
-                                          : ""
-                                      }`}
-                                    >
-                                      {innerItem.label}
-                                      {innerItem.demoLabel && (
-                                        <div className="demo-label">
-                                          <span className="demo-new">New</span>
-                                        </div>
-                                      )}
-                                    </Link>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </>
-                        ) : (
-                          <Link
-                            to={subItem.href}
-                            className={`sub-nav-link ${
-                              isMenuActive(subItem) ? "activeMenu" : ""
-                            }`}
-                          >
-                            {subItem.label}
-                            {subItem.demoLabel && (
-                              <div className="demo-label">
-                                <span className="demo-new">New</span>
-                              </div>
-                            )}
-                          </Link>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div> */}
+                              {subItem.label}
+                              {subItem.demoLabel && (
+                                <div className="demo-label">
+                                  <span className="demo-new">New</span>
+                                </div>
+                              )}
+                            </Link>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -150,9 +157,8 @@ export default function MobileMenu() {
             </div>
             <ul className="mb-info">
               <li>
-              Jewel Junkie, <br />
-               kottappadi,
-                 malappuram <br />
+                Jewel Junkie, <br />
+                kottappadi, malappuram <br />
                 kerala, IN
               </li>
               <li>

@@ -5,7 +5,7 @@ export const useHomePageData = () => {
     hero: { loading: true, data: null, error: null },
     categories: { loading: true, data: null, error: null },
     bestseller:{ loading: true, data: null, error: null },
-    trending:{ loading: true, data: null, error: null },
+    allcollections:{ loading: true, data: null, error: null },
     banner:{loading:true,data:null,error:null},
     home:{loading:true,data:null,error:null}
    

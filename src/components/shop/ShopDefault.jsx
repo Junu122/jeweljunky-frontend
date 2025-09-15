@@ -24,41 +24,55 @@ export default function ShopDefault({ categorydata }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
+  
   // Extract filters from URL parameters
-  const currentFilters = useMemo(() => {
-    const filters = {};
-    
-    const priceMin = searchParams.get('price_min');
-    const priceMax = searchParams.get('price_max');
-    if (priceMin) filters.price_min = parseInt(priceMin);
-    if (priceMax) filters.price_max = parseInt(priceMax);
-    
-    const brands = searchParams.get('filter.p.brand');
-    if (brands) filters.brands = brands.split(',');
-    
-    const colors = searchParams.get('filter.p.color');
-    if (colors) filters.colors = colors.split(',');
-    
-    const sizes = searchParams.get('filter.p.size');
-    if (sizes) filters.sizes = sizes.split(',');
-    
-    const availability = searchParams.get('filter.p.availability');
-    if (availability) filters.availability = availability.split(',');
-    
-    const categories = searchParams.get('filter.p.category');
-    if (categories) filters.categories = categories.split(',');
-    
-    const sort = searchParams.get('sort');
-    if (sort) filters.sort = sort;
-    
-   
-    if (categorydata) {
-      filters.categories = [categorydata];
-    }
-    
-    return filters;
-  }, [searchParams, categorydata]);
-
+ const currentFilters = useMemo(() => {
+  const filters = {};
+  
+  // Extract search parameter - MOST IMPORTANT FIX
+  const search = searchParams.get('search');
+  console.log("search parameter from URL:", search);
+  if (search && search.trim()) {
+    filters.search = search.trim();
+  }
+  
+  const priceMin = searchParams.get('price_min');
+  const priceMax = searchParams.get('price_max');
+  if (priceMin) filters.price_min = parseInt(priceMin);
+  if (priceMax) filters.price_max = parseInt(priceMax);
+  
+  const brands = searchParams.get('filter.p.brand');
+  if (brands) filters.brands = brands.split(',');
+  
+  const colors = searchParams.get('filter.p.color');
+  if (colors) filters.colors = colors.split(',');
+  
+  const sizes = searchParams.get('filter.p.size');
+  if (sizes) filters.sizes = sizes.split(',');
+  
+  const availability = searchParams.get('filter.p.availability');
+  if (availability) filters.availability = availability.split(',');
+  
+  const categories = searchParams.get('filter.p.category');
+  if (categories) filters.categories = categories.split(',');
+  
+  const sort = searchParams.get('sort');
+  if (sort) filters.sort = sort;
+  
+  // If categorydata is provided, use it
+  if (categorydata) {
+    filters.categories = [categorydata];
+  }
+  
+  // DEBUG: Log the extracted filters
+  console.log('=== Frontend Debug ===');
+  console.log('URL search params:', Object.fromEntries(searchParams));
+  console.log('Extracted filters:', filters);
+  console.log('Search value specifically:', filters.search);
+  console.log('====================');
+  
+  return filters;
+}, [searchParams, categorydata]);
   // Debounced function to fetch products
   const debouncedFetchProducts = useCallback(
     debounce(async (filters, page) => {
@@ -66,6 +80,10 @@ export default function ShopDefault({ categorydata }) {
       setError(null);
       
       try {
+        console.log('=== API Call Debug ===');
+        console.log('Calling productService.getProducts with:', { page, limit: 4, filters });
+        console.log('=====================');
+        
         const data = await productService.getProducts(page, 4, filters);
         setProducts(data.products || []);
         setTotalPages(data.pagination?.totalPages || 1);
@@ -92,7 +110,7 @@ export default function ShopDefault({ categorydata }) {
     return () => {
       debouncedFetchProducts.cancel();
     };
-  }, [currentFilters, activePage, debouncedFetchProducts,categorydata]);
+  }, [currentFilters, activePage, debouncedFetchProducts, categorydata]);
 
   // Handle page change
   const handlePageChange = (page) => {
@@ -119,25 +137,43 @@ export default function ShopDefault({ categorydata }) {
   };
 
   // Update URL when filters change (called from ShopFilter)
-  const handleFiltersChange = useCallback((newFilters) => {
-    const newSearchParams = new URLSearchParams();
-    
-    // Add all filter parameters
-    Object.entries(newFilters).forEach(([key, value]) => {
-      if (value !== null && value !== undefined && value !== '') {
-        if (Array.isArray(value) && value.length > 0) {
+const handleFiltersChange = useCallback((newFilters) => {
+  const newSearchParams = new URLSearchParams();
+  
+  // Add all filter parameters
+  Object.entries(newFilters).forEach(([key, value]) => {
+    if (value !== null && value !== undefined && value !== '') {
+      if (Array.isArray(value) && value.length > 0) {
+        // Handle array filters
+        if (key === 'brands') {
+          newSearchParams.set('filter.p.brand', value.join(','));
+        } else if (key === 'colors') {
+          newSearchParams.set('filter.p.color', value.join(','));
+        } else if (key === 'sizes') {
+          newSearchParams.set('filter.p.size', value.join(','));
+        } else if (key === 'availability') {
+          newSearchParams.set('filter.p.availability', value.join(','));
+        } else if (key === 'categories') {
+          newSearchParams.set('filter.p.category', value.join(','));
+        } else {
           newSearchParams.set(key, value.join(','));
-        } else if (!Array.isArray(value)) {
+        }
+      } else if (!Array.isArray(value)) {
+        // Handle single value filters - IMPORTANT: Keep search as 'search'
+        if (key === 'search') {
+          newSearchParams.set('search', value.toString());
+        } else {
           newSearchParams.set(key, value.toString());
         }
       }
-    });
-    
-    // Reset page to 1 when filters change
-    newSearchParams.delete('page');
-    setSearchParams(newSearchParams);
-    setActivePage(1);
-  }, [setSearchParams]);
+    }
+  });
+  
+  // Reset page to 1 when filters change
+  newSearchParams.delete('page');
+  setSearchParams(newSearchParams);
+  setActivePage(1);
+}, [setSearchParams]);
 
   // Clear all filters
   const clearAllFilters = () => {
@@ -155,6 +191,25 @@ export default function ShopDefault({ categorydata }) {
     <>
       <section className="flat-spacing-2">
         <div className="container">
+          {/* ADD: Display current search term if present */}
+          {currentFilters.search && (
+            <div className="search-info mb-3">
+              <p className="text-muted">
+                Showing results for: "<strong>{currentFilters.search}</strong>"
+                <button 
+                  className="btn btn-sm btn-outline-secondary ms-2"
+                  onClick={() => {
+                    const newParams = new URLSearchParams(searchParams);
+                    newParams.delete('search');
+                    setSearchParams(newParams);
+                  }}
+                >
+                  Clear Search
+                </button>
+              </p>
+            </div>
+          )}
+          
           <div className="tf-shop-control grid-3 align-items-center">
             <div className="tf-control-filter">
               <a
@@ -232,6 +287,7 @@ export default function ShopDefault({ categorydata }) {
                   <div className="tf-pagination-result">
                     <p>
                       Showing {((activePage - 1) * 4) + 1} to {Math.min(activePage * 4, totalproducts)} of {totalproducts} results
+                      {currentFilters.search && ` for "${currentFilters.search}"`}
                     </p>
                   </div>
                   
@@ -251,7 +307,12 @@ export default function ShopDefault({ categorydata }) {
               {hasInitiallyLoaded && products.length === 0 && (
                 <div className="text-center py-5">
                   <h4>No products found</h4>
-                  <p>Try adjusting your filters or search criteria.</p>
+                  <p>
+                    {currentFilters.search 
+                      ? `No products found for "${currentFilters.search}". Try adjusting your search or filters.`
+                      : "Try adjusting your filters or search criteria."
+                    }
+                  </p>
                   <button 
                     className="btn btn-primary" 
                     onClick={clearAllFilters}

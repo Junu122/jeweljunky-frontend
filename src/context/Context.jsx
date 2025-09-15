@@ -437,6 +437,7 @@ const loadData=async()=>{
     login,
     isAuthenticated,
     user,
+    setUser,
     loading,
     checkAuthStatus,
     logout,

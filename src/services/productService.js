@@ -19,7 +19,7 @@ async getProducts(page = 1, limit = 2, filters = {}) {
       if (filters.availability?.length > 0) params.append('filter.p.availability', filters.availability.join(','));
       if (filters.categories?.length > 0) params.append('category', filters.categories.join(','));
       if (filters.sort) params.append('sort', filters.sort);
-
+      if (filters.search) params.append('search', filters.search);
       const response = await axiosinstance.get(`/product/getallproducts?${params.toString()}`, {
         withCredentials: true
       });

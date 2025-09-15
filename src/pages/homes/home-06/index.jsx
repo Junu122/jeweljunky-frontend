@@ -19,7 +19,7 @@ import JewelryBanners from "@/components/homes/home-6/BannerNew";
 import { useHomePageData } from "@/services/homepageService";
 import { HomepageDatas } from "@/hooks/homePageData";
 import PageNotFoundPage from "../../../pages/otherPages/page-not-found";
-
+import ProductCollectionShowcase from "@/pages/ProductCollection";
 const LoadingSpinner = () => (
   <div
     className="d-flex justify-content-center align-items-center"
@@ -73,7 +73,7 @@ export default function Homepage6() {
     );
   }
 
-  console.log(home.data.data, "homegszdgggggggg");
+  console.log(home, "homegszdgggggggg");
 
   return (
     <>
@@ -84,10 +84,14 @@ export default function Homepage6() {
       <Hero herodata={home.data.data.heroSection} />
 
       <Categories categories={home.data.data.categorySection} />
-      <Products title="Best Seller" data={home.data.data.bestsellerSection} />
+      
+      { 
+        home.data?.data?.allcollections.map((collection,index)=><Products key={index} title={collection.name} data={collection} />)
+      }
+      {/* <Products title="Best Seller" data={home.data.data.bestsellerSection} /> */}
       <JewelryBanners bannercollection={home.data.data.bannerSection} />
-      <Products title="Trending" data={home.data.data.trendingSection} />
-
+      {/* <Products title="Trending" data={home.data.data.trendingSection} /> */}
+{/* <ProductCollectionShowcase /> */}
       {/* <Banner /> */}
       {/* <BestsellerSection /> */}
 
