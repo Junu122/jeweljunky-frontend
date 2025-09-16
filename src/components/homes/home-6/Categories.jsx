@@ -58,17 +58,17 @@ export default function Categories({ categories, facets }) {
                 },
                 400: {
                   slidesPerView: 2.5,
-                  spaceBetween: 8,
+                  spaceBetween: 4,
                 },
                 0: {
-                  slidesPerView: 2,
-                  spaceBetween: 8,
+                  slidesPerView: 4,
+                  spaceBetween: 20,
                 },
               }}
               spaceBetween={30}
               loop={categories?.length > 6}
               autoplay={{
-                delay: 4000,
+                delay: 8000,
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,
               }}
@@ -294,8 +294,8 @@ export default function Categories({ categories, facets }) {
         /* Extra small screens */
         @media (max-width: 399px) {
           .category-circle-wrapper {
-            width: 75px;
-            height: 75px;
+            width: 55px;
+            height: 55px;
           }
 
           .category-title {
