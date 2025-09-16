@@ -57,8 +57,8 @@ export default function Categories({ categories, facets }) {
                   spaceBetween: 20,
                 },
                 400: {
-                  slidesPerView: 2.5,
-                  spaceBetween: 4,
+                  slidesPerView: 4,
+                  spaceBetween: 20,
                 },
                 0: {
                   slidesPerView: 4,
