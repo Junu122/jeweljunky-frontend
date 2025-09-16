@@ -43,12 +43,12 @@ export default function Products({ title, data }) {
           <div className="products-header">
             <div className="header-content">
               <div className="title-wrapper">
-                <h2 className="main-title">
+                <h2 className="main-title" style={{textTransform: "uppercase"}}>
                   {title}
-                  <span className="title-accent"></span>
+                  <span className="title-accent" ></span>
                 </h2>
                 {data?.subtitle && (
-                  <p className="subtitle">
+                  <p className="subtitle" style={{textTransform: "capitalize"}}>
                     {data.subtitle}
                   </p>
                 )}
@@ -156,12 +156,12 @@ export default function Products({ title, data }) {
         <div className="products-header">
           <div className="header-content">
             <div className="title-wrapper">
-              <h2 className="main-title">
+              <h2 className="main-title" style={{textTransform: "uppercase"}}>
                 {title}
                 <span className="title-accent"></span>
               </h2>
               {data?.subtitle && (
-                <p className="subtitle">
+                <p className="subtitle" style={{textTransform: "capitalize"}}>
                   {data.subtitle}
                 </p>
               )}

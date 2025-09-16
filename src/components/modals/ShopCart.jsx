@@ -6,17 +6,18 @@ import { useRef } from "react";
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { cartService } from "@/services/cartService";
-import { toast } from 'sonner'
+import { toast } from "sonner";
 export default function ShopCart() {
   const { cartProducts, totalPrice, setCartProducts, isAuthenticated } =
     useContextElement();
-const [quantityUpdating, setQuantityUpdating] = useState({});
-
+  const [quantityUpdating, setQuantityUpdating] = useState({});
+  const isProducts = cartProducts && cartProducts.length > 0;
   // Function to update quantity with backend sync and inventory validation
   const setQuantity = async (id, quantity, variant) => {
-    if(!isAuthenticated){
-     return toast.error("please login to update")
+    if (!isAuthenticated) {
+      return toast.error("please login to update");
     }
+
     // Find the cart item
     const item = cartProducts.find(
       (elm) =>
@@ -27,9 +28,10 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
     if (!item) return;
 
     // Get the inventory quantity for this variant
-    const maxQuantity = item.product.variants.find(v => 
-      JSON.stringify(v.id || v._id) === JSON.stringify(variant)
-    )?.inventory?.quantity || 0;
+    const maxQuantity =
+      item.product.variants.find(
+        (v) => JSON.stringify(v.id || v._id) === JSON.stringify(variant)
+      )?.inventory?.quantity || 0;
 
     // Validate quantity
     if (quantity < 1) {
@@ -44,18 +46,18 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
 
     // Set loading state
     const updateKey = `${id}-${JSON.stringify(variant)}`;
-    setQuantityUpdating(prev => ({ ...prev, [updateKey]: true }));
+    setQuantityUpdating((prev) => ({ ...prev, [updateKey]: true }));
 
     try {
       // API call to update quantity in backend
-      const updateData={
-         productId: id._id,
-          variantId: variant,
-          quantity: quantity
-      }
+      const updateData = {
+        productId: id._id,
+        variantId: variant,
+        quantity: quantity,
+      };
       const response = await cartService.updateQuantity(updateData);
-      console.log(response,"..............")
-     toast.success(response?.message)
+      console.log(response, "..............");
+      toast.success(response?.message);
 
       // if (!response.ok) {
       //   throw new Error('Failed to update quantity');
@@ -69,14 +71,12 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
       item.quantity = quantity;
       items[itemIndex] = item;
       setCartProducts(items);
-
     } catch (error) {
-      toast.error(error?.message)
-      console.error('Error updating quantity:', error);
-     
+      toast.error(error?.message);
+      console.error("Error updating quantity:", error);
     } finally {
       // Remove loading state
-      setQuantityUpdating(prev => {
+      setQuantityUpdating((prev) => {
         const updated = { ...prev };
         delete updated[updateKey];
         return updated;
@@ -88,40 +88,39 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
   const removeItem = async (id, variant) => {
     try {
       // API call to remove item from backend
-      const removeData={
-        productId:id._id,
-        variantId:variant
-      }
-      const response = await cartService.removeFromCart(removeData)
-      toast.success(response?.message)
-      console.log("remove from cart response ..*************              :",response)
+      const removeData = {
+        productId: id._id,
+        variantId: variant,
+      };
+      const response = await cartService.removeFromCart(removeData);
+      toast.success(response?.message);
+      console.log(
+        "remove from cart response ..*************              :",
+        response
+      );
 
       // Update local state only if backend removal is successful
       setCartProducts((prev) => [
         ...prev.filter(
           (elm) =>
-
             elm.productId !== id ||
             JSON.stringify(elm.variantId) !== JSON.stringify(variant)
         ),
       ]);
-
     } catch (error) {
-      toast.error(error.message)
-      console.error('Error removing item:', error);
-      alert('Failed to remove item. Please try again.');
+      toast.error(error.message);
+      console.error("Error removing item:", error);
+      alert("Failed to remove item. Please try again.");
     }
   };
 
   // Helper function to get available quantity for a variant
   const getAvailableQuantity = (product, variantId) => {
-    const variant = product.variants.find(v => 
-      JSON.stringify(v.id || v._id) === JSON.stringify(variantId)
+    const variant = product.variants.find(
+      (v) => JSON.stringify(v.id || v._id) === JSON.stringify(variantId)
     );
     return variant?.inventory?.quantity || 0;
   };
-
-
 
   const addNoteRef = useRef();
   const addGiftRef = useRef();
@@ -140,7 +139,7 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
           </div>
           <div className="wrap">
             <div className="tf-mini-cart-threshold">
-              <div className="tf-progress-bar">
+              {/* <div className="tf-progress-bar">
                 <span
                   style={{
                     width: `${Math.min((totalPrice / 2000) * 100, 100)}%`,
@@ -162,8 +161,8 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
                     </svg>
                   </div>
                 </span>
-              </div>
-              <div className="tf-progress-msg">
+              </div> */}
+              {/* <div className="tf-progress-msg">
                 {totalPrice >= 2000 ? (
                   <span className="fw-6">You have unlocked Free Shipping!</span>
                 ) : (
@@ -176,15 +175,20 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
                     <span className="fw-6"> Free Shipping</span>
                   </>
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="tf-mini-cart-wrap">
               <div className="tf-mini-cart-main">
                 <div className="tf-mini-cart-sroll">
                   <div className="tf-mini-cart-items">
-                    {cartProducts.map((elm, i) => {   
-                          const availableQuantity = getAvailableQuantity(elm.product, elm.variantId);
-                      const updateKey = `${elm.productId}-${JSON.stringify(elm.variantId)}`;
+                    {cartProducts.map((elm, i) => {
+                      const availableQuantity = getAvailableQuantity(
+                        elm.product,
+                        elm.variantId
+                      );
+                      const updateKey = `${elm.productId}-${JSON.stringify(
+                        elm.variantId
+                      )}`;
                       const isUpdating = quantityUpdating[updateKey];
                       return (
                         <div key={i} className="tf-mini-cart-item">
@@ -210,31 +214,53 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
                               {elm.product.title}
                             </div>
                             <div className="price fw-6">
-                              &#8377;{elm.product.variants[0].pricing.price.toFixed(2)}
+                              &#8377;
+                              {elm.product.variants[0].pricing.price.toFixed(2)}
                             </div>
-                            
+
                             {/* Stock availability indicator */}
-                            <div className="stock-info" style={{ fontSize: '12px', color: availableQuantity < 5 ? '#ff6b6b' : '#28a745' }}>
-                              {availableQuantity < 5 && availableQuantity > 0 && `Only ${availableQuantity} left in stock`}
-                              {availableQuantity === 0 && 'Out of stock'}
-                              {availableQuantity >= 5 && 'In stock'}
+                            <div
+                              className="stock-info"
+                              style={{
+                                fontSize: "12px",
+                                color:
+                                  availableQuantity < 5 ? "#ff6b6b" : "#28a745",
+                              }}
+                            >
+                              {availableQuantity < 5 &&
+                                availableQuantity > 0 &&
+                                `Only ${availableQuantity} left in stock`}
+                              {availableQuantity === 0 && "Out of stock"}
+                              {availableQuantity >= 5 && "In stock"}
                             </div>
-                            
+
                             <div className="tf-mini-cart-btns">
                               <div className="wg-quantity small">
                                 <span
-                                  className={`btn-quantity minus-btn ${elm.quantity <= 1 || isUpdating ? 'disabled' : ''}`}
+                                  className={`btn-quantity minus-btn ${
+                                    elm.quantity <= 1 || isUpdating
+                                      ? "disabled"
+                                      : ""
+                                  }`}
                                   onClick={() => {
                                     if (elm.quantity > 1 && !isUpdating) {
-                                      setQuantity(elm.productId, elm.quantity - 1, elm.variantId);
+                                      setQuantity(
+                                        elm.productId,
+                                        elm.quantity - 1,
+                                        elm.variantId
+                                      );
                                     }
                                   }}
-                                  style={{ 
-                                    opacity: elm.quantity <= 1 || isUpdating ? 0.5 : 1,
-                                    cursor: elm.quantity <= 1 || isUpdating ? 'not-allowed' : 'pointer'
+                                  style={{
+                                    opacity:
+                                      elm.quantity <= 1 || isUpdating ? 0.5 : 1,
+                                    cursor:
+                                      elm.quantity <= 1 || isUpdating
+                                        ? "not-allowed"
+                                        : "pointer",
                                   }}
                                 >
-                                  {isUpdating ? '...' : '-'}
+                                  {isUpdating ? "..." : "-"}
                                 </span>
                                 <input
                                   type="number"
@@ -244,43 +270,69 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
                                   max={availableQuantity}
                                   disabled={isUpdating}
                                   onChange={(e) => {
-                                    const newValue = parseInt(e.target.value) || 1;
+                                    const newValue =
+                                      parseInt(e.target.value) || 1;
                                     if (newValue !== elm.quantity) {
-                                      setQuantity(elm.productId, newValue, elm.variantId);
+                                      setQuantity(
+                                        elm.productId,
+                                        newValue,
+                                        elm.variantId
+                                      );
                                     }
                                   }}
-                                  style={{ 
+                                  style={{
                                     opacity: isUpdating ? 0.5 : 1,
-                                    cursor: isUpdating ? 'not-allowed' : 'text'
+                                    cursor: isUpdating ? "not-allowed" : "text",
                                   }}
                                 />
                                 <span
-                                  className={`btn-quantity plus-btn ${elm.quantity >= availableQuantity || isUpdating ? 'disabled' : ''}`}
+                                  className={`btn-quantity plus-btn ${
+                                    elm.quantity >= availableQuantity ||
+                                    isUpdating
+                                      ? "disabled"
+                                      : ""
+                                  }`}
                                   onClick={() => {
-                                    if (elm.quantity < availableQuantity && !isUpdating) {
-                                      setQuantity(elm.productId, elm.quantity + 1, elm.variantId);
+                                    if (
+                                      elm.quantity < availableQuantity &&
+                                      !isUpdating
+                                    ) {
+                                      setQuantity(
+                                        elm.productId,
+                                        elm.quantity + 1,
+                                        elm.variantId
+                                      );
                                     }
                                   }}
-                                  style={{ 
-                                    opacity: elm.quantity >= availableQuantity || isUpdating ? 0.5 : 1,
-                                    cursor: elm.quantity >= availableQuantity || isUpdating ? 'not-allowed' : 'pointer'
+                                  style={{
+                                    opacity:
+                                      elm.quantity >= availableQuantity ||
+                                      isUpdating
+                                        ? 0.5
+                                        : 1,
+                                    cursor:
+                                      elm.quantity >= availableQuantity ||
+                                      isUpdating
+                                        ? "not-allowed"
+                                        : "pointer",
                                   }}
                                 >
-                                  {isUpdating ? '...' : '+'}
+                                  {isUpdating ? "..." : "+"}
                                 </span>
                               </div>
                               <div
                                 className="tf-mini-cart-remove"
                                 style={{ cursor: "pointer" }}
-                                onClick={() => removeItem(elm.productId, elm.variantId)}
+                                onClick={() =>
+                                  removeItem(elm.productId, elm.variantId)
+                                }
                               >
                                 Remove
                               </div>
                             </div>
                           </div>
                         </div>
-                      )
-                    
+                      );
                     })}
 
                     {!cartProducts.length && (
@@ -421,11 +473,9 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
                       &#8377;{totalPrice.toFixed(2)}
                     </div>
                   </div>
-                  <div className="tf-cart-tax">
-                    Taxes and <a href="#">shipping</a> calculated at checkout
-                  </div>
+                  <div className="tf-cart-tax"></div>
                   <div className="tf-mini-cart-line" />
-                  <div className="tf-cart-checkbox">
+                  {/* <div className="tf-cart-checkbox">
                     <div className="tf-checkbox-wrapp">
                       <input
                         className=""
@@ -443,7 +493,7 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
                         terms and conditions
                       </a>
                     </label>
-                  </div>
+                  </div> */}
                   <div className="tf-mini-cart-view-checkout">
                     <Link
                       to={`/view-cart`}
@@ -451,12 +501,27 @@ const [quantityUpdating, setQuantityUpdating] = useState({});
                     >
                       View cart
                     </Link>
-                    <Link
-                      to={`/checkout`}
-                      className="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"
-                    >
-                      <span>Check out</span>
-                    </Link>
+                    {isProducts ? (
+                      <Link
+                        to={`/checkout`}
+                        className="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"
+                      >
+                        <span>Check out</span>
+                      </Link>
+                    ) : (
+                      <button
+                        className="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center disabled-checkout"
+                        disabled
+                        style={{
+                          backgroundColor: "#ccc",
+                          color: "#666",
+                          cursor: "not-allowed",
+                          opacity: 0.6,
+                        }}
+                      >
+                        <span>Check out</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

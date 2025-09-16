@@ -4,20 +4,22 @@ import { useContextElement } from "@/context/Context";
 import CountdownComponent from "../common/Countdown";
 import { useSearchParams } from "react-router-dom";
 import { useProductView } from "@/hooks/userProductView";
-import { toast } from 'sonner'
-import {useNavigate} from 'react-router-dom'
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export const ProductCard = ({ product }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { trackView } = useProductView();
   const [searchParams, setSearchParams] = useSearchParams();
-  const colors = searchParams.get('filter.p.color');
+  const colors = searchParams.get("filter.p.color");
 
-  const [currentImage, setCurrentImage] = useState(product.variants[0].images[0].url);
+  const [currentImage, setCurrentImage] = useState(
+    product.variants[0].images[0].url
+  );
   const [currentColor, setCurrentColor] = useState();
   const [currentVariant, setCurrentVariant] = useState(product?.variants[0]);
-  
-  const { isAuthenticated, loading} = useContextElement();
+
+  const { isAuthenticated, loading } = useContextElement();
   const {
     addProductToCart,
     setQuickAddItem,
@@ -37,31 +39,35 @@ export const ProductCard = ({ product }) => {
   // Function to get the color to display based on URL params
   const getInitialColor = useMemo(() => {
     if (!colors || !groupedByColor) return Object.keys(groupedByColor)[0];
-    
-    // Split colors from URL params (assuming comma-separated if multiple)
-    const urlColors = colors.toLowerCase().split(',').map(color => color.trim());
-    const availableColors = Object.keys(groupedByColor).map(color => color.toLowerCase());
-    
+
+    const urlColors = colors
+      .toLowerCase()
+      .split(",")
+      .map((color) => color.trim());
+    const availableColors = Object.keys(groupedByColor).map((color) =>
+      color.toLowerCase()
+    );
+
     // Find the first matching color that exists in the product
     for (const urlColor of urlColors) {
       const matchingColor = Object.keys(groupedByColor).find(
-        productColor => productColor.toLowerCase() === urlColor
+        (productColor) => productColor.toLowerCase() === urlColor
       );
       if (matchingColor) {
         return matchingColor;
       }
     }
-    
+
     // If no URL color matches, return the first available color
     return Object.keys(groupedByColor)[0];
   }, [colors, groupedByColor]);
 
   useEffect(() => {
     if (!groupedByColor || Object.keys(groupedByColor).length === 0) return;
-    
+
     const selectedColor = getInitialColor;
     const selectedVariant = groupedByColor[selectedColor]?.[0];
-    
+
     if (selectedVariant) {
       setCurrentImage(selectedVariant.images[0].url);
       setCurrentColor(selectedColor);
@@ -69,6 +75,7 @@ export const ProductCard = ({ product }) => {
     }
   }, [product, groupedByColor, getInitialColor]);
 
+  //handling color change of product
   const handleColorChange = (color) => {
     const selectedVariant = groupedByColor[color][0];
     setCurrentImage(selectedVariant.images[0].url);
@@ -80,16 +87,17 @@ export const ProductCard = ({ product }) => {
     return text
       .toString()
       .toLowerCase()
-      .replace(/\s+/g, '-')           // Replace spaces with -
-      .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-      .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-      .replace(/^-+/, '')             // Trim - from start of text
-      .replace(/-+$/, '');            // Trim - from end of text
+      .replace(/\s+/g, "-")
+      .replace(/[^\w\-]+/g, "")
+      .replace(/\-\-+/g, "-")
+      .replace(/^-+/, "")
+      .replace(/-+$/, "");
   }
 
-  const handleWishlistToggle = async(productId, currentVariant) => {   
+  //handling wishList
+  const handleWishlistToggle = async (productId, currentVariant) => {
     const result = await addToWishlist(productId, currentVariant);
-    console.log("result:", result.message)
+    console.log("result:", result.message);
     if (!result?.success) {
       toast.error("error occured", {
         description: result.message,
@@ -97,39 +105,13 @@ export const ProductCard = ({ product }) => {
       });
       return;
     } else {
-      toast.success(result.message, {
-        description: " 🖤",
-        duration: 4000,
-        action: {
-          label: "Wishlist",
-          onClick: () => {
-            navigate('/wishlist')
-            console.log("Navigate to login");
-          },
-        },
-      });
     }
-    console.log("result:", result)
-  }
+  };
 
+
+  
   // Fixed Add to Cart handler
   const handleAddToCart = async () => {
-    if (!currentVariant) {
-      toast.error("Please select a variant", {
-        description: "No variant selected",
-        duration: 4000,
-      });
-      return;
-    }
-
-    if (currentVariant.inventory?.quantity<=0) {
-      toast.error("Out of stock", {
-        description: "This variant is currently out of stock",
-        duration: 4000,
-      });
-      return;
-    }
-
     try {
       // Pass the correct parameters: productId, single variant, quantity
       const result = await addProductToCart(
@@ -137,9 +119,6 @@ export const ProductCard = ({ product }) => {
         currentVariant, // Pass single variant instead of array
         1
       );
-    
-   
-      
     } catch (error) {
       console.error("Add to cart error:", error);
       toast.error("Error adding to cart", {
@@ -151,13 +130,13 @@ export const ProductCard = ({ product }) => {
 
   const handleProductClick = () => {
     trackView(product._id);
-  }
+  };
 
   return (
-    <div className="card-product fl-item" key={product?._id} >
+    <div className="card-product fl-item" key={product?._id}>
       <div className="card-product-wrapper">
-        <Link 
-          to={`/product-detail/${slugify(product?.title)}?id=${product._id}`} 
+        <Link
+          to={`/product-detail/${slugify(product?.title)}?id=${product._id}`}
           className="product-img"
           onClick={handleProductClick}
         >
@@ -196,35 +175,35 @@ export const ProductCard = ({ product }) => {
               <a
                 onClick={handleAddToCart} // Use the new handler
                 className="box-icon bg_white quick-add tf-btn-loading"
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
                 <span className="icon icon-bag" />
                 <span className="tooltip">Add To Cart</span>
               </a>
-              {
-                !loading && (
-                  <a
-                    href={!isAuthenticated && "#login"}
-                    data-bs-toggle={!isAuthenticated ? "modal" : null}
-                    onClick={() => handleWishlistToggle(product?._id, currentVariant)}
-                    className={`box-icon bg_white wishlist btn-icon-action ${
+              {!loading && (
+                <a
+                  href={!isAuthenticated && "#login"}
+                  data-bs-toggle={!isAuthenticated ? "modal" : null}
+                  onClick={() =>
+                    handleWishlistToggle(product?._id, currentVariant)
+                  }
+                  className={`box-icon bg_white wishlist btn-icon-action ${
+                    isAddedtoWishlist(product?._id) ? "added" : ""
+                  }`}
+                >
+                  <span
+                    className={`icon icon-heart ${
                       isAddedtoWishlist(product?._id) ? "added" : ""
                     }`}
-                  >
-                    <span
-                      className={`icon icon-heart ${
-                        isAddedtoWishlist(product?._id) ? "added" : ""
-                      }`}
-                    />
-                    <span className="tooltip">
-                      {isAddedtoWishlist(product?._id)
-                        ? "Already Wishlisted"
-                        : "Add to Wishlist"}
-                    </span>
-                    <span className="icon icon-delete" />
-                  </a>
-                )
-              }
+                  />
+                  <span className="tooltip">
+                    {isAddedtoWishlist(product?._id)
+                      ? "Already Wishlisted"
+                      : "Add to Wishlist"}
+                  </span>
+                  <span className="icon icon-delete" />
+                </a>
+              )}
             </div>
             {product.countdown && (
               <div className="countdown-box">
@@ -253,7 +232,10 @@ export const ProductCard = ({ product }) => {
         )}
       </div>
       <div className="card-product-info">
-        <Link to={`/product-detail/${slugify(product.title)}?id=${product._id}`} className="title link">
+        <Link
+          to={`/product-detail/${slugify(product.title)}?id=${product._id}`}
+          className="title link"
+        >
           {product.title}
         </Link>
         <span className="price">

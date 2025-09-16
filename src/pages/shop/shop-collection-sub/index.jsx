@@ -21,7 +21,7 @@ export default function ShopCollectionSubPage() {
         <div className="container-full">
           <div className="heading text-center">Products</div>
           <p className="text-center text-2 text_black-2 mt_5">
-           Find variety of models 
+           Find variety in our jewels 
           </p>
         </div>
       </div>

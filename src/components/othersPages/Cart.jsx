@@ -4,7 +4,8 @@ import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 export default function Cart() {
-  const { cartProducts, setCartProducts, totalPrice,isAuthenticated } = useContextElement();
+  const { cartProducts, setCartProducts, totalPrice, isAuthenticated } =
+    useContextElement();
   const [quantityUpdating, setQuantityUpdating] = useState({});
   const setQuantity = async (id, quantity, variant) => {
     if (!isAuthenticated) {
@@ -103,9 +104,9 @@ export default function Cart() {
     }
   };
 
-    const getAvailableQuantity = (product, variantId) => {
-    const variant = product.variants.find(v => 
-      JSON.stringify(v.id || v._id) === JSON.stringify(variantId)
+  const getAvailableQuantity = (product, variantId) => {
+    const variant = product.variants.find(
+      (v) => JSON.stringify(v.id || v._id) === JSON.stringify(variantId)
     );
     return variant?.inventory?.quantity || 0;
   };
@@ -117,7 +118,7 @@ export default function Cart() {
               <p className="mb_24">You may check out all the available products and buy some in the shop</p>
               <Link to={`/shop-default`} className="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn">Return to shop<i className="icon icon-arrow1-top-left"></i></Link>
           </div> */}
-        <div className="tf-cart-countdown">
+        {/* <div className="tf-cart-countdown">
           <div className="title-left">
             <svg
               className="d-inline-block"
@@ -140,7 +141,7 @@ export default function Cart() {
             data-timer={600}
             data-labels="d:,h:,m:,s"
           />
-        </div>
+        </div> */}
         <div className="tf-page-cart-wrap">
           <div className="tf-page-cart-item">
             <form onSubmit={(e) => e.preventDefault()}>
@@ -337,7 +338,7 @@ export default function Cart() {
                   </div>
                 </>
               )}
-              <div className="tf-page-cart-note">
+              {/* <div className="tf-page-cart-note">
                 <label htmlFor="cart-note">Add Order Note</label>
                 <textarea
                   name="note"
@@ -345,12 +346,12 @@ export default function Cart() {
                   placeholder="How can we help you?"
                   defaultValue={""}
                 />
-              </div>
+              </div> */}
             </form>
           </div>
           <div className="tf-page-cart-footer">
             <div className="tf-cart-footer-inner">
-              <div className="tf-free-shipping-bar">
+              {/* <div className="tf-free-shipping-bar">
                 <div className="tf-progress-bar">
                   <span
                     style={{
@@ -390,9 +391,9 @@ export default function Cart() {
                     </>
                   )}
                 </div>
-              </div>
+              </div> */}
               <div className="tf-page-cart-checkout">
-                <div className="shipping-calculator">
+                {/* <div className="shipping-calculator">
                   <summary
                     className="accordion-shipping-header d-flex justify-content-between align-items-center collapsed"
                     data-bs-target="#shipping"
@@ -557,8 +558,8 @@ export default function Cart() {
                       </button>
                     </div>
                   </div>
-                </div>
-                <div className="cart-checkbox">
+                </div> */}
+                {/* <div className="cart-checkbox">
                   <input
                     type="checkbox"
                     className="tf-check"
@@ -568,7 +569,7 @@ export default function Cart() {
                     <span>Do you want a gift wrap?</span> Only
                     <span className="fw-5">&#8377;5.00</span>
                   </label>
-                </div>
+                </div> */}
                 <div className="tf-cart-totals-discounts">
                   <h3>Subtotal</h3>
                   <span className="total-value">
@@ -580,7 +581,7 @@ export default function Cart() {
                   <Link to={`/shipping-delivery`}>shipping</Link> calculated at
                   checkout
                 </p>
-                <div className="cart-checkbox">
+                {/* <div className="cart-checkbox">
                   <input
                     type="checkbox"
                     className="tf-check"
@@ -590,14 +591,28 @@ export default function Cart() {
                     I agree with the
                     <Link to={`/terms-conditions`}>terms and conditions</Link>
                   </label>
-                </div>
+                </div> */}
                 <div className="cart-checkout-btn">
-                  <Link
-                    to={cartProducts.length>0?`/checkout` : `/view-cart`}
+                {
+                  cartProducts.length > 0 ? 
+                   <Link
+                    to={cartProducts.length > 0 ? `/checkout` : `/view-cart`}
                     className="tf-btn w-100 btn-fill animate-hover-btn radius-3 justify-content-center"
                   >
                     <span>Check out</span>
-                  </Link>
+                  </Link> : <button
+                   className="tf-btn w-100 btn-fill animate-hover-btn radius-3 justify-content-center"
+                     style={{
+                          backgroundColor: "#ccc",
+                          color: "#666",
+                          cursor: "not-allowed",
+                          opacity: 0.6,
+                        }}>
+                   <span>Check out</span>
+                  </button>
+
+                }
+                
                 </div>
                 <div className="tf-page-cart_imgtrust">
                   <p className="text-center fw-6">Guarantee Safe Checkout</p>

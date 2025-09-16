@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Nav from "./Nav";
 import { useContextElement } from "@/context/Context";
 import { Link } from "react-router-dom";
 import CartLength from "../common/CartLength";
 import WishlistLength from "../common/WishlistLength";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom"
 export default function Header2({
   textClass,
   bgColor = "",
@@ -16,39 +16,56 @@ export default function Header2({
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-   const navigate = useNavigate();
+  const searchInputRef = useRef(null);
+  
+  const navigate=useNavigate()
   const handleLogout = () => {
     logout();
     setIsAccountDropdownOpen(false);
   };
 
-  const toggleSearch = () => {
+  const handleSearchToggle = (e) => {
+    e.preventDefault();
     setIsSearchOpen(!isSearchOpen);
-    if (!isSearchOpen) {
-      // Focus on input when opening
-      setTimeout(() => {
-        const searchInput = document.getElementById('search-input');
-        if (searchInput) {
-          searchInput.focus();
-        }
-      }, 100);
-    }
   };
+
+  const handlesearchinputchange=(e)=>{
+    setSearchQuery(e.target.value)
+  }
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // You can implement your search logic here
-     navigate(`/product-detail?search=${encodeURIComponent(searchQuery.trim())}`);
-      // For example: navigate to search results page
+      // Handle search logic here
+      console.log("Searching for:", searchQuery);
+      navigate(`/product-detail?search=${encodeURIComponent(searchQuery)}`)
       // navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     }
   };
 
-  const handleSearchInputChange = (e) => {
-    console.log("e.target.value", e.target.value);
-    setSearchQuery(e.target.value);
+  const handleSearchClose = () => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
   };
+
+  // Focus input when search opens
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
+  // Close search on escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isSearchOpen) {
+        handleSearchClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isSearchOpen]);
 
   return (
     <header
@@ -57,84 +74,6 @@ export default function Header2({
         uppercase ? "header-uppercase" : ""
       } "header-style-2"`}
     >
-      {/* Search Overlay */}
-      {isSearchOpen && (
-        <div className="search-overlay position-fixed w-100 h-100 d-none d-md-block" style={{
-          top: 0,
-          left: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 9999
-        }}>
-          <div className="search-container position-absolute w-100 bg-white shadow-lg" style={{
-            top: '80px',
-            left: 0,
-            padding: '20px 0'
-          }}>
-            <div className="container">
-              <div className="row justify-content-center">
-                <div className="col-lg-8 col-md-10">
-                  <form onSubmit={handleSearchSubmit} className="search-form position-relative">
-                    <input
-                      id="search-input"
-                      type="text"
-                      value={searchQuery}
-                      onChange={handleSearchInputChange}
-                      placeholder="Search for products..."
-                      className="form-control search-input"
-                      style={{
-                        padding: '15px 50px 15px 20px',
-                        fontSize: '18px',
-                        border: '2px solid #e0e0e0',
-                        borderRadius: '50px',
-                        outline: 'none'
-                      }}
-                    />
-                    <button
-                      type="submit"
-                      className="search-submit-btn position-absolute"
-                      style={{
-                        right: '15px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <i className="icon icon-search" style={{ fontSize: '20px' }} />
-                    </button>
-                  </form>
-                  
-                  {/* Quick suggestions or recent searches can go here */}
-                  {searchQuery && (
-                    <div className="search-suggestions mt-3">
-                      <div className="text-muted small">Press Enter to search for "{searchQuery}"</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            
-            {/* Close button */}
-            <button
-              onClick={toggleSearch}
-              className="search-close position-absolute"
-              style={{
-                top: '15px',
-                right: '20px',
-                background: 'none',
-                border: 'none',
-                fontSize: '24px',
-                cursor: 'pointer',
-                padding: '5px'
-              }}
-            >
-              ×
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="px_15 lg-px_40">
         <div className="row wrapper-header align-items-center">
           <div className="col-md-4 col-3 tf-lg-hidden">
@@ -185,15 +124,49 @@ export default function Header2({
           </div>
           <div className="col-xl-3 col-md-4 col-3">
             <ul className="nav-icon d-flex justify-content-end align-items-center gap-20">
-              <li className="nav-search d-none d-md-block">
-                <button
-                  onClick={toggleSearch}
-                  className="nav-icon-item bg-transparent border-0"
-                  style={{ cursor: 'pointer' }}
-                >
-                
-                  <i className="icon icon-search" />
-                </button>
+              <li className="nav-search position-relative">
+                {!isSearchOpen ? (
+                  <a
+                    href="#"
+                    onClick={handleSearchToggle}
+                    className="nav-icon-item"
+                  >
+                    <i className="icon icon-search" />
+                  </a>
+                ) : (
+                  <div className="search-container d-flex align-items-center">
+                    <form onSubmit={handleSearchSubmit} className="search-form" >
+                      <div className="search-input-wrapper" >
+                        <input
+                        
+                          style={{borderRadius:"20px",background:"#F1EEE4"}}
+                          ref={searchInputRef}
+                          type="text"
+                          value={searchQuery}
+                          onChange={handlesearchinputchange}
+                          placeholder="Search..."
+                          className="search-input"
+                        />
+                        {searchQuery && (
+                          <button
+                            type="submit"
+                            className="search-submit-btn"
+                          >
+                            <i className="icon icon-search" />
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                    <button
+                      onClick={handleSearchClose}
+                      className="search-close-btn ms-2"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                      </svg>
+                    </button>
+                  </div>
+                )}
               </li>
               <li 
                 className="nav-account position-relative"
@@ -389,46 +362,114 @@ export default function Header2({
           transform: translateY(0) !important;
         }
 
-        /* Search styles */
-        .search-overlay {
-          animation: fadeIn 0.3s ease-in-out;
-        }
-        
+        /* Search Styles */
         .search-container {
-          animation: slideDown 0.3s ease-in-out;
+          min-width: 250px;
+          animation: slideIn 0.2s ease-out;
         }
-        
-        .search-input:focus {
-          border-color: #007bff !important;
-          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-        
-        .search-close:hover {
-          opacity: 0.7;
-        }
-        
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        @keyframes slideDown {
-          from { 
+
+        @keyframes slideIn {
+          from {
             opacity: 0;
-            transform: translateY(-20px);
+            transform: translateX(20px);
           }
-          to { 
+          to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(0);
           }
         }
-        
-        .nav-icon-item {
+
+        .search-form {
+          flex: 1;
+        }
+
+        .search-input-wrapper {
+          position: relative;
+          display: flex;
+          align-items: center;
+        }
+
+        .search-input {
+          width: 100%;
+          padding: 8px 12px;
+          padding-right: 36px;
+          border: 1px solid #e5e7eb;
+          border-radius: 40px;
+          font-size: 14px;
+          outline: none;
           transition: all 0.2s ease-in-out;
+          background: #f9fafb;
+        }
+
+        .search-input:focus {
+          border-color: #3b82f6;
+          background: #fff;
+          
+        }
+
+        .search-input::placeholder {
+          color: #9ca3af;
+        }
+
+        .search-submit-btn {
+          position: absolute;
+          right: 4px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          padding: 4px;
+          cursor: pointer;
+          color: #6b7280;
+          transition: color 0.2s ease-in-out;
+          border-radius: 50%;
+        }
+
+        .search-submit-btn:hover {
+          color: #000000;
+          background: rgba(59, 130, 246, 0.1);
+        }
+
+        .search-close-btn {
+          background: none;
+          border: none;
+          padding: 6px;
+          cursor: pointer;
+          color: #6b7280;
+          transition: all 0.2s ease-in-out;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .search-close-btn:hover {
+          color: #ef4444;
+          background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          .search-container {
+            min-width: 180px;
+          }
+          
+          .search-input {
+            font-size: 13px;
+            padding: 6px 10px;
+            padding-right: 32px;
+          }
+        }
+        @media (max-width:1149px){
+          .search-container{
+            display:none !important;
+          }
+        }
+        @media (max-width:1149px){
+        .nav-cart{
+        display:none !important;
         }
         
-        .nav-icon-item:hover {
-          transform: scale(1.1);
         }
       `}</style>
     </header>

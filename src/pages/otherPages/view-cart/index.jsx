@@ -22,8 +22,8 @@ export default function ViewCartPage() {
       </div>
 
       <Cart />
-      <Testimonials />
-      <RecentProducts />
+      {/* <Testimonials /> */}
+      {/* <RecentProducts /> */}
       <Footer1 />
     </>
   );

@@ -12,8 +12,7 @@ export default function ProductGrid({
   totalproducts
   
 }) {
- 
-console.log("dummy", dummy);
+
  
 
   return (

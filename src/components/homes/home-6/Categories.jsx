@@ -53,7 +53,7 @@ export default function Categories({ categories, facets }) {
                   spaceBetween: 15,
                 },
                 576: {
-                  slidesPerView: 5,
+                  slidesPerView: 4,
                   spaceBetween: 20,
                 },
                 400: {
@@ -61,8 +61,8 @@ export default function Categories({ categories, facets }) {
                   spaceBetween: 20,
                 },
                 0: {
-                  slidesPerView: 4,
-                  spaceBetween: 20,
+                  slidesPerView: 3,
+                  spaceBetween: 10,
                 },
               }}
               spaceBetween={30}
@@ -183,8 +183,8 @@ export default function Categories({ categories, facets }) {
 
         /* Circular Image Container - Responsive */
         .category-circle-wrapper {
-          width: 220px;
-          height: 220px;
+          width: 160px;
+          height: 160px;
           border-radius: 50%;
           position: relative;
           overflow: hidden;
@@ -196,6 +196,7 @@ export default function Categories({ categories, facets }) {
           border-color: rgba(0,0,0,0.15);
           transform: scale(1.05);
           box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.15) !important;
+         
         }
 
         .category-image {
@@ -219,12 +220,12 @@ export default function Categories({ categories, facets }) {
         }
 
         .category-title {
-          transition: color 0.3s ease;
+          transition: color 0.7s ease;
           color: #333;
         }
 
         .category-card:hover .category-title {
-          color: #000 !important;
+          color: #db1215!important;
         }
 
         .categories-swiper {

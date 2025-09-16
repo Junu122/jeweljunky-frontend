@@ -8,6 +8,7 @@ export const ProductCardWishlist = ({ product }) => {
   
   const {  getWishlistItem } = useContextElement();
   const {
+    addProductToCart,
     setQuickAddItem,
     addToWishlist,
     isAddedtoWishlist,
@@ -97,24 +98,36 @@ export const ProductCardWishlist = ({ product }) => {
 
   const handleRemoveProduct=async(productid)=>{
    const result=await removeFromWishlist(productid);
-   if(result?.success){
-     toast.success(result.message, {
-      description: " 🖤",
-      duration: 4000,
-   
-    });
-   }else{
-         toast.error("error occured", {
-      description: result.message,
-      duration: 4000,
-   
-    });
-   }
+  
    console.log("result in removing product",result)
   }
   // Show loading state if data is not ready
   if ( !currentImage) {
     return <div>Loading...</div>;
+  }
+
+  const handleAddToCart=async()=>{
+   
+     
+
+
+       try {
+      // Pass the correct parameters: productId, single variant, quantity
+      const result = await addProductToCart(
+        product._id,
+        currentVariant, 
+        1
+      );
+    
+   
+      
+    } catch (error) {
+      console.error("Add to cart error:", error);
+      toast.error("Error adding to cart", {
+        description: "Please try again",
+        duration: 4000,
+      });
+    }
   }
 
   return (
@@ -152,12 +165,8 @@ export const ProductCardWishlist = ({ product }) => {
 
         <div className="list-product-btn">
           <a
-            href="#quick_add"
-              onClick={() => setQuickAddItem({
-                  productid:product._id,
-                  variant:groupedByColor[currentColor],
-                  realproduct:product
-                })}
+            
+              onClick={handleAddToCart}
             data-bs-toggle="modal"
             className="box-icon bg_white quick-add tf-btn-loading"
           >
