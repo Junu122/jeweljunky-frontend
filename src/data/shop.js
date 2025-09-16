@@ -1,9 +1,5 @@
 export const layouts = [
-  {
-    className: "sw-layout-list list-layout",
-    dataValueGrid: "1",
-    iconClass: "icon icon-list",
-  },
+
   {
     className: "sw-layout-2",
     dataValueGrid: "2",

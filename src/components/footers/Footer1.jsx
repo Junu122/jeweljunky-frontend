@@ -73,7 +73,7 @@ export default function Footer1({ bgColor = "" }) {
         <div className="footer-body">
           <div className="container">
             <div className="row">
-              <div className="col-xl-3 col-md-6 col-12">
+              <div className="col-xl-4 col-md-6 col-12">
                 <div className="footer-infor">
                   <div className="footer-logo">
                     {/* <Link to={`/`}>
@@ -152,7 +152,7 @@ export default function Footer1({ bgColor = "" }) {
                   </ul> */}
                 </div>
               </div>
-              <div className="col-xl-3 col-md-6 col-12 footer-col-block">
+              <div className="col-xl-4 col-md-6 col-12 footer-col-block">
                 <div className="footer-heading footer-heading-desktop">
                   <h6>Help</h6>
                 </div>
@@ -169,7 +169,7 @@ export default function Footer1({ bgColor = "" }) {
                   ))}
                 </ul>
               </div>
-              <div className="col-xl-3 col-md-6 col-12 footer-col-block">
+              <div className="col-xl-4 col-md-6 col-12 footer-col-block">
                 <div className="footer-heading footer-heading-desktop">
                   <h6>About us</h6>
                 </div>
@@ -186,7 +186,7 @@ export default function Footer1({ bgColor = "" }) {
                   ))}
                 </ul>
               </div>
-              <div className="col-xl-3 col-md-6 col-12">
+              {/* <div className="col-xl-3 col-md-6 col-12">
                 <div className="footer-newsletter footer-col-block">
                   <div className="footer-heading footer-heading-desktop">
                     <h6>Sign Up for Email</h6>
@@ -246,17 +246,17 @@ export default function Footer1({ bgColor = "" }) {
                       </div>
                       <div className="subscribe-msg" />
                     </form>
-                    {/* <div className="tf-cur">
+                    <div className="tf-cur">
                       <div className="tf-currencies">
                         <CurrencySelect />
                       </div>
                       <div className="tf-languages">
                         <LanguageSelect />
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -269,7 +269,7 @@ export default function Footer1({ bgColor = "" }) {
                     © {new Date().getFullYear()} Jewel Junkie Store. All Rights
                     Reserved
                   </div>
-                  <div className="tf-payment">
+                  {/* <div className="tf-payment">
                     {paymentImages.map((image, index) => (
                       <img
                         key={index}
@@ -279,7 +279,7 @@ export default function Footer1({ bgColor = "" }) {
                         alt={image.alt}
                       />
                     ))}
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
