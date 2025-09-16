@@ -6,7 +6,7 @@ import {ArrowBigRight,ArrowBigLeft} from 'lucide-react'
 export default function Categories({ categories, facets }) {
   return (
     <>
-      <section className="py-5 bg-light">
+      <section className="py-5 bg-light" style={{overflowX: 'hidden'}}>
         <div className="container">
           {/* Modern Header Section */}
           <div className="text-center mb-5">
@@ -50,15 +50,19 @@ export default function Categories({ categories, facets }) {
                 },
                 768: {
                   slidesPerView: 4,
-                  spaceBetween: 20,
-                },
-                576: {
-                  slidesPerView: 4,
                   spaceBetween: 15,
                 },
-                0: {
+                576: {
                   slidesPerView: 3,
                   spaceBetween: 10,
+                },
+                400: {
+                  slidesPerView: 2.5,
+                  spaceBetween: 8,
+                },
+                0: {
+                  slidesPerView: 2,
+                  spaceBetween: 8,
                 },
               }}
               spaceBetween={30}
@@ -100,14 +104,13 @@ export default function Categories({ categories, facets }) {
                         <div className="category-content">
                           <h5 className="category-title mb-1" style={{fontSize: '0.95rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight:"800"}}>
                             {item.name} <br/>
-
                           </h5>
                           
                           {/* Item Count */}
                           {facets?.map((facet) => {
                             if (facet.name === item.name) {
                               return (
-                                <p key={facet.name} className="category-count  mb-0" style={{fontSize: '0.75rem'}}>
+                                <p key={facet.name} className="category-count mb-0" style={{fontSize: '0.75rem'}}>
                                   {facet.count} items
                                 </p>
                               );
@@ -178,7 +181,7 @@ export default function Categories({ categories, facets }) {
           transform: translateY(-8px);
         }
 
-        /* Circular Image Container */
+        /* Circular Image Container - Responsive */
         .category-circle-wrapper {
           width: 220px;
           height: 220px;
@@ -239,14 +242,21 @@ export default function Categories({ categories, facets }) {
         }
 
         /* Responsive adjustments */
-        @media (max-width: 992px) {
+        @media (max-width: 1199px) {
           .category-circle-wrapper {
-            width: 100px;
-            height: 100px;
+            width: 180px;
+            height: 180px;
           }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 991px) {
+          .category-circle-wrapper {
+            width: 140px;
+            height: 140px;
+          }
+        }
+
+        @media (max-width: 767px) {
           .display-4 {
             font-size: 2.5rem;
           }
@@ -257,27 +267,48 @@ export default function Categories({ categories, facets }) {
           }
 
           .category-circle-wrapper {
-            width: 90px;
-            height: 90px;
+            width: 110px;
+            height: 110px;
           }
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 575px) {
           .display-4 {
             font-size: 2rem;
           }
           
           .category-circle-wrapper {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
           }
 
           .category-title {
-            font-size: 0.85rem !important;
+            font-size: 0.8rem !important;
           }
 
           .category-count {
-            font-size: 0.7rem !important;
+            font-size: 0.65rem !important;
+          }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 399px) {
+          .category-circle-wrapper {
+            width: 75px;
+            height: 75px;
+          }
+
+          .category-title {
+            font-size: 0.75rem !important;
+            line-height: 1.2;
+          }
+
+          .category-count {
+            font-size: 0.6rem !important;
+          }
+
+          .categories-swiper {
+            padding: 1rem 0;
           }
         }
       `}</style>
