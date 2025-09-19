@@ -605,7 +605,7 @@ const navigate=useNavigate()
                   <div className="d-flex justify-content-between mb-2">
                     <span className="text-muted">Subtotal</span>
                     <span className="text-dark">
-                      &#8377;{orderdata?.subTotal/100}
+                      &#8377;{orderdata?.subTotal}
                     </span>
                   </div>
                   <div className="d-flex justify-content-between mb-2">
@@ -624,7 +624,7 @@ const navigate=useNavigate()
                     <div className="d-flex justify-content-between">
                       <span className="fw-bold text-dark h6">Total</span>
                       <span className="fw-bold text-primary h5">
-                        &#8377;{orderdata?.subTotal/100}
+                        &#8377;{orderdata?.subTotal}
                       </span>
                     </div>
                   </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
+import {useNavigate} from "react-router-dom"
 import { axiosinstance } from '@/utlis/api';
 const PaymentSuccessPage = ({data}) => {
-
+const navigate=useNavigate()
 
   const [showContent, setShowContent] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -102,7 +102,7 @@ const PaymentSuccessPage = ({data}) => {
                     animationFillMode: 'forwards'
                   }}
                 >
-                  Payment Successful!
+                  Order  Successful!
                 </h1>
                 
                 <p 
@@ -130,7 +130,7 @@ const PaymentSuccessPage = ({data}) => {
                         style={{ background: 'linear-gradient(135deg, #f8f9ff, #e6f3ff)' }}
                       >
                         <div className="small text-muted fw-semibold mb-1">Amount</div>
-                        <div className="h5 fw-bold mb-0" style={{ color: '#4a5568' }}>&#8377;{data?.amount/100}</div>
+                        <div className="h5 fw-bold mb-0" style={{ color: '#4a5568' }}>&#8377;{data?.subTotal}</div>
                       </div>
                     </div>
                     <div className="col-6">
@@ -184,7 +184,7 @@ const PaymentSuccessPage = ({data}) => {
                         e.target.style.color = '#667eea';
                         e.target.style.transform = 'translateY(0)';
                       }}
-                       onClick={() => window.open("/")}
+                       onClick={()=>navigate("/product-detail")}
                     >
                       Continue Shopping
                     </button>

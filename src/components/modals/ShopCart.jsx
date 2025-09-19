@@ -7,9 +7,12 @@ import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { cartService } from "@/services/cartService";
 import { toast } from "sonner";
+import { useEffect } from "react";
 export default function ShopCart() {
-  const { cartProducts, totalPrice, setCartProducts, isAuthenticated } =
+  const { cartProducts, totalPrice, setCartProducts, isAuthenticated,setTotalPrice } =
     useContextElement();
+
+  
   const [quantityUpdating, setQuantityUpdating] = useState({});
   const isProducts = cartProducts && cartProducts.length > 0;
   // Function to update quantity with backend sync and inventory validation
@@ -57,6 +60,7 @@ export default function ShopCart() {
       };
       const response = await cartService.updateQuantity(updateData);
       console.log(response, "..............");
+      setTotalPrice(response.data.totalAmount)
       toast.success(response?.message);
 
       // if (!response.ok) {
@@ -93,6 +97,7 @@ export default function ShopCart() {
         variantId: variant,
       };
       const response = await cartService.removeFromCart(removeData);
+      setTotalPrice(response.data.totalAmount)
       toast.success(response?.message);
       console.log(
         "remove from cart response ..*************              :",

@@ -485,7 +485,7 @@ export default function Orders({ data }) {
                     <div className="order-amount">
                       <div className="amount-label">Total Amount</div>
                       <div className="amount-value">
-                        ₹{(order.subTotal / 100).toLocaleString('en-IN')}
+                        ₹{(order.subTotal ).toLocaleString('en-IN')}
                       </div>
                     </div>
                   </div>
@@ -535,8 +535,8 @@ export default function Orders({ data }) {
 
                       <div className="detail-group">
                         <span className="detail-label">Payment Method</span>
-                        <span className="detail-value">
-                          {order.paymentMethod || 'Online Payment'}
+                        <span className="detail-value" style={{textTransform:"uppercase"}}>
+                          {order?.paymentDetails.method || 'Online Payment'}
                         </span>
                       </div>
 

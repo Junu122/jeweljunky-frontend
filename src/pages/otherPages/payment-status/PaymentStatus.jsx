@@ -15,7 +15,7 @@ const PaymentStatus = () => {
         const response = await axiosinstance.get(`/payment/payment-status/${orderId}`);
         console.log('Order Status:.........', response.data);
         setStatus(response.data.status);
-        setData(response.data.data)
+        setData(response.data.order)
          // assuming response.data is 'completed' or 'failure'
       } catch (error) {
         console.error('Error fetching order status:', error);
