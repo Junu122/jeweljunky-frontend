@@ -475,7 +475,7 @@ export default function ShopCart() {
                   <div className="tf-cart-totals-discounts">
                     <div className="tf-cart-total">Subtotal</div>
                     <div className="tf-totals-total-value fw-6">
-                      &#8377;{totalPrice.toFixed(2)}
+                      &#8377;{totalPrice?.toFixed(2)}
                     </div>
                   </div>
                   <div className="tf-cart-tax"></div>

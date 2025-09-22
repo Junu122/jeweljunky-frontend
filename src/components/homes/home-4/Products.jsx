@@ -1,20 +1,38 @@
 import Productcard4 from "@/components/shopCards/Productcart4";
 import { products1 } from "@/data/products";
+import {useNavigate} from "react-router-dom"
 import { useState } from "react";
-
-export default function Products() {
+import { ProductCard } from "@/components/shopCards/ProductCard";
+import { axiosinstance } from "@/utlis/api";
+import { useEffect } from "react";
+export default function VerticalProducts() {
+  const navigate=useNavigate()
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [allproducts, setAllproducts] = useState([...products1]);
+  const [allproducts, setAllproducts] = useState([]);
   const handleLoad = () => {
     setLoading(true);
 
     setTimeout(() => {
-      setAllproducts((pre) => [...pre, ...products1.slice(0, 12)]);
+       
       setLoading(false);
       setLoaded(true);
+      navigate("/product-detail")
     }, 1000);
   };
+      const fetchdata=async()=>{
+       const response=await axiosinstance.get("/product/getallproducts");
+       
+       setAllproducts(response?.data?.products)
+      console.log("response  for all products  :",response)
+  }
+
+  useEffect(()=>{
+
+fetchdata()
+  },[])
+ 
+
   return (
     <section className="flat-spacing-6">
       <div className="container">
@@ -28,8 +46,8 @@ export default function Products() {
           </p>
         </div>
         <div className="grid-layout" data-grid="grid-4">
-          {allproducts.map((product, i) => (
-            <Productcard4 product={product} key={i} />
+          {allproducts?.slice(0,8).map((product, i) => (
+            <ProductCard product={product} key={i} />
           ))}
         </div>
         {!loaded && (

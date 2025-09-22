@@ -1,9 +1,12 @@
 import Footer1 from "@/components/footers/Footer1";
 import Header4 from "@/components/headers/Header4";
+import Collections from "@/components/homes/home-ceramic/Collections";
+import Banner2 from "@/components/homes/home-ceramic/Banner2";
+import Banner from "@/components/homes/home-ceramic/Banner";
 import Productsp from "@/components/homes/home-1/Products";
 import Brands from "@/components/homes/home-1/Brands";
 import BestsellerSection from "@/components/shopCards/ProductCardNew";
-import Banner from "@/components/homes/home-6/Banner";
+// import Banner from "@/components/homes/home-6/Banner";
 import Categories from "@/components/homes/home-6/Categories";
 import Features from "@/components/common/Features";
 // import Hero from "@/components/homes/home-6/Hero";
@@ -20,6 +23,7 @@ import { useHomePageData } from "@/services/homepageService";
 import { HomepageDatas } from "@/hooks/homePageData";
 import PageNotFoundPage from "../../../pages/otherPages/page-not-found";
 import ProductCollectionShowcase from "@/pages/ProductCollection";
+import VerticalProducts from "@/components/homes/home-4/Products";
 const LoadingSpinner = () => (
   <div
     className="d-flex justify-content-center align-items-center"
@@ -89,12 +93,14 @@ export default function Homepage6() {
         home.data?.data?.allcollections.map((collection,index)=><Products key={index} title={collection.name} data={collection} />)
       }
       {/* <Products title="Best Seller" data={home.data.data.bestsellerSection} /> */}
+      {/* <Collections bannercollection={home.data.data.bannerSection} /> */}
+       <Banner />
       <JewelryBanners bannercollection={home.data.data.bannerSection} />
       {/* <Products title="Trending" data={home.data.data.trendingSection} /> */}
 {/* <ProductCollectionShowcase /> */}
       {/* <Banner /> */}
       {/* <BestsellerSection /> */}
-
+    <VerticalProducts />
       {/* <Productsp /> */}
       {/* <Features2 bgColor="" />
       <Location /> */}

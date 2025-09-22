@@ -343,6 +343,38 @@ export default function Checkout() {
                 </div>
               )}
 
+              {
+                allAddresses.length<=0 && (
+                     <button
+                    type="button"
+                    onClick={handleAddNewAddress}
+                    style={{
+                      marginTop: "20px",
+                      padding: "12px 24px",
+                      backgroundColor: "#000000",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "8px",
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      cursor: "pointer",
+                      transition: "all 0.3s ease",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                    onMouseOver={(e) =>
+                      (e.target.style.backgroundColor = "#0056b3")
+                    }
+                    onMouseOut={(e) =>
+                      (e.target.style.backgroundColor = "#000000")
+                    }
+                  >
+                    ➕ Add New Address
+                  </button>
+                )
+              }
+
               {/* New Address Form */}
               {showNewAddressForm && (
                 <NewAddressForm

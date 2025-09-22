@@ -35,7 +35,7 @@ export const useHomePageData = () => {
       console.error(`Error fetching ${key}:`, error);
       setData(prev => ({
         ...prev,
-        [key]: { loading: false, data: null, error: error?.response?.data?.message || error?.message }
+        [key]: { loading: false, data: null, error:error?.response?.data || error?.response?.data?.message || error?.message }
       }));
     }
   };

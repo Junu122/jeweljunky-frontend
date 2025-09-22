@@ -15,22 +15,23 @@ export default function Banner() {
                 className="lazyload"
                 data-src="/images/collections/collection-ceramic-3.png"
                 alt="collection-img"
-                src="/images/collections/collection-ceramic-3.png"
+                src="/images/collections/Gemini_Generated_Image_rfaqkxrfaqkxrfaq.png"
                 width={1600}
-                height={571}
+                height={671}
+                style={{width:"100%"}}
               />
             </Link>
             <div
               className="collection-content text-center wow fadeInUp"
               data-wow-delay="0s"
             >
-              <h5 className="heading text-white">Beauty in Simplicity</h5>
-              <p className="subtext text-white">
+              <h5 className="heading text-black" style={{fontWeight:"700"}}>Beauty in Simplicity</h5>
+              <p className="subtext " style={{color:"red"}}>
                 Explore a world of meticulous details
               </p>
               <Link
                 to={`/shop-collection-sub`}
-                className="fade-item fade-item-3 tf-btn btn-outline-light fw-5 btn-xl radius-60"
+                className="fade-item fade-item-3 tf-btn btn-outline-dark fw-5 btn-xl radius-60"
               >
                 <span>Shop now</span>
               </Link>

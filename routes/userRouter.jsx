@@ -158,7 +158,7 @@ import BlogListPage from "../src/pages/blogs/blog-list";
 import BlogDetailsPage from "../src/pages/blogs/blog-detail";
 import StoreLocationPage from "../src/pages/otherPages/store-locations";
 import ScrollTopBehaviour from "../src/components/common/ScrollToTopBehaviour";
-import CheckoutPage from "../src/pages/otherPages/checkout";
+import CheckoutPage from "@/pages/otherPages/checkout";
 import PaymentCOnfirmationPage from "../src/pages/otherPages/payment-confirmation";
 import PaymentFailurePage from "../src/pages/otherPages/payment-failure";
 import MyAccountOrderPage from "../src/pages/dashboard/my-account-orders";

@@ -6,7 +6,7 @@ import {ArrowBigRight,ArrowBigLeft} from 'lucide-react'
 export default function Categories({ categories, facets }) {
   return (
     <>
-      <section className="py-5 bg-light" style={{overflowX: 'hidden'}}>
+      <section className="py-5 " style={{overflowX: 'hidden'}}>
         <div className="container">
           {/* Modern Header Section */}
           <div className="text-center mb-5">
@@ -42,10 +42,10 @@ export default function Categories({ categories, facets }) {
               breakpoints={{
                 1200: {
                   slidesPerView: 6,
-                  spaceBetween: 20,
+                  spaceBetween: 40,
                 },
                 992: {
-                  slidesPerView: 5,
+                  slidesPerView: 6,
                   spaceBetween: 25,
                 },
                 768: {
@@ -57,12 +57,12 @@ export default function Categories({ categories, facets }) {
                   spaceBetween: 20,
                 },
                 400: {
-                  slidesPerView: 4,
+                  slidesPerView: 2.5,
                   spaceBetween: 20,
                 },
                 0: {
-                  slidesPerView: 3,
-                  spaceBetween: 10,
+                  slidesPerView: 2,
+                  spaceBetween: 20,
                 },
               }}
               spaceBetween={30}
@@ -183,8 +183,8 @@ export default function Categories({ categories, facets }) {
 
         /* Circular Image Container - Responsive */
         .category-circle-wrapper {
-          width: 160px;
-          height: 160px;
+          width: 200px;
+          height: 200px;
           border-radius: 50%;
           position: relative;
           overflow: hidden;
@@ -279,8 +279,8 @@ export default function Categories({ categories, facets }) {
           }
           
           .category-circle-wrapper {
-            width: 90px;
-            height: 90px;
+            width: 120px;
+            height: 120px;
           }
 
           .category-title {
@@ -295,8 +295,8 @@ export default function Categories({ categories, facets }) {
         /* Extra small screens */
         @media (max-width: 399px) {
           .category-circle-wrapper {
-            width: 55px;
-            height: 55px;
+            width: 130px;
+            height: 130px;
           }
 
           .category-title {
